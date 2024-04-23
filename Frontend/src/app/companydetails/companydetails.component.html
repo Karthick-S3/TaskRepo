@@ -1,0 +1,195 @@
+<div class="mainbody">
+  <div class="sidebar">
+
+    <h3>Filters</h3>
+
+    <form #myForm="ngForm" (ngSubmit)="onSubmit()">
+      <label for="Country">Country</label>
+      <p-multiSelect [options]="countrys" [(ngModel)]="selectedCountry" optionLabel="country" name="country" (ngModelChange)="onCountryChange($event)">
+      </p-multiSelect>
+  
+      <label for="State">State</label>
+      <p-multiSelect [options]="states" [(ngModel)]="selectedState" optionLabel="state" name="state" (ngModelChange)="onStateChange($event)"></p-multiSelect>
+  
+      <label for="City">City</label>
+      <p-multiSelect [options]="citys" [(ngModel)]="selectedCity" optionLabel="city" name="city" (ngModelChange)="onCityChange($event)"></p-multiSelect>
+      <p-toast></p-toast>
+      <div>
+          
+          <button type="submit" pButton pRipple class="p-button-success" style="background-color: #5cb85c;border: 1px solid #4ba04b;">Submit</button>
+          <button type="button" pButton pRipple (click)="clearForm(myForm)" class="p-button-success" style="background-color: #F0B054;border: 1px solid #eb9f2e;">Clear</button>
+      </div>
+
+  </form>
+  
+      
+      
+
+  </div>
+
+
+
+
+  
+
+
+ 
+
+  <div class="body" style="max-height: calc(100vh - 70px);"  >
+    
+    <div class="container-fluid">
+     
+      <div  style="max-height: calc(100vh - 70px)">
+        <div  style="max-height: calc(100vh - 70px);border: 1px solid rgba(0, 0, 0, 0.131);">
+          <p-table id="demo" #demo styleClass="p-datatable-gridlines"
+            [value]="companys" 
+            [paginator]="true"
+            [rows]="10"
+            [lazy]="true"
+            (onLazyLoad)="loadCompanies($event)"
+            [loading]="loading"
+            [totalRecords]="total_record"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,15,20]"
+            [scrollable]="true"
+            scrollHeight="700px"
+            [customSort]="true"
+            [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
+            
+            >
+
+
+            <ng-template pTemplate="caption"  >
+              <div class="flex align-items-center justify-content-between" style="width: 100%;display: flex;align-items: center;justify-content: space-between;height: 30px;">
+                <h4>
+                  Company Details
+                </h4>
+                  
+                  <div class="cap">
+                    <div class="p-input-icon-left ginput">
+                      <span class="p-input-icon-right ml-auto">
+                        <input pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                        <i class="pi pi-search"></i>
+                    </span>
+                  </div>
+                  <i class="fa-solid fa-plus" routerLink="/adddetail"  pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
+                    <i class="fa-solid fa-print" (click)="PrintPage()" style="color: #1c537a;"  pTooltip="Print" tooltipPosition="bottom" ></i>
+                    <i class="fa-solid fa-rotate"  (click)="reload()" style="color : #1e7d23;" pTooltip="Reload" tooltipPosition="bottom" ></i>
+                    <i class="fa-solid fa-filter" (click)="showFilter()"  pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
+                    <i class="fa-solid fa-eraser" (click)="erase(demo)" *ngIf="showwwww"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
+                    <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
+                  </div>
+                  
+                  
+              </div>
+          </ng-template>
+
+
+            
+              
+            <ng-template pTemplate="header">
+             
+              
+                <tr style="height: 40px;">
+                    <th style="width: 5%;" pSortableColumn="companyid">Cmp Id<p-sortIcon field="companyid"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="companyname">CompanyName <p-sortIcon field="companyname"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="companyshortname">Shortname<p-sortIcon field="companyshortname"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="contact">Business Cont <p-sortIcon field="contact"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="address">Address <p-sortIcon field="Address"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="country">Country<p-sortIcon field="country"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="state">State <p-sortIcon field="state"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="zipcode">Zip code <p-sortIcon field="zipcode"></p-sortIcon></th>
+                    <th style="width: 7%;" pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon></th>
+                    <!-- <th pSortableColumn="establish_date">Establish Date<p-sortIcon field="establish_date"></p-sortIcon></th> -->
+                    <th style="width: 10%;" pSortableColumn="revenue">Revenue<p-sortIcon field="revenue"></p-sortIcon></th>
+                </tr>
+
+                
+
+
+                <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
+  
+                <th style="width: 5%;">
+                    <p-columnFilter type="text" field="companyid" ></p-columnFilter>
+                </th>
+                <th style="width: 10%;">
+                    <p-columnFilter type="text" field="companyname"></p-columnFilter>
+                </th>
+                <th style="width: 10%;">
+                    <p-columnFilter type="text" field="companyshortname"></p-columnFilter>
+                </th>
+  
+              <th style="width: 10%;">
+                  <p-columnFilter type="text" field="contact"></p-columnFilter>
+              </th>
+              <th style="width: 10%;">
+                  <p-columnFilter type="text" field="address"></p-columnFilter>
+              </th>
+              <th style="width: 10%;">
+                  <p-columnFilter type="text" field="country"></p-columnFilter>
+              </th>
+              <th style="width: 10%;">
+                <p-columnFilter type="text" field="state"></p-columnFilter>
+            </th>
+            <th style="width: 10%;">
+              <p-columnFilter type="text" field="city"></p-columnFilter>
+          </th>
+          <th style="width: 10%;">
+            <p-columnFilter type="text" field="zipcode"></p-columnFilter>
+        </th>
+        <th style="width: 7%;">
+          <p-columnFilter type="text" field="active"></p-columnFilter>
+      </th>
+      <!-- <th style="width: 10%;">
+        <p-columnFilter type="date" field="establish_date"></p-columnFilter>
+    </th> -->
+        
+
+      <th style="width: 10%;">
+        <p-columnFilter type="text" field="revenue"></p-columnFilter>
+    </th>
+
+                </tr>
+            </ng-template>
+            <ng-template  pTemplate="body" let-company>
+              <tr class="tr-body" style="height: 5vh;">
+                <td >{{ company.companyid }}</td>
+                <td >{{ company.companyname }}</td>
+                <td >{{ company.companyshortname }}</td>
+                <td >{{ company.contact }}</td>
+                <td >{{ company.address }}</td>
+                <td >{{ company.country }}</td>
+                <td >{{ company.state }}</td>
+                <td >{{ company.city }}</td>
+                <td >{{ company.zipcode }}</td>
+                <td >{{ company.active }}</td>
+                <!-- <td >{{ company.establish_date | date : 'MMM/dd/yyyy'}}</td> -->
+                <td >{{ company.revenue }}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                  <td colspan="11">No Company found.</td>
+              </tr>
+          </ng-template>
+            
+            <ng-template pTemplate="paginatorleft" class="print">
+            </ng-template>
+            <ng-template pTemplate="paginatorright" class="print">
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+</div>
+
+<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+  <img src="../assets/idepo container.svg" alt="">
+</div>

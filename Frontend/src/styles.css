@@ -1,0 +1,144 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+
+*{
+    font-family: "Poppins";
+}
+
+.p-element .p-multiselect-label-container{
+    width: 170px;
+    height: 40px;
+
+}
+
+body{
+    margin: 0%;
+    padding: 0%;
+}
+
+
+
+.try {
+    .p-inputtext{
+        padding: 0.2rem 0.5rem;
+      }
+    
+}
+
+._ngcontent-ng-c1526762707{
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+}
+
+  .p-datatable .p-datatable-thead > tr > th {
+    text-align: left;
+    padding: 0.2rem 0.2rem !important;
+    border: 1.2px solid #e5e7eb;
+    border-width: 0 0 1px 0;
+    font-weight: 600;
+    color: #ffffff;
+    background: #0B3A77;
+    font-size: 13px;
+    transition: box-shadow 0.2s;
+   
+}
+
+
+.p-datatable .p-sortable-column .p-sortable-column-icon {
+    color: #ffffff;
+    margin-left: 0.5rem;
+}
+
+.p-column-filter-menu-button {
+color: white;
+display: none;
+}
+
+.p-column-filter-clear-button {
+color: white;
+display: none;
+}
+
+.p-column-filter-menu-button.p-column-filter-menu-button-active, .p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
+    background: rgb(0 0 0);
+
+}
+
+.p-datatable .p-datatable-tbody > tr {
+
+    font-weight: 500;
+    color: #4b5563;
+    font-size: 14px;
+    
+}
+
+/* .p-datatable .p-datatable-tbody > tr td{
+    max-height: 10px !important;
+} */
+
+.p-column-filter-menu-button:hover {
+    color: rgb(0, 0, 0) !important;
+}
+.p-column-filter-menu-button:active{
+    color: red !important;
+}
+
+
+.p-datatable .p-datatable-header {
+background-color: rgb(243, 243, 243);
+}
+
+
+.test .p-card-header{
+    height: 60px;
+    width: 100%;
+    padding:30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #04246A;
+    color: #ffffff;
+    font-size: 17px;
+    border-radius: 5px 5px 0px 0px;
+
+}
+
+.bodY{
+    width: 100%;
+    height: 10vh;
+    background-color: red !important;
+}
+
+
+
+
+.fullwidth{
+    width: 100%;
+    
+    .p-dropdown{
+        width: 100%;
+        height: 40px;
+    }
+}
+p-dropdown .p-dropdown-label.p-placeholder{
+    line-height: 15px;
+    font-size: 14px;
+}
+.p-dropdown .p-dropdown-label {
+    line-height: 15px;
+    font-size: 15px;
+}
+
+
+.p-inputswitch .p-inputswitch-slider{
+    background-color: red;
+}
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider{
+    background-color: #468847;
+}
