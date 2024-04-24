@@ -62,10 +62,8 @@
 
 
             <ng-template pTemplate="caption"  >
-              <div class="flex align-items-center justify-content-between" style="width: 100%;display: flex;align-items: center;justify-content: space-between;height: 30px;">
-                <h4>
-                  Company Details
-                </h4>
+              <div class="" style="width: 100%;display: flex;align-items:center;justify-content: space-between;height: 30px;">
+              
                   
                   <div class="cap">
                     <div class="p-input-icon-left ginput">
@@ -81,7 +79,9 @@
                     <i class="fa-solid fa-eraser" (click)="erase(demo)" *ngIf="showwwww"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
                     <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
                   </div>
-                  
+                  <h4>
+                    Company Details
+                  </h4>
                   
               </div>
           </ng-template>
@@ -113,7 +113,7 @@
                 <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
   
                 <th style="width: 5%;">
-                    <p-columnFilter type="text" field="companyid" ></p-columnFilter>
+                    <p-columnFilter  type="text" field="companyid" ></p-columnFilter>
                 </th>
                 <th style="width: 10%;">
                     <p-columnFilter type="text" field="companyname"></p-columnFilter>
@@ -155,7 +155,7 @@
                 </tr>
             </ng-template>
             <ng-template  pTemplate="body" let-company>
-              <tr class="tr-body" style="height: 5vh;">
+              <tr class="tr-body" (click)="summa(company)">
                 <td >{{ company.companyid }}</td>
                 <td >{{ company.companyname }}</td>
                 <td >{{ company.companyshortname }}</td>

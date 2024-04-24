@@ -5,25 +5,32 @@ import { City } from '../Interfaces/city';
 import { State } from '../Interfaces/state';
 import { Country } from '../Interfaces/country';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 @Component({
   selector: 'app-add-details',
   templateUrl: './add-details.component.html',
   styleUrls: ['./add-details.component.css'],
-  providers: [MessageService]  
+  providers: [MessageService,ConfirmationService]  
 })
 export class AddDetailsComponent implements OnInit {
   isActive: boolean = false;
   submit = false;
-
   myForm!: FormGroup;
-
   citys: City[] = [];
   states: State[] = [];
   countrys: Country[] = [];
   
   
+
+  constructor(
+    private companyService: CompanyserviceService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {}
+
 
   routeToList(){
     if(this.myForm.invalid){
@@ -32,9 +39,9 @@ export class AddDetailsComponent implements OnInit {
       this.insert();
       this.router.navigate(['companylist']);
     }
-   
   }
   resetForm() {
+    console.log("swdasdas");
     this.messageService.add({ severity: 'info', summary: 'New Company', detail: 'To add a new detail, the form has been cleared.' });
     this.myForm.reset();
     this.ngOnInit();
@@ -46,7 +53,21 @@ export class AddDetailsComponent implements OnInit {
       }
     });
   }
-
+  SubmitAndReset(){
+    if(this.myForm.valid){
+      this.insert();
+      this.resetForm();
+    }else{
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'Please enter a valid value.' 
+      });
+    }
+    
+    
+    
+  }
   onCountryChange(event: any) {
     const selectedCountryid: number[] = [];
     if (event) {
@@ -63,14 +84,51 @@ export class AddDetailsComponent implements OnInit {
       this.getCityBystateIds(selectedStateid);
     }
   }
-  
 
-  constructor(
-    private companyService: CompanyserviceService,
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private messageService: MessageService,
-  ) {}
+  Addnew(event: Event) {
+    if(this.myForm.touched){
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'You have unsaved changes in the screen. Do you want to continue?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon:"none",
+        rejectIcon:"none",
+        rejectButtonStyleClass:"p-button-text",
+        accept: () => {
+            this.resetForm();
+        },
+        reject: () => {
+            
+        }
+    });
+    }else{
+      this.resetForm();
+    }
+    
+}
+BackToList(event: Event) {
+  if(this.myForm.touched){
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'You have unsaved changes in the screen. Do you want to continue?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon:"none",
+      rejectIcon:"none",
+      rejectButtonStyleClass:"p-button-text",
+      accept: () => {
+        this.router.navigate(['companylist']);
+      },
+      reject: () => {
+          
+      }
+  });
+  }else{
+    this.router.navigate(['companylist']);
+  }
+  
+}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -81,18 +139,9 @@ export class AddDetailsComponent implements OnInit {
 
   initializeForm(): void {
     this.myForm = this.formBuilder.group({
-      companyname: ['',
-      [Validators.required,
-      Validators.minLength(1),
-      Validators.maxLength(20),
-      Validators.pattern('[a-zA-Z0-9\-]*')]]
-      ,
-
-      companyshortname: ['',[Validators.maxLength(10),Validators.pattern('[a-zA-Z0-9\-]*')]]
-      
-      ,
+      companyname: ['',[Validators.required,Validators.minLength(1),Validators.maxLength(20),Validators.pattern('[a-zA-Z0-9\\- ]*')]],
+      companyshortname: ['',[Validators.maxLength(10), Validators.pattern('[a-zA-Z0-9\\- ]*')]],
       contact: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
-
       active: [''],
       cid: ['', Validators.required],
       sid: ['', Validators.required],
@@ -102,13 +151,7 @@ export class AddDetailsComponent implements OnInit {
       city:[''],
       revenue: ['', [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$'), Validators.maxLength(12)]],
       address: [''],
-      email: ['', [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(250),
-        Validators.email 
-    ]],
-    
+      email: ['', [Validators.required,Validators.minLength(5),Validators.maxLength(250),Validators.email ]],
       zipcode: ['', [Validators.required,Validators.pattern('[0-9]*'),Validators.maxLength(5),Validators.minLength(5)]],
     });
   }
@@ -147,11 +190,16 @@ export class AddDetailsComponent implements OnInit {
   }
 
   insert(): void {
-    //  console.log(this.myForm);
+    
     if(this.myForm.invalid){
       for (const control of Object.keys(this.myForm.controls)){
         this.myForm.controls[control].markAsTouched();
       }
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'Please enter a valid value.' 
+      });
     }else{
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');

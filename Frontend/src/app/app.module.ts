@@ -20,6 +20,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 
 @NgModule({
@@ -45,7 +47,9 @@ import { BadgeModule } from 'primeng/badge';
     InputGroupAddonModule,
     InputSwitchModule,
     DropdownModule,
-    BadgeModule
+    BadgeModule,
+    ConfirmDialogModule,
+    KeyFilterModule
   ],
   providers: [
     provideClientHydration()

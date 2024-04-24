@@ -38,6 +38,11 @@ export class CompanydetailsComponent implements OnInit {
   sFiledValue: string[] | undefined;
   searchField: string[] | undefined;
 
+  summa(company:any){
+    alert(company.companyid);
+  }
+  
+
   ExportData() {
     const event = {
         first: 0,
@@ -135,8 +140,8 @@ export class CompanydetailsComponent implements OnInit {
 
   
   loadCompanies(event : TableLazyLoadEvent): void {
+    console.log(event);
     this.animation = true;
-
     const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
     const sortOrder: boolean = event.sortOrder === 1 ? true : false;
 

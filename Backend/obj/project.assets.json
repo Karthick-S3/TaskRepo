@@ -1101,19 +1101,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Karthick S\\.nuget\\packages\\": {}
+    "C:\\Users\\Karthick.S\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Karthick S\\Desktop\\Task\\Backend\\Backend.csproj",
+      "projectUniqueName": "d:\\Task\\TaskRepo\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\Karthick S\\Desktop\\Task\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\Karthick S\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Karthick S\\Desktop\\Task\\Backend\\obj\\",
+      "projectPath": "d:\\Task\\TaskRepo\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\Karthick.S\\.nuget\\packages\\",
+      "outputPath": "d:\\Task\\TaskRepo\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Karthick S\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Karthick.S\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1133,6 +1133,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1179,7 +1184,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -301,8 +301,13 @@ namespace Backend.Repository
                         {
                             query.Append($" ORDER BY {orderby} {(isAsc ? "ASC" : "DESC")}");
                         }
+                        else{
+                            query.Append(" ORDER BY companyid ASC");
+                        }
 
                         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
+
+                       
 
                         using (var connection = _context.CreateConnection())
                         {
@@ -353,6 +358,28 @@ namespace Backend.Repository
 
         }
 
-        
+        public async Task<Companydetails> GetCompany(int id)
+        {
+            try
+            {
+                using (var connection = _context.CreateConnection())
+                {
+                    var oracleDynamicParameters = new OracleDynamicParameters();
+                    oracleDynamicParameters.Add("id", id, dbType: OracleMappingType.Int32, ParameterDirection.Input);
+                    oracleDynamicParameters.Add("OUT_COMPANY", dbType: OracleMappingType.RefCursor, direction: ParameterDirection.Output);
+
+                    var result = await connection.QueryFirstOrDefaultAsync<Companydetails>("getcompany.getcompanybyid", oracleDynamicParameters, commandType: CommandType.StoredProcedure);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+       
     }
 }

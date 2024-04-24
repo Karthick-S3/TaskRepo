@@ -40,5 +40,9 @@ namespace Backend.Models
 
         public int total_records {get; set;}
 
+        internal async Task<List<Companydetails>> ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

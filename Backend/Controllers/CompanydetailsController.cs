@@ -163,6 +163,22 @@ namespace Backend.Controllers
       }
 
 
+    [HttpGet("byId")]
+    public async Task<IActionResult> GetCompany([FromQuery]int id)
+    {
+        try
+        {
+            var company = await _companydetailsRepositry.GetCompany(id);
+            return Ok(company);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    
+
         
         
     }

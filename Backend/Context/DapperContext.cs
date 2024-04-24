@@ -13,12 +13,12 @@ namespace Backend.Context
         private readonly String _connectionString;
 
         public DapperContext(IConfiguration configuration)
-{
-    _configuration = configuration;
-    _connectionString = _configuration.GetConnectionString("DapConnection");
+        {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DapConnection");
 
 
-}
+        }
 
         public object Database { get; internal set; }
 

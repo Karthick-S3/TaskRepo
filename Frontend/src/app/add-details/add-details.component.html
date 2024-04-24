@@ -9,15 +9,16 @@
             
             <div class="bts">
                 <p-toast></p-toast>
-                <button routerLink="/companylist" pTooltip="Back to List" tooltipPosition="bottom">
+                <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
                     Back To List
                 </button>
-                <button pTooltip="Add new" tooltipPosition="bottom" (click)="resetForm()">
+                <p-confirmDialog></p-confirmDialog>
+                <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
                     <i class="fa-solid fa-plus" style="color: #1E1EC4;"></i>
                     Add New
                 </button>
-                <button type="submit" (click)="routeToList()" pTooltip="Go to List" tooltipPosition="bottom">
+                <button type="button" (click)="routeToList()" pTooltip="Go to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
                     Submit & Go To List
                 </button>
@@ -25,7 +26,7 @@
                     <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
                     Submit
                 </button>
-                <button type="submit" pTooltip="Submit" tooltipPosition="bottom">
+                <button type="button" pTooltip="Submit" tooltipPosition="bottom" (click)="SubmitAndReset()">
                     <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
                     Submit & Add New
                 </button>
@@ -65,7 +66,7 @@
                     </small>
 
                     <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
-                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
+                        *it allows only Alphabet, Numeric Values
                     </small>
 
                     <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
@@ -142,14 +143,14 @@
             </div>
 
 
-            <div class="input-group" style="height:90px;">
+            <div class="input-group" style="height:90px;background-color: rgb(255, 255, 255);">
                 <label for="revenue" class="form-label">Revenue<span style="color: red;"> * </span></label>
-                <input class="form-control" pInputText id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" />
+                <input class="form-control" pInputText  id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" />
                 <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched">
                     * This field is required.
                 </small>
                 <small *ngIf="myForm.get('revenue')?.errors?.['pattern']">
-                    * Revenue should be a numeric value with up to 2 decimal places.
+                    * Revenue allow numeric value with up to 2 decimal places.
                 </small>
                 <small *ngIf="myForm.get('revenue')?.errors?.['maxlength']" >
                     * Revenue should be less than 12 characters.
@@ -189,7 +190,7 @@
 
         <div class="input-group" style="height: 200px;">
             <label for="zipcode" class="form-label">Zip Code<span style="color: red;"> * </span></label>
-            <input pInputText pKeyFilter="int" placeholder="Zipcode" id="zipcode" class="form-control" formControlName="zipcode"  autocomplete="off" />
+            <input pInputText  placeholder="Zipcode" id="zipcode" class="form-control" formControlName="zipcode"  autocomplete="off" />
            
 
             <small *ngIf="myForm.get('zipcode')?.errors?.['required'] && myForm.get('zipcode')?.touched">
@@ -213,4 +214,8 @@
        
     </p-card>
 
+
+    
+
 </form>
+
