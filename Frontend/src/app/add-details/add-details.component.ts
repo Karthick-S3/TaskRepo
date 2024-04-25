@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input , Output , EventEmitter} from '@angular/core';
 import { CompanyserviceService } from '../companyservice.service';
 import { Router } from '@angular/router';
 import { City } from '../Interfaces/city';
@@ -6,6 +6,8 @@ import { State } from '../Interfaces/state';
 import { Country } from '../Interfaces/country';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
+import { response } from 'express';
+import { Company } from '../Interfaces/company';
 
 @Component({
   selector: 'app-add-details',
@@ -20,6 +22,12 @@ export class AddDetailsComponent implements OnInit {
   citys: City[] = [];
   states: State[] = [];
   countrys: Country[] = [];
+  animation: boolean = false;
+  newcompany : Company[] = [];
+
+  @Input() id= 0;
+  @Output() Flag = new EventEmitter<boolean>();
+  
   
   
 
@@ -118,23 +126,47 @@ BackToList(event: Event) {
       rejectIcon:"none",
       rejectButtonStyleClass:"p-button-text",
       accept: () => {
-        this.router.navigate(['companylist']);
+        this.Flag.emit(false);
       },
       reject: () => {
           
       }
   });
   }else{
-    this.router.navigate(['companylist']);
+    this.Flag.emit(false);
   }
   
 }
 
   ngOnInit(): void {
-    this.initializeForm();
+    
     this.loadCountry();
     this.loadState();
     this.loadCity();
+
+    if(this.id == undefined){
+      this.initializeForm();
+      
+    }else{
+      this.animation = true;
+      this.initializeForm();
+      this.companyService.getById(Number(this.id)).subscribe({
+        next: (response) => {
+          this.myForm.patchValue(response);
+          this.myForm.get('email')?.setValue("Example@gmail.com");
+          this.myForm.get('revenue')?.setValue(response.revenue.toString());
+          // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
+          this.animation = false;
+          if(response.active == "Yes"){
+            this.myForm.get('active')?.setValue(true);
+          }else{
+            this.myForm.get('active')?.setValue(false);
+          }
+        }
+      });
+      
+    }
+
   }
 
   initializeForm(): void {
@@ -149,6 +181,7 @@ BackToList(event: Event) {
       country:[''],
       state:[''],
       city:[''],
+      contactid:[''],
       revenue: ['', [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$'), Validators.maxLength(12)]],
       address: [''],
       email: ['', [Validators.required,Validators.minLength(5),Validators.maxLength(250),Validators.email ]],
@@ -190,7 +223,6 @@ BackToList(event: Event) {
   }
 
   insert(): void {
-    
     if(this.myForm.invalid){
       for (const control of Object.keys(this.myForm.controls)){
         this.myForm.controls[control].markAsTouched();
@@ -200,22 +232,39 @@ BackToList(event: Event) {
         summary: 'Error', 
         detail: 'Please enter a valid value.' 
       });
-    }else{
+    }
+    else{
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');
      
-      if (this.myForm.valid) {
-        this.companyService.insertCompany(this.myForm.value).subscribe({
-          next: (company) => {
-            console.log(company);
+      this.myForm.get('country')?.setValue("");
+      this.myForm.get('state')?.setValue("");
+      this.myForm.get('city')?.setValue("");
+
+      if(this.id){
+        alert("Updating");
+        this.companyService.updateCompany(this.myForm.value).subscribe({
+          next : (company) => {
+            console.log("updated succesfully");
           },
           error: (response) => {
             console.log(response);
-          },
-        });
-        
-      }
+          }
+        })
+      }else{
+        alert("Inserting");
+          this.companyService.insertCompany(this.myForm.value).subscribe({
+            next: (company) => {
+              console.log("created successfully");
+            },
+            error: (response) => {
+              console.log(response);
+            },
+          });
+        }
+
     }
+    
     
   }
 

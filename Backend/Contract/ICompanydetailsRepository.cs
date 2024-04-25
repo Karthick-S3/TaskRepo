@@ -41,6 +41,8 @@ namespace Backend.Contract
 
         public Task<Companydetails> GetCompany(int id);
 
+        public Task UpdateCompany(Companydetails companydetails);
+
     
         
        

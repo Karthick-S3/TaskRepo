@@ -138,7 +138,29 @@ export class CompanyserviceService {
 
 
 insertCompany(company: Company): Observable<Company> {
+  console.log("Service",company);
   return this.http.post<Company>(`${this.baseApiUrl}/api/Companydetails/insert`, company);
+}
+
+
+
+
+// fetch by id
+
+getById(id : number): Observable<Company>{
+ const val =  `${this.baseApiUrl}/api/Companydetails/byId?id=${id}`;
+ return this.http.get<Company>(val);
+}
+
+//update data 
+
+updateCompany(company: Company):Observable<Company>{
+  console.log("calling",company);
+  
+  const val =  this.http.put<Company>(`${this.baseApiUrl}/api/Companydetails/Update`, company);
+  console.log(val);
+
+  return val;
 }
 
 

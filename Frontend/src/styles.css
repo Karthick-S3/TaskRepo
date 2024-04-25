@@ -142,3 +142,7 @@ p-dropdown .p-dropdown-label.p-placeholder{
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider{
     background-color: #468847;
 }
+
+.p-datatable .p-datatable-tbody > tr > td{
+    padding: 11px 10px;
+}

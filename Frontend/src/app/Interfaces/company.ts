@@ -14,7 +14,8 @@ export interface Company {
     total_records :number,
     country:string,
     state:string,
-    city:string
+    city:string,
+    contactid:number
 }
 
 

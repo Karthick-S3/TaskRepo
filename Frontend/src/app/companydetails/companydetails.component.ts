@@ -17,6 +17,7 @@ import { first } from 'rxjs';
 })
 export class CompanydetailsComponent implements OnInit {
 
+  
   @ViewChild('demo') demoTable!: Table;
 
   value:string="sjd"
@@ -37,9 +38,18 @@ export class CompanydetailsComponent implements OnInit {
   fileName="Company Details.xlsx";
   sFiledValue: string[] | undefined;
   searchField: string[] | undefined;
-
+  Companyid:any;
+  Showadd:boolean = false;
   summa(company:any){
-    alert(company.companyid);
+    this.Companyid = company.companyid
+    this.Showadd = true;
+  }
+  shows(){
+    this.Showadd = true;
+  }
+
+  show(val : boolean){
+    this.Showadd = val;
   }
   
 
@@ -126,7 +136,7 @@ export class CompanydetailsComponent implements OnInit {
   ngOnInit(): void {
     this.loadCompanies({
       first: 0,
-      rows: 10,
+      rows: 15,
       sortField: undefined,
       sortOrder: 1,
       filters: {},
@@ -140,7 +150,6 @@ export class CompanydetailsComponent implements OnInit {
 
   
   loadCompanies(event : TableLazyLoadEvent): void {
-    console.log(event);
     this.animation = true;
     const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
     const sortOrder: boolean = event.sortOrder === 1 ? true : false;

@@ -380,6 +380,34 @@ namespace Backend.Repository
             }
         }
 
-       
+        public async Task UpdateCompany(Companydetails companydetails)
+        {
+             try{
+                using (var connection = _context.CreateConnection())
+                {
+                    var oracleParams = new OracleDynamicParameters();
+                    oracleParams.Add("p_contact", companydetails.contact, OracleMappingType.Varchar2, ParameterDirection.Input);
+                    oracleParams.Add("p_companyname", companydetails.companyname, OracleMappingType.Varchar2, ParameterDirection.Input);
+                    oracleParams.Add("p_companyshortname", companydetails.companyshortname, OracleMappingType.Varchar2, ParameterDirection.Input);
+                    oracleParams.Add("p_address", companydetails.Address, OracleMappingType.Varchar2, ParameterDirection.Input);
+                    oracleParams.Add("p_zipcode", companydetails.zipcode, OracleMappingType.Int32, ParameterDirection.Input);
+                    oracleParams.Add("p_active", companydetails.active, OracleMappingType.Varchar2, ParameterDirection.Input);
+                    oracleParams.Add("p_cid", companydetails.cid, OracleMappingType.Int32, ParameterDirection.Input);
+                    oracleParams.Add("p_sid", companydetails.sid, OracleMappingType.Int32, ParameterDirection.Input);
+                    oracleParams.Add("p_cityid", companydetails.cityid, OracleMappingType.Int32, ParameterDirection.Input);
+                    oracleParams.Add("p_revenue", companydetails.revenue, OracleMappingType.Decimal, ParameterDirection.Input);
+                    oracleParams.Add("p_contactid", companydetails.contactid, OracleMappingType.Int32, ParameterDirection.Input);
+
+
+                    await connection.ExecuteAsync("getcompany.update_company", oracleParams, commandType: CommandType.StoredProcedure);
+                  
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
     }
 }

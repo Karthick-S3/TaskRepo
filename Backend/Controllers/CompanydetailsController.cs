@@ -177,6 +177,19 @@ namespace Backend.Controllers
         }
     }
 
+
+    [HttpPut("Update")]
+
+    public async Task<IActionResult> UpdateCompany(Companydetails companydetails){
+        try{
+            await _companydetailsRepositry.UpdateCompany(companydetails);
+                return Ok("yjfyjvff");
+        }
+        catch (Exception ex){
+            return StatusCode(500, ex.Message);
+        }
+    }
+
     
 
         

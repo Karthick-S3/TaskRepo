@@ -66,15 +66,14 @@ SELECT cd.companyid,
        cd.active, 
        co.country, 
        st.state, 
-       ci.city 
+       ci.city ,
+       con.contactid
 FROM companydetail cd 
 JOIN countrydetail co ON co.cid = cd.cid 
 JOIN statedetail st ON st.sid = cd.sid 
 JOIN citydetail ci ON ci.cityid = cd.cityid 
 JOIN contactdetail con ON con.contactid = cd.contactid 
-WHERE co.cid IN (2000) 
-  AND (st.sid IN (3000, 3001) OR st.sid IS NULL) 
-  AND (ci.cityid IN (4000) OR ci.cityid IS NULL);
+
   
 
   
@@ -413,7 +412,7 @@ lower(state) like lower('%tam%')
     AND 
     ci.cityid IN (4000, 4001, 4002, 4003)
 ORDER BY 
-    ci.city;
+    companyid asc;
             
             
             
@@ -628,4 +627,6 @@ CREATE OR REPLACE PACKAGE BODY FilterPackage AS
     END GetcitiesByState;
 END FilterPackage;
 /
+
+
 
