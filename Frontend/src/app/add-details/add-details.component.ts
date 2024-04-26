@@ -24,6 +24,7 @@ export class AddDetailsComponent implements OnInit {
   countrys: Country[] = [];
   animation: boolean = false;
   newcompany : Company[] = [];
+  badgeval : string = '';
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
@@ -45,11 +46,10 @@ export class AddDetailsComponent implements OnInit {
       this.insert();
     }else{
       this.insert();
-      this.router.navigate(['companylist']);
+      this.Flag.emit(false);
     }
   }
   resetForm() {
-    console.log("swdasdas");
     this.messageService.add({ severity: 'info', summary: 'New Company', detail: 'To add a new detail, the form has been cleared.' });
     this.myForm.reset();
     this.ngOnInit();
@@ -64,7 +64,9 @@ export class AddDetailsComponent implements OnInit {
   SubmitAndReset(){
     if(this.myForm.valid){
       this.insert();
-      this.resetForm();
+      this.myForm.reset();
+      this.badgeval = "NEW";
+      this.id=0;
     }else{
       this.messageService.add({ 
         severity: 'error', 
@@ -94,7 +96,8 @@ export class AddDetailsComponent implements OnInit {
   }
 
   Addnew(event: Event) {
-    if(this.myForm.touched){
+    this.id = 0;
+    if(this.myForm.touched || this.id>0){
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'You have unsaved changes in the screen. Do you want to continue?',
@@ -144,10 +147,12 @@ BackToList(event: Event) {
     this.loadState();
     this.loadCity();
 
-    if(this.id == undefined){
+    if(this.id == 0){
       this.initializeForm();
+      this.badgeval = 'NEW';
       
     }else{
+      this.badgeval = 'EDIT'
       this.animation = true;
       this.initializeForm();
       this.companyService.getById(Number(this.id)).subscribe({
@@ -236,13 +241,10 @@ BackToList(event: Event) {
     else{
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');
-     
-      this.myForm.get('country')?.setValue("");
-      this.myForm.get('state')?.setValue("");
-      this.myForm.get('city')?.setValue("");
-
-      if(this.id){
-        alert("Updating");
+      this.myForm.get('country')?.setValue('');
+      this.myForm.get('state')?.setValue('');
+      this.myForm.get('city')?.setValue('');
+      if(this.id > 0){
         this.companyService.updateCompany(this.myForm.value).subscribe({
           next : (company) => {
             console.log("updated succesfully");
@@ -252,10 +254,10 @@ BackToList(event: Event) {
           }
         })
       }else{
-        alert("Inserting");
+        this.myForm.get('contactid')?.setValue(0);
           this.companyService.insertCompany(this.myForm.value).subscribe({
             next: (company) => {
-              console.log("created successfully");
+              console.log("Inserted successfully");
             },
             error: (response) => {
               console.log(response);

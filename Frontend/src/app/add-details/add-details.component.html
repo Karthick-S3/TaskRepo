@@ -3,7 +3,7 @@
         <ng-template pTemplate="header">
             <h4 style="font-weight: 600;">
                 Add Company Detail
-                <p-badge class="badge"  value="NEW" severity="success"></p-badge>
+                <p-badge class="badge"  [value]="badgeval" severity="success"></p-badge>
             </h4>
             
             
@@ -145,7 +145,7 @@
 
             <div class="input-group" style="height:90px;background-color: rgb(255, 255, 255);">
                 <label for="revenue" class="form-label">Revenue<span style="color: red;"> * </span></label>
-                <input class="form-control" pInputText  id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" />
+                <input class="form-control"  pInputText  id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" />
                 <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched">
                     * This field is required.
                 </small>

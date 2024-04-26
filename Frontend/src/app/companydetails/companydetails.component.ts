@@ -8,6 +8,7 @@ import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
 import { first } from 'rxjs';
+import { flush } from '@angular/core/testing';
 
 @Component({
   selector: 'app-companydetails',
@@ -40,15 +41,19 @@ export class CompanydetailsComponent implements OnInit {
   searchField: string[] | undefined;
   Companyid:any;
   Showadd:boolean = false;
+  check:number = 1;
+
   summa(company:any){
     this.Companyid = company.companyid
     this.Showadd = true;
   }
   shows(){
     this.Showadd = true;
+    this.Companyid = 0;
   }
 
   show(val : boolean){
+    this.check=0;
     this.Showadd = val;
   }
   
@@ -118,7 +123,6 @@ export class CompanydetailsComponent implements OnInit {
     reload(){
       this.messageService.add({ severity: 'success', summary: 'Reload', detail: 'Company Details Reloaded' });
     this.showwwww = false;
-    // alert("wor")
     this.demoTable.reset();
   
   }
@@ -134,9 +138,10 @@ export class CompanydetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("oninit working");
     this.loadCompanies({
       first: 0,
-      rows: 15,
+      rows: 10,
       sortField: undefined,
       sortOrder: 1,
       filters: {},
@@ -150,37 +155,43 @@ export class CompanydetailsComponent implements OnInit {
 
   
   loadCompanies(event : TableLazyLoadEvent): void {
-    this.animation = true;
-    const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
-    const sortOrder: boolean = event.sortOrder === 1 ? true : false;
-
-    let searchField: string[] = [];
-    let sFiledValue: string[] = [];
-
-    if (event.filters) {
-      for (const key in event.filters) {
-        if (event.filters.hasOwnProperty(key)) {
-          const filterValue = event.filters[key];
-          if (filterValue && ('value' in filterValue) && filterValue.value !== null) {
-            searchField.push(key);
-            sFiledValue.push(filterValue.value);
+    if (this.check==0) {
+      this.check =1;
+      return; 
+    }
+      this.animation = true;
+      const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
+      const sortOrder: boolean = event.sortOrder === 1 ? true : false;
+  
+      let searchField: string[] = [];
+      let sFiledValue: string[] = [];
+  
+      if (event.filters) {
+        for (const key in event.filters) {
+          if (event.filters.hasOwnProperty(key)) {
+            const filterValue = event.filters[key];
+            if (filterValue && ('value' in filterValue) && filterValue.value !== null) {
+              searchField.push(key);
+              sFiledValue.push(filterValue.value);
+            }
           }
         }
       }
-    }
-
+  
+      
+  
+      this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
+        .subscribe(companies => {
+          this.animation = false;
+          if (companies && companies.length > 0) {
+            this.companys = companies;
+            this.total_record = companies[0].total_records;
+          } else {
+            console.error('No companies found.');
+          }
+        });
     
-
-    this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
-      .subscribe(companies => {
-        this.animation = false;
-        if (companies && companies.length > 0) {
-          this.companys = companies;
-          this.total_record = companies[0].total_records;
-        } else {
-          console.error('No companies found.');
-        }
-      });
+    
   }
 
   loadCountry(): void {

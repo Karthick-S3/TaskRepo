@@ -6,8 +6,6 @@ import { Country } from './Interfaces/country';
 import { State } from './Interfaces/state';
 import { City } from './Interfaces/city';
 
-import { TableLazyLoadEvent } from 'primeng/table';
-import { compileDeclareNgModuleFromMetadata } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -138,7 +136,6 @@ export class CompanyserviceService {
 
 
 insertCompany(company: Company): Observable<Company> {
-  console.log("Service",company);
   return this.http.post<Company>(`${this.baseApiUrl}/api/Companydetails/insert`, company);
 }
 
@@ -155,11 +152,7 @@ getById(id : number): Observable<Company>{
 //update data 
 
 updateCompany(company: Company):Observable<Company>{
-  console.log("calling",company);
-  
   const val =  this.http.put<Company>(`${this.baseApiUrl}/api/Companydetails/Update`, company);
-  console.log(val);
-
   return val;
 }
 

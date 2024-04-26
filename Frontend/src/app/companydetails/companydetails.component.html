@@ -35,16 +35,16 @@
 
  
 
-  <div class="body" style="max-height: calc(100vh - 70px);"  >
+  <div class="body" style="max-height: calc(100vh -110px);"  >
     
     <div class="container-fluid">
      
-      <div  style="max-height: calc(100vh - 70px)">
-        <div  style="max-height: calc(100vh - 70px);border: 1px solid rgba(0, 0, 0, 0.131);">
+      <div  style="max-height: calc(100vh - 110px)">
+        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131);">
           <p-table id="demo" #demo styleClass="p-datatable-gridlines"
             [value]="companys" 
             [paginator]="true"
-            [rows]="15"
+            [rows]="10"
             [lazy]="true"
             (onLazyLoad)="loadCompanies($event)"
             [loading]="loading"
@@ -52,9 +52,9 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[15,20,25,30]"
+            [rowsPerPageOptions]="[10,15,20]"
             [scrollable]="true"
-            scrollHeight="700px"
+            scrollHeight="670px"
             [customSort]="true"
             [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
             

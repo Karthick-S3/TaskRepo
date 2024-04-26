@@ -1,6 +1,74 @@
 <div class="whole">
     <div class="topbar">
-      <h2>iComp</h2>
+      <div style="width: 40%;height: 50px;display: flex;align-items: center;justify-content: space-between;">
+        <i><img src="../assets/IComp Logo.svg" alt=""></i>
+        <div class="timee" >
+          <h3>Date : {{ currentDate | date: 'medium' }}</h3>
+          <h3>Version : 1.0</h3>
+        </div>
+        <div class="p-input-icon-left ginput">
+          <span class="p-input-icon-right ml-auto">
+            <input pInputText type="text"  placeholder="Equipment No" />
+            <i class="pi pi-search"></i>
+        </span>
+      </div>
+        
+      </div>
+      
+      <div style="display: flex;align-items:center;justify-content: space-between;width: 210px;">
+        <i style="cursor: pointer;" class="fa-solid fa-house"></i>
+        <i style ="cursor: pointer;" class="fa-solid fa-maximize"></i>
+        <div  class="user">
+          <h4 style="margin-right: 10px;">WELCOME USER</h4>
+          <i style="margin-top: -3px;color: gray;" class="fa-solid fa-caret-down"></i>
+        </div>
+        
+      </div>
+      
+    </div>
+    <div class="topbar2" >
+      <button>
+        <i class="fa-solid fa-industry"></i>
+        Company
+        <span>
+
+        </span>
+      </button>
+      <button>
+        <i class="fa-solid fa-user-group"></i>
+        Add
+        <span>
+          
+        </span>
+      </button>
+      <button>
+        <i class="fa-solid fa-file-signature"></i>
+        Estimate
+        <span>
+
+        </span>
+      </button>
+      <button>
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        Repair
+        <span>
+          
+        </span>
+      </button>
+      <button>
+        <i class="fa-solid fa-chart-simple"></i>
+        Status
+        <span>
+
+        </span>
+      </button>
+      <button>
+        <i class="fa-solid fa-ellipsis"></i>
+        Others
+        <span>
+
+        </span>
+      </button>
     </div>
     <div class="mainbody">
         <router-outlet></router-outlet>

@@ -4,21 +4,108 @@
     
     .topbar{
         width: 100%;
-        height: 70px;
+        height: 50px;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.363);
+        padding: 0px 20px;
+        i{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            img{
+                width: 150px;
+            }
+        }
+        h4{
+            color: rgb(39, 39, 39);
+            font-size: 15px;
+            font-weight: 600
+        }
+    }
+    .topbar2{
         background-color: #04246A;
+        width: 100%;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0px 20px;
+       button{
+        width: 70px;
+        height: 60px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.363);
-        h2{
-            color: rgb(255, 255, 255);
-            font-size: 20px;
-            font-weight: 600;
+        flex-direction: column;
+        background-color: transparent;
+        color: white;
+        font-size: 12px;
+        outline: none;
+        margin-right: 8px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        i{
+            color: white;
+            font-size: 25px;
         }
+     
+       }
     }
     .mainbody{
         width: 100%;
-        height: calc(100vh - 70px);
+        height: calc(100vh - 110px);
     }
 
+}
+
+.user{
+
+    display: flex;
+    h4{
+        cursor: pointer;
+    }i{
+        cursor: pointer;
+
+    }
+}
+
+.timee{
+    width: 220px;
+    height: 50px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    h3{
+        padding: 0%;
+        margin: 0%;
+        font-size: 13px;
+        color: #233f7c;
+    }
+}
+
+.ginput{
+    margin-right: 20px;
+    span{
+        i{
+            font-size: 15px;
+            font-weight: 400;
+            color: #1c537a;
+            margin-right: 0px;
+        }
+        input{
+            width: 250px;
+            height: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.199);
+            padding: 0px 0px 0px 10px;
+            outline: none;
+            background-color: #ffef97;
+        }
+    }
 }
