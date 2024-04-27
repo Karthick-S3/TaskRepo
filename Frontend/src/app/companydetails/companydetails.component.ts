@@ -7,7 +7,7 @@ import { City } from '../Interfaces/city';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
-import { first } from 'rxjs';
+import { elementAt, first } from 'rxjs';
 import { flush } from '@angular/core/testing';
 
 @Component({
@@ -42,10 +42,39 @@ export class CompanydetailsComponent implements OnInit {
   Companyid:any;
   Showadd:boolean = false;
   check:number = 1;
+  rowIndex:number = 0;
+  showval: number | undefined = 10;
+ 
+  Tempcompany:Company[] = [];
 
-  summa(company:any){
+  sortField:string | undefined='';
+  sortOrder:boolean =false;
+
+  summa(company:any,rowIndex:number){
     this.Companyid = company.companyid
+    this.rowIndex = rowIndex;
     this.Showadd = true;
+
+    this.companyService.lazyData2(0 || 0, this.total_record || 10, this.sortField, this.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
+    .subscribe(companies => {
+      this.Tempcompany = companies;
+    });
+    
+  }
+  returnPreviousCompId(){
+    return this.Tempcompany[--this.rowIndex].companyid;
+  }
+   
+  returnNextCompId(){
+    return this.Tempcompany[++this.rowIndex].companyid;
+  }
+  returnLastCompId(){
+    this.rowIndex = this.Tempcompany.length-1;
+    return this.Tempcompany[this.rowIndex].companyid;
+  }
+  returnFirstCompId(){
+    this.rowIndex = 0;
+    return this.Tempcompany[0].companyid;
   }
   shows(){
     this.Showadd = true;
@@ -116,8 +145,9 @@ export class CompanydetailsComponent implements OnInit {
 
     const event: TableLazyLoadEvent = {
       first: 0,
-      rows: 10
+      rows:this.showval
     };
+    this.loadCompanies(event)
   }
 
     reload(){
@@ -138,7 +168,7 @@ export class CompanydetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("oninit working");
+
     this.loadCompanies({
       first: 0,
       rows: 10,
@@ -150,6 +180,8 @@ export class CompanydetailsComponent implements OnInit {
     this.loadCountry();
     this.loadState();
     this.loadCity();
+
+   
   }
 
 
@@ -159,6 +191,7 @@ export class CompanydetailsComponent implements OnInit {
       this.check =1;
       return; 
     }
+
       this.animation = true;
       const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
       const sortOrder: boolean = event.sortOrder === 1 ? true : false;
@@ -177,22 +210,29 @@ export class CompanydetailsComponent implements OnInit {
           }
         }
       }
-  
-      
-  
+      this.searchField=searchField;
+      this.sFiledValue=sFiledValue;
+      this.sortOrder=sortOrder;
+      this.sortField=sortField;
+
+
+     this.showval = event.rows !== null ? event.rows : undefined;
+
       this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
         .subscribe(companies => {
           this.animation = false;
           if (companies && companies.length > 0) {
             this.companys = companies;
+            // console.log(event);
+            console.log(this.companys);
             this.total_record = companies[0].total_records;
           } else {
             console.error('No companies found.');
           }
         });
-    
-    
   }
+
+
 
   loadCountry(): void {
     this.companyService.getCountry().subscribe({

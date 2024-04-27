@@ -8,6 +8,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { response } from 'express';
 import { Company } from '../Interfaces/company';
+import { CompanydetailsComponent } from '../companydetails/companydetails.component';
 
 @Component({
   selector: 'app-add-details',
@@ -26,6 +27,8 @@ export class AddDetailsComponent implements OnInit {
   newcompany : Company[] = [];
   badgeval : string = '';
 
+  comp:any[] = [];
+
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
   
@@ -37,9 +40,89 @@ export class AddDetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private companydetail:CompanydetailsComponent
   ) {}
+  GetFirst(){
 
+    const val = this.companydetail.returnFirstCompId();
+    const id:number =val;
+     this.companyService.getById(Number(id)).subscribe({
+        next: (response) => {
+          this.myForm.patchValue(response);
+
+          this.myForm.get('email')?.setValue("Example@gmail.com");
+          this.myForm.get('revenue')?.setValue(response.revenue.toString());
+
+          if(response.active == "Yes"){
+            this.myForm.get('active')?.setValue(true);
+          }else{
+            this.myForm.get('active')?.setValue(false);
+          }
+     }
+     });
+  }
+  GetLast(){
+
+    const val = this.companydetail.returnLastCompId();
+    const id:number =val;
+     this.companyService.getById(Number(id)).subscribe({
+        next: (response) => {
+          this.myForm.patchValue(response);
+
+          this.myForm.get('email')?.setValue("Example@gmail.com");
+          this.myForm.get('revenue')?.setValue(response.revenue.toString());
+          // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
+
+          if(response.active == "Yes"){
+            this.myForm.get('active')?.setValue(true);
+          }else{
+            this.myForm.get('active')?.setValue(false);
+          }
+     }
+     });
+  }
+
+  GetPrevious(){
+
+    const val = this.companydetail.returnPreviousCompId();
+    const id:number =val;
+     this.companyService.getById(Number(id)).subscribe({
+        next: (response) => {
+          this.myForm.patchValue(response);
+
+          this.myForm.get('email')?.setValue("Example@gmail.com");
+          this.myForm.get('revenue')?.setValue(response.revenue.toString());
+          // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
+
+          if(response.active == "Yes"){
+            this.myForm.get('active')?.setValue(true);
+          }else{
+            this.myForm.get('active')?.setValue(false);
+          }
+     }
+     });
+  }
+
+  GetNext(){
+
+    const val = this.companydetail.returnNextCompId();
+    const id:number =val;
+     this.companyService.getById(Number(id)).subscribe({
+        next: (response) => {
+          this.myForm.patchValue(response);
+
+          this.myForm.get('email')?.setValue("Example@gmail.com");
+          this.myForm.get('revenue')?.setValue(response.revenue.toString());
+
+          if(response.active == "Yes"){
+            this.myForm.get('active')?.setValue(true);
+          }else{
+            this.myForm.get('active')?.setValue(false);
+          }
+     }
+     });
+  }
 
   routeToList(){
     if(this.myForm.invalid){
@@ -176,7 +259,7 @@ BackToList(event: Event) {
 
   initializeForm(): void {
     this.myForm = this.formBuilder.group({
-      companyname: ['',[Validators.required,Validators.minLength(1),Validators.maxLength(20),Validators.pattern('[a-zA-Z0-9\\- ]*')]],
+      companyname: ['',[Validators.required,Validators.minLength(1),Validators.maxLength(20),Validators.pattern('[a-zA-Z0-9\\-. ]*')]],
       companyshortname: ['',[Validators.maxLength(10), Validators.pattern('[a-zA-Z0-9\\- ]*')]],
       contact: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
       active: [''],

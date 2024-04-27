@@ -31,18 +31,18 @@
                     Submit & Add New
                 </button>
 
-                <button>
+                <button type="button" (click)="GetFirst()">
                     <i class="fa-solid fa-angles-left" style="color: #1E1EC4;"></i>
                 </button>
                 
-                <button>
+                <button type="button" (click)="GetPrevious()">
                     <i class="fa-solid fa-angle-left" style="color: #1E1EC4;"></i>
                 </button>
-                <button>
+                <button type="button" (click)="GetNext()">
                     <i class="fa-solid fa-angle-right" style="color: #1E1EC4;"></i>
                 </button>
 
-                <button>
+                <button type="button" (click)="GetLast()">
                     <i class="fa-solid fa-angles-right" style="color: #1E1EC4;"></i>
                 </button>
                 
@@ -59,7 +59,7 @@
             
                 <div class="input-group" style="height: 90px;">
                     <label for="companyname" class="form-label">Company Name <span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off"/>
+                    <input pInputText type="text" class="form-control" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
                     
                     <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
                         *This field is required.
