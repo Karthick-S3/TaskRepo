@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompanydetailsComponent } from './companydetails/companydetails.component';
@@ -49,7 +49,8 @@ import { KeyFilterModule } from 'primeng/keyfilter';
     DropdownModule,
     BadgeModule,
     ConfirmDialogModule,
-    KeyFilterModule
+    KeyFilterModule,
+    OverlayPanelModule
   ],
   providers: [
     provideClientHydration()

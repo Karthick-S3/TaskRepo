@@ -208,3 +208,7 @@ h4{
     background-color: rgba(0, 0, 0, 0.050);
     cursor: pointer;
 }
+
+.hide {
+    display: none;
+  }

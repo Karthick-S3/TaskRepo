@@ -1,4 +1,5 @@
-<div class="mainbody" *ngIf="!Showadd">
+<div class="mainbody"  [class.hide]="Showadd">
+  
   <div class="sidebar">
 
     <h3>Filters</h3>
@@ -195,3 +196,7 @@
 </div>
 
 <app-add-details *ngIf="Showadd" [id]="Companyid"  (Flag)="show($event)"></app-add-details>
+
+
+
+

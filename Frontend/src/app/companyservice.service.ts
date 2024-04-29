@@ -99,7 +99,8 @@ export class CompanyserviceService {
     sFieldValue: string[] | undefined,
     countries: number[] | undefined,
     states: number[] | undefined,
-    cities: number[] | undefined
+    cities: number[] | undefined,
+    globalFilter: string  | undefined
   ): Observable<Company[]> {
     // Construct the query string
     let queryString = `skip=${skip}&take=${take}`;
@@ -127,7 +128,12 @@ export class CompanyserviceService {
       });
     }
 
-    const url = `${this.baseApiUrl}/api/Companydetails/Lazy2?${queryString}`;
+    if (globalFilter) {
+      queryString += `&globalfilter=${globalFilter}`;
+    }
+
+
+    const url = `${this.baseApiUrl}/api/Companydetails/Lazy?${queryString}`;
 
     return this.http.get<Company[]>(url);
 }

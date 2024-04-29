@@ -44,13 +44,13 @@ export class AddDetailsComponent implements OnInit {
     private companydetail:CompanydetailsComponent
   ) {}
   GetFirst(){
-
+    this.animation = true;
     const val = this.companydetail.returnFirstCompId();
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-
+          this.animation=false;
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
@@ -63,13 +63,13 @@ export class AddDetailsComponent implements OnInit {
      });
   }
   GetLast(){
-
+    this.animation = true;
     const val = this.companydetail.returnLastCompId();
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-
+          this.animation = false;
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
           // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
@@ -84,13 +84,13 @@ export class AddDetailsComponent implements OnInit {
   }
 
   GetPrevious(){
-
+    this.animation = true;
     const val = this.companydetail.returnPreviousCompId();
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-
+          this.animation = false;
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
           // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
@@ -105,13 +105,13 @@ export class AddDetailsComponent implements OnInit {
   }
 
   GetNext(){
-
+    this.animation = true;
     const val = this.companydetail.returnNextCompId();
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-
+          this.animation = false;
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 

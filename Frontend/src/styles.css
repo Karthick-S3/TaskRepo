@@ -146,3 +146,14 @@ p-dropdown .p-dropdown-label.p-placeholder{
 .p-datatable .p-datatable-tbody > tr > td{
     padding: 11px 10px;
 }
+
+.p-overlaypanel .p-overlaypanel-content{
+
+    padding: 5px;
+}
+
+.p-overlaypanel{
+    margin-top: -7px;
+    border: 1px solid red;
+   
+}

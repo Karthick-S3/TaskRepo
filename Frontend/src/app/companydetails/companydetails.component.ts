@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+
+import { ChangeDetectorRef, Component, OnInit, ViewChild   } from '@angular/core';
 import { CompanyserviceService } from '../companyservice.service';
 import { Company } from '../Interfaces/company';
 import { Country } from '../Interfaces/country';
@@ -7,8 +8,7 @@ import { City } from '../Interfaces/city';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
-import { elementAt, first } from 'rxjs';
-import { flush } from '@angular/core/testing';
+
 
 @Component({
   selector: 'app-companydetails',
@@ -20,8 +20,8 @@ export class CompanydetailsComponent implements OnInit {
 
   
   @ViewChild('demo') demoTable!: Table;
+  
 
-  value:string="sjd"
   total_record: number = 0;
   companys: Company[] = [];
   countrys: Country[] = [];
@@ -43,19 +43,24 @@ export class CompanydetailsComponent implements OnInit {
   Showadd:boolean = false;
   check:number = 1;
   rowIndex:number = 0;
-  showval: number | undefined = 10;
- 
+  showval: number | undefined;
   Tempcompany:Company[] = [];
-
   sortField:string | undefined='';
   sortOrder:boolean =false;
+  globalFilter:string | undefined='';
+
+
+
+  
+
+ 
 
   summa(company:any,rowIndex:number){
     this.Companyid = company.companyid
     this.rowIndex = rowIndex;
     this.Showadd = true;
 
-    this.companyService.lazyData2(0 || 0, this.total_record || 10, this.sortField, this.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
+    this.companyService.lazyData2(0 || 0, this.total_record || 10, this.sortField, this.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds, this.globalFilter)
     .subscribe(companies => {
       this.Tempcompany = companies;
     });
@@ -95,7 +100,7 @@ export class CompanydetailsComponent implements OnInit {
         sortOrder: true
     };
 
-    this.companyService.lazyData2(event.first || 0, event.rows || 10, event.sortField, event.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
+    this.companyService.lazyData2(event.first || 0, event.rows || 10, event.sortField, event.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds,this.globalFilter)
         .subscribe(companies => {
             if (companies && companies.length > 0) {
                 const jsonData = companies.map(company => {
@@ -154,6 +159,10 @@ export class CompanydetailsComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Reload', detail: 'Company Details Reloaded' });
     this.showwwww = false;
     this.demoTable.reset();
+    this.demoTable.filterGlobal('','string');
+    
+    this.globalFilter = "";
+
   
   }
 
@@ -186,8 +195,13 @@ export class CompanydetailsComponent implements OnInit {
 
 
   
+  
   loadCompanies(event : TableLazyLoadEvent): void {
+
+    // console.log(this.globalFilter);
+    
     if (this.check==0) {
+     
       this.check =1;
       return; 
     }
@@ -195,7 +209,7 @@ export class CompanydetailsComponent implements OnInit {
       this.animation = true;
       const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
       const sortOrder: boolean = event.sortOrder === 1 ? true : false;
-  
+      const globalFilter : string | undefined = typeof event.globalFilter === 'string' ? event.globalFilter : undefined;
       let searchField: string[] = [];
       let sFiledValue: string[] = [];
   
@@ -204,6 +218,9 @@ export class CompanydetailsComponent implements OnInit {
           if (event.filters.hasOwnProperty(key)) {
             const filterValue = event.filters[key];
             if (filterValue && ('value' in filterValue) && filterValue.value !== null) {
+              if(key=="global"){
+                continue;
+              }
               searchField.push(key);
               sFiledValue.push(filterValue.value);
             }
@@ -214,17 +231,17 @@ export class CompanydetailsComponent implements OnInit {
       this.sFiledValue=sFiledValue;
       this.sortOrder=sortOrder;
       this.sortField=sortField;
+      this.globalFilter = globalFilter;
+      
 
 
      this.showval = event.rows !== null ? event.rows : undefined;
-
-      this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds)
+ 
+      this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds,globalFilter)
         .subscribe(companies => {
           this.animation = false;
           if (companies && companies.length > 0) {
             this.companys = companies;
-            // console.log(event);
-            console.log(this.companys);
             this.total_record = companies[0].total_records;
           } else {
             console.error('No companies found.');
@@ -345,13 +362,15 @@ export class CompanydetailsComponent implements OnInit {
     if(this.selectedCityIds.length ==0 && this.selectedCountryIds.length ==0 && this.selectedStateIds.length ==0) {
       const event: TableLazyLoadEvent = {
         first: 0,
-        rows: 10,
+        rows: this.showval,
         sortField: undefined, 
         sortOrder: null,
+        globalFilter:this.globalFilter
       };
 
       this.animation = true;
       setTimeout(() => {
+        console.log(event);
         this.loadCompanies(event);
         this.animation = false;
       }, 500);
@@ -360,9 +379,10 @@ export class CompanydetailsComponent implements OnInit {
     else{
       const event: TableLazyLoadEvent = {
         first: 0,
-        rows: 10,
+        rows: this.showval,
         sortField: undefined, 
         sortOrder: 1, 
+        globalFilter:this.globalFilter
       };
     
       this.loadCompanies(event);

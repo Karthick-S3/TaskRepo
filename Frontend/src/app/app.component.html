@@ -17,8 +17,11 @@
       
       <div style="display: flex;align-items:center;justify-content: space-between;width: 210px;">
         <i style="cursor: pointer;" class="fa-solid fa-house"></i>
-        <i style ="cursor: pointer;" class="fa-solid fa-maximize"></i>
-        <div  class="user">
+        <i (click)="FullScreen()" style ="cursor: pointer;" class="fa-solid fa-maximize"></i>
+        <p-overlayPanel #op>
+          <button class="logoutbutton"(click)="logout()" >Sign Out<i class="fa-solid fa-right-from-bracket"></i></button>
+       </p-overlayPanel>
+        <div (click)="op.toggle($event)"  class="user">
           <h4 style="margin-right: 10px;">WELCOME USER</h4>
           <i style="margin-top: -3px;color: gray;" class="fa-solid fa-caret-down"></i>
         </div>

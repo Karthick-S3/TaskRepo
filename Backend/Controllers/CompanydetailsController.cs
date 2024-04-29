@@ -142,7 +142,48 @@ namespace Backend.Controllers
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
+        
 
+
+
+
+         [HttpGet("Lazy")]
+        public async Task<IActionResult> LazyData(
+            [FromQuery] int skip,
+            [FromQuery] int take,
+            [FromQuery] string? orderby,
+            [FromQuery] bool isAsc,
+            [FromQuery] string[]? searchField,
+            [FromQuery] string[]? sFieldValue,
+            [FromQuery] int[]? countries,
+            [FromQuery] int[]? states,
+            [FromQuery] int[]? cities,
+            [FromQuery] string? globalfilter)
+        {
+            try
+            {
+                
+                var data = await _companydetailsRepositry.LazyData(
+                    skip,
+                    take,
+                    orderby,
+                    isAsc,
+                    searchField,
+                    sFieldValue,
+                    countries,
+                    states,
+                    cities,
+                    globalfilter);
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+        
 
 
 

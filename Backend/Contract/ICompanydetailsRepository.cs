@@ -31,6 +31,7 @@ namespace Backend.Contract
 
 
         public Task<IEnumerable<Companydetails>> LazyData2(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,int[]? countries,int[]? states, int[]? cities);
+        public Task<IEnumerable<Companydetails>> LazyData(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,int[]? countries,int[]? states, int[]? cities, string globalfilter);
        
         //insert
 
