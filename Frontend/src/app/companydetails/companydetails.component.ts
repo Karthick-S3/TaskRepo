@@ -1,5 +1,5 @@
 
-import { ChangeDetectorRef, Component, OnInit, ViewChild   } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild , ElementRef  } from '@angular/core';
 import { CompanyserviceService } from '../companyservice.service';
 import { Company } from '../Interfaces/company';
 import { Country } from '../Interfaces/country';
@@ -20,6 +20,7 @@ export class CompanydetailsComponent implements OnInit {
 
   
   @ViewChild('demo') demoTable!: Table;
+  @ViewChild('filterInput') filterInput!:ElementRef<HTMLInputElement>;
   
 
   total_record: number = 0;
@@ -41,7 +42,6 @@ export class CompanydetailsComponent implements OnInit {
   searchField: string[] | undefined;
   Companyid:any;
   Showadd:boolean = false;
-  check:number = 1;
   rowIndex:number = 0;
   showval: number | undefined;
   Tempcompany:Company[] = [];
@@ -55,7 +55,7 @@ export class CompanydetailsComponent implements OnInit {
 
  
 
-  summa(company:any,rowIndex:number){
+  routebyid(company:any,rowIndex:number){
     this.Companyid = company.companyid
     this.rowIndex = rowIndex;
     this.Showadd = true;
@@ -67,19 +67,40 @@ export class CompanydetailsComponent implements OnInit {
     
   }
   returnPreviousCompId(){
-    return this.Tempcompany[--this.rowIndex].companyid;
+    if(this.rowIndex==0){
+      return undefined;
+    }else{
+      return this.Tempcompany[--this.rowIndex].companyid;
+    }
+    
   }
    
-  returnNextCompId(){
-    return this.Tempcompany[++this.rowIndex].companyid;
+  returnNextCompId() {
+    if(this.rowIndex==this.Tempcompany.length-1){
+      return undefined;
+    }else{
+      return this.Tempcompany[++this.rowIndex]?.companyid;
+    }
   }
+  
+  
   returnLastCompId(){
-    this.rowIndex = this.Tempcompany.length-1;
-    return this.Tempcompany[this.rowIndex].companyid;
+    if(this.rowIndex== this.Tempcompany.length-1){
+      return undefined;
+    }else{
+      this.rowIndex = this.Tempcompany.length-1;
+      return this.Tempcompany[this.rowIndex].companyid;
+    }
+    
   }
   returnFirstCompId(){
-    this.rowIndex = 0;
-    return this.Tempcompany[0].companyid;
+    if(this.rowIndex==0){
+      return undefined;
+    }else{
+      this.rowIndex = 0;
+      return this.Tempcompany[0].companyid;
+    }
+    
   }
   shows(){
     this.Showadd = true;
@@ -87,7 +108,6 @@ export class CompanydetailsComponent implements OnInit {
   }
 
   show(val : boolean){
-    this.check=0;
     this.Showadd = val;
   }
   
@@ -159,9 +179,9 @@ export class CompanydetailsComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Reload', detail: 'Company Details Reloaded' });
     this.showwwww = false;
     this.demoTable.reset();
-    this.demoTable.filterGlobal('','string');
-    
-    this.globalFilter = "";
+    if (this.filterInput) {
+      this.filterInput.nativeElement.value = ''; 
+    }
 
   
   }
@@ -197,15 +217,6 @@ export class CompanydetailsComponent implements OnInit {
   
   
   loadCompanies(event : TableLazyLoadEvent): void {
-
-    // console.log(this.globalFilter);
-    
-    if (this.check==0) {
-     
-      this.check =1;
-      return; 
-    }
-
       this.animation = true;
       const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
       const sortOrder: boolean = event.sortOrder === 1 ? true : false;
@@ -397,13 +408,13 @@ export class CompanydetailsComponent implements OnInit {
     this.selectedCountry = [];
     this.selectedCity=[];
     this.selectedState = [];
-
+    if (this.filterInput) {
+      this.filterInput.nativeElement.value = ''; 
+    }
     this.loadCountry();
     this.loadState();
     this.loadCity();
-
     this.demoTable.reset();
-
     this.showwwww = false;
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Filters cleared successfully.' });
   }

@@ -31,18 +31,18 @@
                     Submit & Add New
                 </button>
 
-                <button type="button" (click)="GetFirst()">
+                <button type="button" (click)="GetFirst($event)">
                     <i class="fa-solid fa-angles-left" style="color: #1E1EC4;"></i>
                 </button>
                 
-                <button type="button" (click)="GetPrevious()">
+                <button type="button" (click)="GetPrevious($event)">
                     <i class="fa-solid fa-angle-left" style="color: #1E1EC4;"></i>
                 </button>
-                <button type="button" (click)="GetNext()">
+                <button type="button" (click)="GetNext($event)">
                     <i class="fa-solid fa-angle-right" style="color: #1E1EC4;"></i>
                 </button>
 
-                <button type="button" (click)="GetLast()">
+                <button type="button" (click)="GetLast($event)">
                     <i class="fa-solid fa-angles-right" style="color: #1E1EC4;"></i>
                 </button>
                 
@@ -221,4 +221,5 @@
 
 <div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
     <img src="../assets/idepo container.svg" alt="">
-  </div>
+</div>
+

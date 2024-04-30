@@ -69,7 +69,7 @@
                   <div class="cap">
                     <div class="p-input-icon-left ginput">
                       <span class="p-input-icon-right ml-auto">
-                        <input pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                        <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
                         <i class="pi pi-search"></i>
                     </span>
                   </div>
@@ -156,7 +156,7 @@
                 </tr>
             </ng-template>
             <ng-template  pTemplate="body" let-company let-rowIndex="rowIndex">
-              <tr class="tr-body" (click)="summa(company,rowIndex)" >
+              <tr class="tr-body" (click)="routebyid(company,rowIndex)" >
                 <td >{{ company.companyid }}</td>
                 <td >{{ company.companyname }}</td>
                 <td >{{ company.companyshortname }}</td>

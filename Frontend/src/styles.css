@@ -148,12 +148,17 @@ p-dropdown .p-dropdown-label.p-placeholder{
 }
 
 .p-overlaypanel .p-overlaypanel-content{
-
+    
     padding: 5px;
 }
 
 .p-overlaypanel{
     margin-top: -7px;
-    border: 1px solid red;
    
 }
+.p-dialog{
+    width: 800px;
+
+}
+
+

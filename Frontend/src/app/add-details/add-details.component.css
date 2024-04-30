@@ -3,6 +3,7 @@
     height: 100%;
     padding: 20px;
 
+
     
 
     
@@ -101,4 +102,16 @@ small{
 
 .badge{
     font-size: 1px;
+}
+
+.popup{
+    width: 750px;
+    height: 140px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
+    background-color: #C79121;
+    border-radius: 10px;
 }

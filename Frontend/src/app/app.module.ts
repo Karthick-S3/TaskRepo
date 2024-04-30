@@ -22,6 +22,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { TariffGridComponent } from './tariff-grid/tariff-grid.component';
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import { KeyFilterModule } from 'primeng/keyfilter';
     AppComponent,
     CompanydetailsComponent,
     AddDetailsComponent,
+    DashboardComponent,
+    TariffGridComponent,
   ],
   imports: [
     BrowserModule,

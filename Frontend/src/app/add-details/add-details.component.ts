@@ -27,7 +27,6 @@ export class AddDetailsComponent implements OnInit {
   newcompany : Company[] = [];
   badgeval : string = '';
 
-  comp:any[] = [];
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
@@ -43,9 +42,23 @@ export class AddDetailsComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private companydetail:CompanydetailsComponent
   ) {}
-  GetFirst(){
+  GetFirst(event : any){
     this.animation = true;
     const val = this.companydetail.returnFirstCompId();
+    if (val === undefined) {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'No Records Found',
+        header: 'Warning',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon:"true",
+        rejectIcon:"none",
+        rejectButtonStyleClass:"p-button-text", 
+        
+    });
+      this.animation = false; 
+      return;
+    }
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
@@ -62,9 +75,23 @@ export class AddDetailsComponent implements OnInit {
      }
      });
   }
-  GetLast(){
+  GetLast(event : any){
     this.animation = true;
     const val = this.companydetail.returnLastCompId();
+    if (val === undefined) {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'No Records Found',
+        header: 'Warning',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon:"true",
+        rejectIcon:"none",
+        rejectButtonStyleClass:"p-button-text",
+        
+    });
+      this.animation = false; 
+      return;
+    }
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
@@ -83,9 +110,23 @@ export class AddDetailsComponent implements OnInit {
      });
   }
 
-  GetPrevious(){
+  GetPrevious(event : any){
     this.animation = true;
     const val = this.companydetail.returnPreviousCompId();
+    if (val === undefined) {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'No Records Found',
+        header: 'Warning',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon:"true",
+        rejectIcon:"none",
+        rejectButtonStyleClass:"p-button-text",
+        
+    });
+      this.animation = false; 
+      return;
+    }
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
@@ -93,7 +134,6 @@ export class AddDetailsComponent implements OnInit {
           this.animation = false;
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
-          // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
 
           if(response.active == "Yes"){
             this.myForm.get('active')?.setValue(true);
@@ -104,25 +144,42 @@ export class AddDetailsComponent implements OnInit {
      });
   }
 
-  GetNext(){
+  GetNext(event : any) {
     this.animation = true;
     const val = this.companydetail.returnNextCompId();
-    const id:number =val;
-     this.companyService.getById(Number(id)).subscribe({
-        next: (response) => {
-          this.myForm.patchValue(response);
-          this.animation = false;
-          this.myForm.get('email')?.setValue("Example@gmail.com");
-          this.myForm.get('revenue')?.setValue(response.revenue.toString());
-
-          if(response.active == "Yes"){
-            this.myForm.get('active')?.setValue(true);
-          }else{
-            this.myForm.get('active')?.setValue(false);
-          }
-     }
-     });
+    if (val === undefined) {
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'No Records Found',
+        header: 'Warning',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon:"true",
+        rejectIcon:"none",
+        rejectButtonStyleClass:"p-button-text",
+        
+    });
+      this.animation = false; 
+      return;
+    }
+    
+    const id: number = val;
+    
+    this.companyService.getById(Number(id)).subscribe({
+      next: (response) => {
+        this.myForm.patchValue(response);
+        this.animation = false;
+        this.myForm.get('email')?.setValue("Example@gmail.com");
+        this.myForm.get('revenue')?.setValue(response.revenue.toString());
+  
+        if (response.active == "Yes") {
+          this.myForm.get('active')?.setValue(true);
+        } else {
+          this.myForm.get('active')?.setValue(false);
+        }
+      }
+    });
   }
+  
 
   routeToList(){
     if(this.myForm.invalid){
@@ -136,13 +193,13 @@ export class AddDetailsComponent implements OnInit {
     this.messageService.add({ severity: 'info', summary: 'New Company', detail: 'To add a new detail, the form has been cleared.' });
     this.myForm.reset();
     this.ngOnInit();
-    setTimeout(() => {
-      if (this.myForm.invalid) {
-        for (const control of Object.keys(this.myForm.controls)) {
-          this.myForm.controls[control].markAsUntouched();
-        }
-      }
-    });
+    // setTimeout(() => {
+    //   if (this.myForm.invalid) {
+    //     for (const control of Object.keys(this.myForm.controls)) {
+    //       this.myForm.controls[control].markAsUntouched();
+    //     }
+    //   }
+    // });
   }
   SubmitAndReset(){
     if(this.myForm.valid){
@@ -192,9 +249,7 @@ export class AddDetailsComponent implements OnInit {
         accept: () => {
             this.resetForm();
         },
-        reject: () => {
-            
-        }
+        
     });
     }else{
       this.resetForm();
@@ -324,9 +379,9 @@ BackToList(event: Event) {
     else{
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');
-      this.myForm.get('country')?.setValue('');
-      this.myForm.get('state')?.setValue('');
-      this.myForm.get('city')?.setValue('');
+      // this.myForm.get('country')?.setValue('');
+      // this.myForm.get('state')?.setValue('');
+      // this.myForm.get('city')?.setValue('');
       if(this.id > 0){
         this.companyService.updateCompany(this.myForm.value).subscribe({
           next : (company) => {
