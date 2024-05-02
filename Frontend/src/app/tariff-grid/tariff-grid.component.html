@@ -1,1 +1,119 @@
-<p>tariff-grid works!</p>
+<div class="body" style="max-height: calc(100vh -110px);" [class.hide]="showAddBudget" >
+  <p-toast></p-toast>
+    <div class="container-fluid">
+     
+      <div  style="max-height: calc(100vh - 110px)">
+        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
+          <p-table id="demo" #demo styleClass="p-datatable-gridlines"
+            [value]="budget" 
+            [paginator]="true"
+            [rows]="showval"
+            [lazy]="true"
+            (onLazyLoad)="LazyDataBudget($event)"
+            [loading]="loading"
+            [totalRecords]="total_records"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,15,20]"
+            [scrollable]="true"
+            scrollHeight="700px"
+            [customSort]="true"
+            [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
+            
+            >
+
+
+            <ng-template pTemplate="caption"  >
+              <div class="" style="width: 100%;display: flex;align-items:center;justify-content: space-between;height: 30px;">
+              
+                  
+                  <div class="cap">
+                    <div class="p-input-icon-left ginput">
+                      <span class="p-input-icon-right ml-auto">
+                        <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                        <i class="pi pi-search"></i>
+                    </span>
+                  </div>
+                  <i class="fa-solid fa-plus" (click)="shows()"   pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
+                    <i class="fa-solid fa-rotate"  (click)="reload()" style="color : #1e7d23;" pTooltip="Reload" tooltipPosition="bottom" ></i>
+                    <i class="fa-solid fa-filter" (click)="showFilter()"  pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
+                    <i class="fa-solid fa-eraser" (click)="erase(demo)" *ngIf="showwwww"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
+                    <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
+                  </div>
+                  <h4>
+                    Budget List
+                  </h4>
+                  
+              </div>
+          </ng-template>
+
+
+            
+              
+            <ng-template pTemplate="header">
+             
+              
+                <tr style="height: 40px;">
+                    <th style="width: 10%;" pSortableColumn="budgetid">Budget Code<p-sortIcon field="budgetid"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="currency">Currency<p-sortIcon field="currency"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="active">Active<p-sortIcon field="active"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="createdate">Create Date<p-sortIcon field="createdate"></p-sortIcon></th>
+                    
+                </tr>
+
+                
+
+
+                <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
+  
+                <th style="width: 10%;">
+                    <p-columnFilter  type="text" field="budgetid" ></p-columnFilter>
+                </th>
+                <th style="width: 10%;">
+                    <p-columnFilter type="text" field="description"></p-columnFilter>
+                </th>
+                <th style="width: 10%;">
+                    <p-columnFilter type="text" field="currency"></p-columnFilter>
+                </th>
+  
+              <th style="width: 10%;">
+                  <p-columnFilter type="text" field="active"></p-columnFilter>
+              </th>
+              <th style="width: 10%;">
+                <p-columnFilter type="text" field="createdate"></p-columnFilter>
+            </th>
+            
+      
+
+                </tr>
+            </ng-template>
+            <ng-template  pTemplate="body" let-budget let-rowIndex="rowIndex">
+              <tr class="tr-body" (click)="routebyid(budget,rowIndex)" >
+                <td >{{budget.budgetid }}</td>
+                <td >{{budget.description }}</td>
+                <td >{{budget.currency}}</td>
+                <td >{{budget.active}}</td>
+                <td >{{ budget.createdate | date : 'dd-MMM-yyyy'}}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                  <td colspan="11">No Company found.</td>
+              </tr>
+          </ng-template>
+            
+            <ng-template pTemplate="paginatorleft" class="print">
+            </ng-template>
+            <ng-template pTemplate="paginatorright" class="print">
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <app-addbudget *ngIf="showAddBudget" [id]="Companyid"  (Flag)="show($event)"></app-addbudget>

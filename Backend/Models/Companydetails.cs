@@ -42,6 +42,8 @@ namespace Backend.Models
 
         public int contactid {get; set;}
 
+        public int budgetid {get; set;}
+
         internal async Task<List<Companydetails>> ToList()
         {
             throw new NotImplementedException();

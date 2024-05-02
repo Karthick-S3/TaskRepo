@@ -5,6 +5,7 @@ import { Company } from './Interfaces/company';
 import { Country } from './Interfaces/country';
 import { State } from './Interfaces/state';
 import { City } from './Interfaces/city';
+import { Budget } from './Interfaces/budget';
 
 
 @Injectable({
@@ -161,6 +162,42 @@ updateCompany(company: Company):Observable<Company>{
   const val =  this.http.put<Company>(`${this.baseApiUrl}/api/Companydetails/Update`, company);
   return val;
 }
+
+
+
+
+
+//////////////////////////////////////////// budget //////////////////////////////////////////////////////
+
+
+LazyDataBudget(
+  skip: number,
+  take: number,
+  orderby: string | undefined,
+  isAsc: boolean,
+  searchField: string[] | undefined,
+  sFieldValue: string[] | undefined,
+  globalFilter: string  | undefined
+): Observable<Budget[]> {
+  let queryString = `skip=${skip}&take=${take}`;
+  if (orderby) {
+    queryString += `&orderby=${orderby}&isAsc=${isAsc}`;
+  }
+  if (searchField && sFieldValue) {
+    for (let i = 0; i < searchField.length; i++) {
+      queryString += `&searchField=${searchField[i]}&sFieldValue=${sFieldValue[i]}`;
+    }
+  }
+
+  if (globalFilter) {
+    queryString += `&globalfilter=${globalFilter}`;
+  }
+
+
+  const url = `${this.baseApiUrl}/api/Companydetails/LazyBudget?${queryString}`;
+  return this.http.get<Budget[]>(url);
+}
+
 
 
 

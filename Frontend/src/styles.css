@@ -161,4 +161,12 @@ p-dropdown .p-dropdown-label.p-placeholder{
 
 }
 
+.p-card .p-card-content{
+    padding: 0%;
+}
 
+
+
+.mainbody[_ngcontent-ng-c3235723258]{
+    padding: 10px !important;
+}

@@ -247,6 +247,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                         }
                         if(!string.IsNullOrEmpty(globalfilter)){
                             query.Append(" AND (");
+                            query.Append($" lower(cd.companyid) like  lower('% {globalfilter } %')");
                             query.Append($" lower(co.country) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(cd.companyname) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(con.contact) LIKE lower('%{globalfilter}%') OR ");
@@ -309,87 +310,6 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
 
 // try end
 
-
-
-        public async Task<IEnumerable<Companydetails>> LazyData2(int skip, int take, string? orderby, bool isAsc, string[]? searchfield, string[]? sfieldvalue, int[]? countries, int[]? states, int[]? cities)
-{
-    try
-    {
-        var query = new StringBuilder();
-        query.Append(@"SELECT 
-                        cd.companyid, cd.companyname, con.contact, cd.companyshortname,
-                        cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
-                        cd.establish_date, cd.REVENUE,
-                        COUNT(*) OVER() AS total_records
-                        FROM 
-                            companydetail cd
-                        JOIN 
-                            countrydetail co ON co.cid = cd.cid
-                        JOIN 
-                            statedetail st ON st.sid = cd.sid
-                        JOIN 
-                            citydetail ci ON ci.cityid = cd.cityid
-                        JOIN 
-                            contactdetail con ON con.contactid = cd.contactid");
-
-                        if (searchfield != null && searchfield.Length > 0 && sfieldvalue != null && sfieldvalue.Length > 0)
-                        {
-                            query.Append(" WHERE ");
-                            for (int i = 0; i < searchfield.Length; i++)
-                            {
-                                if (i > 0)
-                                    query.Append(" AND ");
-                                query.Append($"lower({searchfield[i]}) LIKE lower('%{sfieldvalue[i]}%')");
-                            }
-                        }
-
-                        if (countries != null && countries.Any())
-                        {
-                            query.Append($" AND co.cid IN ({string.Join(",", countries)})");
-                        }
-
-                        if (states != null && states.Any())
-                        {
-                            query.Append($" AND st.sid IN ({string.Join(",", states)})");
-                        }
-
-                        if (cities != null && cities.Any())
-                        {
-                            query.Append($" AND ci.cityid IN ({string.Join(",", cities)})");
-                        }
-
-
-                        if (!string.IsNullOrEmpty(orderby))
-                        {
-                            query.Append($" ORDER BY {orderby} {(isAsc ? "ASC" : "DESC")}");
-                        }
-                        else{
-                            query.Append(" ORDER BY companyid ASC");
-                        }
-
-                        query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
-
-                       
-
-                        using (var connection = _context.CreateConnection())
-                        {
-                            var result = await connection.QueryAsync<Companydetails>(query.ToString()).ConfigureAwait(false);
-                            return result;
-                        }
-            }
-            catch (Exception ex)
-            {
-                
-                Console.WriteLine("An error occurred: " + ex.Message);
-                throw; 
-            }
-    }
-
-
-
-
-
-  
 
         public async Task<Companydetails> AddCompany(Companydetails companydetails)
         {
@@ -472,6 +392,74 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             }
         }
 
-        
+
+
+
+
+
+
+
+
+
+      
+
+       public async Task<IEnumerable<Budgetdetails>> LazyDataBudget(int skip, int take, string? orderby, bool isAsc, string[]? searchfield, string[]? sfieldvalue,string? globalfilter){
+        try
+        {
+        var query = new StringBuilder();
+        query.Append(@"SELECT 
+                    b.budgetid, b.description, b.currency,
+                    b.active,
+                    b.createdate,
+                    c.companyid,
+                    COUNT(*) OVER() AS total_records
+                FROM 
+                    budgetdetail b
+                JOIN 
+                    companydetail c ON c.companyid = b.companyid");
+
+        if (searchfield != null && searchfield.Length > 0 && sfieldvalue != null && sfieldvalue.Length > 0)
+        {
+            query.Append(" WHERE ");
+            for (int i = 0; i < searchfield.Length; i++)
+            {
+                if (i > 0)
+                    query.Append(" AND ");
+                query.Append($"lower(b.{searchfield[i]}) LIKE lower('%{sfieldvalue[i]}%')");
+            }
+        }
+
+        if (!string.IsNullOrEmpty(globalfilter))
+        {
+            query.Append(" AND (");
+            query.Append($" lower(b.budgetid) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.description) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.currency) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.createdate) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.active) LIKE lower('%{globalfilter}%')");
+            query.Append(")");
+        }
+
+        if (!string.IsNullOrEmpty(orderby))
+        {
+            query.Append($" ORDER BY b.{orderby} {(isAsc ? "ASC" : "DESC")}");
+        }
+
+        query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
+
+        using (var connection = _context.CreateConnection())
+        {
+            var result = await connection.QueryAsync<Budgetdetails>(query.ToString()).ConfigureAwait(false);
+            return result;
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("An error occurred: " + ex.Message);
+        throw; 
+    }
+}
+
+       
     }
 }

@@ -1,0 +1,312 @@
+<form class="mainbody" [formGroup]="myForm" (ngSubmit)="addBudget()" novalidate>
+    <p-card class="test" >
+        <ng-template pTemplate="header">
+            <h4 style="font-weight: 600;">
+                Budget
+                <p-badge class="badge"  [value]="badgeval" severity="success"></p-badge>
+            </h4>
+
+
+            <div class="bts">
+                <p-toast></p-toast>
+                <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
+                    Back To List
+                </button>
+                <p-confirmDialog></p-confirmDialog>
+                <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
+                    <i class="fa-solid fa-plus" style="color: #1E1EC4;"></i>
+                    Add Budget
+                </button>
+                <button type="button" (click)="routeToList()" pTooltip="Go to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    Submit & Go To List
+                </button>
+                <button type="submit" pTooltip="Submit" tooltipPosition="bottom">
+                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    Submit
+                </button>
+               
+    
+                <button type="button" (click)="GetFirst($event)">
+                    <i class="fa-solid fa-angles-left" style="color: #1E1EC4;"></i>
+                </button>
+                
+                <button type="button" (click)="GetPrevious($event)">
+                    <i class="fa-solid fa-angle-left" style="color: #1E1EC4;"></i>
+                </button>
+                <button type="button" (click)="GetNext($event)">
+                    <i class="fa-solid fa-angle-right" style="color: #1E1EC4;"></i>
+                </button>
+    
+                <button type="button" (click)="GetLast($event)">
+                    <i class="fa-solid fa-angles-right" style="color: #1E1EC4;"></i>
+                </button>
+                
+            </div>
+    
+
+        </ng-template>
+
+        <div class="body">
+            <div class="rowss">
+                <div class="input-group" style="height: 90px;">
+                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
+                    
+                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
+                        *This field is required.
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
+                        *it allows only Alphabet, Numeric Values
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 20
+                    </small> -->
+                </div>
+                
+
+                <div class="input-group" style="height:90px;">
+                    <label for="companyshortname" class="form-label">Description</label>
+                    <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Short Name" autocomplete="off" />
+                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
+                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
+                    </small>
+                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 10
+                    </small> -->
+                </div>
+
+                <div class="input-group" style="height:90px;">
+                    <label for="contact" class="form-label">Currency<span style="color: red;">*</span></label>
+                    <input pInputText class="form-control" id="contact" formControlName="currency"  placeholder="Phone Number" autocomplete="off"  />
+                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
+                        *This field is required.
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
+                        *Enter Valid Number & it allow only Numeric Value
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
+                        *Length should be 10
+                    </small> -->
+                    
+                </div>
+
+            
+
+
+                <div class="input-group" style="height:90px;">
+                    <label for="active" class="form-label">Active</label>
+                    <p-inputSwitch class="form-control" type="" formControlName="active" ></p-inputSwitch>
+                    
+                </div>    
+            </div>
+        </div>
+
+        <p-card>
+            <ng-template pTemplate="header">
+                <h4 style="font-weight: 600;">
+                    Budget Detail Entry
+                </h4>
+            </ng-template>
+
+            <div class="body2">
+
+
+                <div class="budget-tree">
+                    <p-card class="budget-tree">
+                        <ng-template pTemplate="header">
+                            <h4 style="font-weight: 600;">
+                                Budget Tree
+                            </h4>
+                        </ng-template>
+                    </p-card>
+                </div>
+
+
+
+
+
+                <div class="budget-view">
+                   <div class="rowss">
+                <div class="input-group" style="height: 90px;">
+                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
+                    
+                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
+                        *This field is required.
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
+                        *it allows only Alphabet, Numeric Values
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 20
+                    </small> -->
+                </div>
+                
+
+                <div class="input-group" style="height:90px;">
+                    <label for="companyshortname" class="form-label">Description</label>
+                    <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Short Name" autocomplete="off" />
+                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
+                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
+                    </small>
+                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 10
+                    </small> -->
+                </div>
+
+                <div class="input-group" style="height:90px;">
+                    <label for="contact" class="form-label">Currency<span style="color: red;">*</span></label>
+                    <input pInputText class="form-control" id="contact" formControlName="currency"  placeholder="Phone Number" autocomplete="off"  />
+                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
+                        *This field is required.
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
+                        *Enter Valid Number & it allow only Numeric Value
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
+                        *Length should be 10
+                    </small> -->
+                    
+                </div>
+
+            
+
+
+                <div class="input-group" style="height: 90px;">
+                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
+                    
+                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
+                        *This field is required.
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
+                        *it allows only Alphabet, Numeric Values
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 20
+                    </small> -->
+                </div>   
+            </div>
+            <div class="rowss">
+                <div class="input-group" style="height: 90px;">
+                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
+                    
+                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
+                        *This field is required.
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
+                        *it allows only Alphabet, Numeric Values
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 20
+                    </small> -->
+                </div>
+                
+
+                <div class="input-group" style="height:90px;">
+                    <label for="companyshortname" class="form-label">Description</label>
+                    <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Short Name" autocomplete="off" />
+                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
+                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
+                    </small>
+                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 10
+                    </small> -->
+                </div>
+
+                <div class="input-group" style="height:90px;">
+                    <label for="contact" class="form-label">Currency<span style="color: red;">*</span></label>
+                    <input pInputText class="form-control" id="contact" formControlName="currency"  placeholder="Phone Number" autocomplete="off"  />
+                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
+                        *This field is required.
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
+                        *Enter Valid Number & it allow only Numeric Value
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
+                        *Length should be 10
+                    </small> -->
+                    
+                </div>
+
+            
+
+
+                <div class="input-group" style="height: 90px;">
+                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
+                    
+                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
+                        *This field is required.
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
+                        *it allows only Alphabet, Numeric Values
+                    </small>
+
+                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
+                        *Company name should lesser than 20
+                    </small> -->
+                </div>    
+            </div>
+
+            <div class="rows">
+                <p-table  [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Start Amount</th>
+                            <th>Limit Amount</th>
+                            <th>Create Date</th>
+                            <th>Create Date</th>
+                            <th>Man Hour</th>
+                            <th>Container Type</th>
+                            <th>Container Size</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" >
+                        <tr>
+                            <td>data 1</td>
+                            <td>Data 2 </td>
+                            <td>data 3</td>
+                            <td>Data 4</td>
+                            <td>data 1</td>
+                            <td>Data 2 </td>
+                            <td>data 3</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            
+                </div>
+            </div>
+        </p-card>
+        
+
+           
+
+        
+       
+
+       
+    </p-card>
+
+
+    
+
+</form>
+
+<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+    <img src="../assets/idepo container.svg" alt="">
+</div>
+
