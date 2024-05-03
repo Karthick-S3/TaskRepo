@@ -235,7 +235,17 @@ namespace Backend.Controllers
         }
     
 
-        
+        [HttpGet("cnt")]
+        public async Task<IActionResult> TreeData(){
+            try{
+                var students = await _companydetailsRepositry.TreeData();
+                return Ok(students);
+            }
+            catch(Exception ex){
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
         
     }
 }

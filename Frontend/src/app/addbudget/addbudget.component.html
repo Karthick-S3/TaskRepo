@@ -115,13 +115,14 @@
             <div class="body2">
 
 
-                <div class="budget-tree">
-                    <p-card class="budget-tree">
+                <div class="budget-tree" style="height: 30vh;background-color: red;">
+                    <p-card class="budget-tree-card">
                         <ng-template pTemplate="header">
                             <h4 style="font-weight: 600;">
                                 Budget Tree
                             </h4>
                         </ng-template>
+                        <p-tree class="w-full md:w-30rem" [value]="files" selectionMode="single"></p-tree>
                     </p-card>
                 </div>
 
@@ -132,7 +133,7 @@
                 <div class="budget-view">
                    <div class="rowss">
                 <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <label for="companyname" class="form-label">Company Name<span style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
                     
                     <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
@@ -150,7 +151,7 @@
                 
 
                 <div class="input-group" style="height:90px;">
-                    <label for="companyshortname" class="form-label">Description</label>
+                    <label for="companyshortname" class="form-label">Short name</label>
                     <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Short Name" autocomplete="off" />
                     <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
                         *Company Name allows only Alphabet, Numeric And Only Special Character '-'
@@ -161,7 +162,7 @@
                 </div>
 
                 <div class="input-group" style="height:90px;">
-                    <label for="contact" class="form-label">Currency<span style="color: red;">*</span></label>
+                    <label for="contact" class="form-label">Contact<span style="color: red;">*</span></label>
                     <input pInputText class="form-control" id="contact" formControlName="currency"  placeholder="Phone Number" autocomplete="off"  />
                     <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
                         *This field is required.
@@ -179,7 +180,7 @@
 
 
                 <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <label for="companyname" class="form-label">Zipcode<span style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
                     
                     <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
@@ -197,7 +198,7 @@
             </div>
             <div class="rowss">
                 <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <label for="companyname" class="form-label">Country<span style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
                     
                     <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
@@ -215,7 +216,7 @@
                 
 
                 <div class="input-group" style="height:90px;">
-                    <label for="companyshortname" class="form-label">Description</label>
+                    <label for="companyshortname" class="form-label">State</label>
                     <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Short Name" autocomplete="off" />
                     <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
                         *Company Name allows only Alphabet, Numeric And Only Special Character '-'
@@ -226,7 +227,7 @@
                 </div>
 
                 <div class="input-group" style="height:90px;">
-                    <label for="contact" class="form-label">Currency<span style="color: red;">*</span></label>
+                    <label for="contact" class="form-label">City<span style="color: red;">*</span></label>
                     <input pInputText class="form-control" id="contact" formControlName="currency"  placeholder="Phone Number" autocomplete="off"  />
                     <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
                         *This field is required.
@@ -244,7 +245,7 @@
 
 
                 <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Budget Code<span style="color: red;">*</span></label>
+                    <label for="companyname" class="form-label">Revenue<span style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Full Name" autocomplete="off" />
                     
                     <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
@@ -262,30 +263,29 @@
             </div>
 
             <div class="rows">
-                <p-table  [tableStyle]="{ 'min-width': '50rem' }">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Start Amount</th>
-                            <th>Limit Amount</th>
-                            <th>Create Date</th>
-                            <th>Create Date</th>
-                            <th>Man Hour</th>
-                            <th>Container Type</th>
-                            <th>Container Size</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" >
-                        <tr>
-                            <td>data 1</td>
-                            <td>Data 2 </td>
-                            <td>data 3</td>
-                            <td>Data 4</td>
-                            <td>data 1</td>
-                            <td>Data 2 </td>
-                            <td>data 3</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+               
+<div class="card">
+    <p-table styleClass="p-datatable-gridlines" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Start</th>
+                <th>Limit</th>
+                <th>ManHour</th>
+                <th>Container Type</th>
+                <th>Container Size</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr class="tarif-tab" (click)="showDialog()">
+                <td>{{ product.start }}</td>
+                <td>{{ product.limit }}</td>
+                <td>{{ product.manhour }}</td>
+                <td>{{ product.containerType }}</td>
+                <td>{{ product.containerSize }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
             </div>
             
                 </div>
@@ -310,3 +310,15 @@
     <img src="../assets/idepo container.svg" alt="">
 </div>
 
+<p-dialog  [(visible)]="visible" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <ng-template pTemplate="header">
+        <h4 style="color: black;">Detail line header</h4>
+      </ng-template>
+    <form action="">
+  
+    <p>Detail line data</p>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="visible = false" label="Ok" pAutoFocus [autofocus]="true"></p-button>
+    </ng-template>
+</form>
+</p-dialog>

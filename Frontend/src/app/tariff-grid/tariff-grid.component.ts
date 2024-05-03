@@ -30,7 +30,7 @@ export class TariffGridComponent implements OnInit  {
   animation = false;
   showwwww: boolean = false;
   fileName="Budget Details.xlsx";
-  showAddBudget : boolean = false;
+  showAddBudget : boolean = true;
   Showadd: boolean | undefined;
   Companyid:any;
 
@@ -180,7 +180,7 @@ shows() {
   this.showAddBudget = true;
 }
 show(val : boolean){
-  this.Showadd = val;
+  this.showAddBudget = val;
 }
  
 }

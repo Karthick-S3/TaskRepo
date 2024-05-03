@@ -460,6 +460,29 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
     }
 }
 
-       
+  public async Task<IEnumerable<Countrydetails>> TreeData()
+{
+    var query = @"
+        SELECT cid AS Key, country AS Label, TO_CHAR(cid) AS Data 
+        FROM countrydetail;
+
+        SELECT sid as Key, state as Label, TO_CHAR(sid) as Data, cid 
+        FROM statedetail";
+
+    using (var connection = _context.CreateConnection())
+    {
+        var results = await connection.QueryMultipleAsync(query);
+        var countries = (await results.ReadAsync<Countrydetails>()).ToList();
+        var states = (await results.ReadAsync<Countrydetails.State>()).ToList();
+
+        foreach (var country in countries)
+        {
+            country.Children = states.Where(s => s.cid == country.cid).ToList();
+        }
+
+        return countries;
+    }
+}
+
     }
 }

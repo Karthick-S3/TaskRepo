@@ -9,9 +9,28 @@ namespace Backend.Models
 {
     public class Countrydetails
     {
-        [Key]
-        public int cid {get; set;}
+       [Key]
+        public int cid { get; set; }
 
-        public string country {get; set;} 
+        public string country { get; set; }
+
+        public string Key { get; set; }
+        public string Label { get; set; }
+        public string Data { get; set; }
+        public string Icon { get; set; }
+
+        public List<State> Children { get; set; } // List of states as children
+
+        public class State
+        {
+            public int sid { get; set; }
+            public string state { get; set; }
+
+            public int cid { get; set; }
+            public string Key { get; set; }
+            public string Label { get; set; }
+            public string Data { get; set; }
+            public string Icon { get; set; }
+        }
     }
 }

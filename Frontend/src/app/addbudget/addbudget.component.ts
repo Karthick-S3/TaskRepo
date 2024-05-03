@@ -5,6 +5,8 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { response } from 'express';
 import { Company } from '../Interfaces/company';
+import { start } from 'repl';
+import { Country } from '../Interfaces/country';
 
 
 
@@ -15,6 +17,70 @@ import { Company } from '../Interfaces/company';
   providers: [MessageService,ConfirmationService]  
 })
 export class AddbudgetComponent implements OnInit {
+  visible: boolean = false;
+  badgeval:string = 'NEW';
+  myForm!: FormGroup;;
+  animation = false;
+
+  @Input() id= 0;
+  @Output() Flag = new EventEmitter<boolean>();
+
+  
+  products = [
+    {
+      start: 1000,
+      limit : 5000,
+      manhour : 25,
+      containerType : "general Purpose",
+      containerSize : 22
+    }
+  ];
+  
+  filess = [
+    {
+      key: '0',
+      label: 'India',
+      data: 'Documents Folder',
+      children: [
+          {
+              key: '0-0',
+              label: 'Tamilnadu',
+              data: 'Work Folder',
+              children: [
+                  { key: '0-0-0', label: 'Chennai', data: 'Expenses Document' ,
+                  children: [
+                    { key: '0-0-0-0', label: 'Abc Corp', data: 'Expenses Document' },
+        
+                ]
+                  },
+                  { key: '0-0-1', label: 'Salem', data: 'Resume Document',
+                  children: [
+                    { key: '0-0-1-0', label: 'ZXY Co', data: 'Expenses Document' },
+             
+                ]
+                   }
+              ]
+          },
+
+
+          {
+              key: '0-1',
+              label: 'Karnataka',
+              data: 'Home Folder',
+    
+              children: [{ key: '0-1-0', label: 'Bangalore',  data: 'Invoices for this month' }]
+          },
+          {
+            key: '0-2',
+            label: 'West Bengal',
+            data: 'Home Folder',
+      
+            children: [{ key: '0-1-0', label: 'Kolkata',  data: 'Invoices for this month' }]
+        }
+      ]
+  }
+  ]
+
 
   constructor( private companyService: CompanyserviceService,
     private formBuilder: FormBuilder,
@@ -23,16 +89,20 @@ export class AddbudgetComponent implements OnInit {
     private confirmationService: ConfirmationService){
 
   }
+  showDialog() {
+    this.visible = true;
+}
 
-  ngOnInit(): void {
-    this.initializeForm();
-  }
-  @Input() id= 0;
-  @Output() Flag = new EventEmitter<boolean>();
+ngOnInit(): void {
+  this.initializeForm();
+  this.companyService.TreeData().subscribe(countries => { 
+    console.log(countries);
+    this.files = countries;
+  });
+}
 
-  badgeval:string = 'NEW';
-  myForm!: FormGroup;;
-  animation = false;
+files: Country[] = [];
+  
   addBudget(){
 
   }

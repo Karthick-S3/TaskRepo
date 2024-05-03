@@ -200,5 +200,11 @@ LazyDataBudget(
 
 
 
+TreeData():Observable<Country[]>{
+  const val =  this.http.get<Country[]>(`${this.baseApiUrl}/api/Companydetails/cnt`);
+  return val;
+}
+
+
 
 }

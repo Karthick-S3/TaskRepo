@@ -82,19 +82,20 @@
 
 .body2{
     width: 100%;
-    height: 25vh;
+    height: 30vh;
     padding: 0%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     .budget-tree{
-        width: 25%;
-        max-height: 25vh;
-        background-color: yellow;
+        width: 27%;
+        max-height: 30vh;
+
+        
         
     }
     .budget-view{
-        width: 75%;
+        width: 70%;
         max-height: 25vh;
       /* background-color: red; */
       display: flex;
