@@ -6,6 +6,7 @@ import { Country } from './Interfaces/country';
 import { State } from './Interfaces/state';
 import { City } from './Interfaces/city';
 import { Budget } from './Interfaces/budget';
+import { Currency } from './Interfaces/currency';
 
 
 @Injectable({
@@ -200,8 +201,13 @@ LazyDataBudget(
 
 
 
-TreeData():Observable<Country[]>{
-  const val =  this.http.get<Country[]>(`${this.baseApiUrl}/api/Companydetails/cnt`);
+getShortName():Observable<Company[]>{
+  const val =  this.http.get<Company[]>(`${this.baseApiUrl}/api/Companydetails/shortname`);
+  return val;
+}
+
+GetCurrency():Observable<Currency[]>{
+  const val =  this.http.get<Currency[]>(`${this.baseApiUrl}/api/Companydetails/currency`);
   return val;
 }
 

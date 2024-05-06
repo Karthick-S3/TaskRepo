@@ -94,7 +94,7 @@
              
               
                 <tr style="height: 40px;">
-                    <th style="width: 5%;" pSortableColumn="companyid">Cmp Id<p-sortIcon field="companyid"></p-sortIcon></th>
+                    <!-- <th style="width: 5%;" pSortableColumn="companyid">Cmp Id<p-sortIcon field="companyid"></p-sortIcon></th> -->
                     <th style="width: 10%;" pSortableColumn="companyname">CompanyName <p-sortIcon field="companyname"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="companyshortname">Shortname<p-sortIcon field="companyshortname"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="contact">Business Cont <p-sortIcon field="contact"></p-sortIcon></th>
@@ -104,7 +104,7 @@
                     <th style="width: 10%;" pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="zipcode">Zip code <p-sortIcon field="zipcode"></p-sortIcon></th>
                     <th style="width: 7%;" pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon></th>
-                    <!-- <th pSortableColumn="establish_date">Establish Date<p-sortIcon field="establish_date"></p-sortIcon></th> -->
+                    <th style="width: 7%;" pSortableColumn="currency">Currency<p-sortIcon field="currency"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="revenue">Revenue<p-sortIcon field="revenue"></p-sortIcon></th>
                 </tr>
 
@@ -113,9 +113,9 @@
 
                 <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
   
-                <th style="width: 5%;">
+                <!-- <th style="width: 5%;">
                     <p-columnFilter  type="text" field="companyid" ></p-columnFilter>
-                </th>
+                </th> -->
                 <th style="width: 10%;">
                     <p-columnFilter type="text" field="companyname"></p-columnFilter>
                 </th>
@@ -144,9 +144,9 @@
         <th style="width: 7%;">
           <p-columnFilter type="text" field="active"></p-columnFilter>
       </th>
-      <!-- <th style="width: 10%;">
-        <p-columnFilter type="date" field="establish_date"></p-columnFilter>
-    </th> -->
+      <th style="width: 7%;">
+        <p-columnFilter type="text" field="currency"></p-columnFilter>
+    </th>
         
 
       <th style="width: 10%;">
@@ -157,7 +157,7 @@
             </ng-template>
             <ng-template  pTemplate="body" let-company let-rowIndex="rowIndex">
               <tr class="tr-body" (click)="routebyid(company,rowIndex)" >
-                <td >{{ company.companyid }}</td>
+                <!-- <td >{{ company.companyid }}</td> -->
                 <td >{{ company.companyname }}</td>
                 <td >{{ company.companyshortname }}</td>
                 <td >{{ company.contact }}</td>
@@ -167,6 +167,7 @@
                 <td >{{ company.city }}</td>
                 <td >{{ company.zipcode }}</td>
                 <td >{{ company.active }}</td>
+                <td >{{ company.currency }}</td>
                 <!-- <td >{{ company.establish_date | date : 'MMM/dd/yyyy'}}</td> -->
                 <td >{{ company.revenue }}</td>
               </tr>

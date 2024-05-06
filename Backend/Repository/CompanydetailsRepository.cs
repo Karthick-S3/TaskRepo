@@ -223,7 +223,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                         cd.companyid, cd.companyname, con.contact, cd.companyshortname,
                         cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
                         cd.establish_date, cd.REVENUE,
-                        COUNT(*) OVER() AS total_records
+                        COUNT(*) OVER() AS total_records,cu.currency
                         FROM 
                             companydetail cd
                         JOIN 
@@ -233,7 +233,9 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                         JOIN 
                             citydetail ci ON ci.cityid = cd.cityid
                         JOIN 
-                            contactdetail con ON con.contactid = cd.contactid");
+                            contactdetail con ON con.contactid = cd.contactid
+                        JOIN
+                            currencydetail cu ON cu.currencyid = cd.currencyid");
 
                         if (searchfield != null && searchfield.Length > 0 && sfieldvalue != null && sfieldvalue.Length > 0)
                         {
@@ -245,9 +247,10 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                                 query.Append($"lower({searchfield[i]}) LIKE lower('%{sfieldvalue[i]}%')");
                             }
                         }
-                        if(!string.IsNullOrEmpty(globalfilter)){
+                        if (!string.IsNullOrEmpty(globalfilter))
+                        {
                             query.Append(" AND (");
-                            query.Append($" lower(cd.companyid) like  lower('% {globalfilter } %')");
+                            query.Append($" lower(cd.companyid) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(co.country) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(cd.companyname) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(con.contact) LIKE lower('%{globalfilter}%') OR ");
@@ -257,10 +260,11 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                             query.Append($" lower(st.state) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(ci.city) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(cd.establish_date) LIKE lower('%{globalfilter}%') OR ");
+                            query.Append($" lower(cu.currency) LIKE lower('%{globalfilter}%') OR ");
                             query.Append($" lower(cd.REVENUE) LIKE lower('%{globalfilter}%')");
                             query.Append(")");
-
                         }
+
 
                         if (countries != null && countries.Any())
                         {
@@ -288,7 +292,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
 
                         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
 
-                       
+                       Console.WriteLine(query);
 
                         using (var connection = _context.CreateConnection())
                         {
@@ -460,29 +464,24 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
     }
 }
 
-  public async Task<IEnumerable<Countrydetails>> TreeData()
-{
-    var query = @"
-        SELECT cid AS Key, country AS Label, TO_CHAR(cid) AS Data 
-        FROM countrydetail;
-
-        SELECT sid as Key, state as Label, TO_CHAR(sid) as Data, cid 
-        FROM statedetail";
-
-    using (var connection = _context.CreateConnection())
-    {
-        var results = await connection.QueryMultipleAsync(query);
-        var countries = (await results.ReadAsync<Countrydetails>()).ToList();
-        var states = (await results.ReadAsync<Countrydetails.State>()).ToList();
-
-        foreach (var country in countries)
+        public async Task<IEnumerable<Companydetails>> getShortName()
         {
-            country.Children = states.Where(s => s.cid == country.cid).ToList();
+            var query = @"select cid,sid,cityid,companyshortname,companyid from companydetail";
+
+            using(var connection = _context.CreateConnection()){
+                var result = await connection.QueryAsync<Companydetails>(query.ToString());
+                return result;
+            }
         }
 
-        return countries;
-    }
-}
+        public async Task<IEnumerable<Currencydetails>> GetCurrency()
+        {
+            var query = @"select * from currencydetail";
 
+            using(var connection = _context.CreateConnection()){
+                var result = await connection.QueryAsync<Currencydetails>(query.ToString());
+                return result;
+            }
+        }
     }
 }

@@ -19,18 +19,18 @@ namespace Backend.Models
         public string Data { get; set; }
         public string Icon { get; set; }
 
-        public List<State> Children { get; set; } // List of states as children
+        public List<Statedetails> States { get; set; }
 
-        public class State
-        {
-            public int sid { get; set; }
+       public class Statedetails{
+            public int cid { get; set;}
+            public int sid { get; set;}
             public string state { get; set; }
-
-            public int cid { get; set; }
             public string Key { get; set; }
             public string Label { get; set; }
             public string Data { get; set; }
             public string Icon { get; set; }
         }
+
     }
+     
 }

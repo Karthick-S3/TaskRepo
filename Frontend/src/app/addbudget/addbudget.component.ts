@@ -7,6 +7,8 @@ import { response } from 'express';
 import { Company } from '../Interfaces/company';
 import { start } from 'repl';
 import { Country } from '../Interfaces/country';
+import { count } from 'console';
+
 
 
 
@@ -19,7 +21,8 @@ import { Country } from '../Interfaces/country';
 export class AddbudgetComponent implements OnInit {
   visible: boolean = false;
   badgeval:string = 'NEW';
-  myForm!: FormGroup;;
+  myForm!: FormGroup;
+
   animation = false;
 
   @Input() id= 0;
@@ -93,16 +96,114 @@ export class AddbudgetComponent implements OnInit {
     this.visible = true;
 }
 
+
+tree : any;
+
+
 ngOnInit(): void {
   this.initializeForm();
-  this.companyService.TreeData().subscribe(countries => { 
-    console.log(countries);
-    this.files = countries;
+
+  this.companyService.getCountry().subscribe(countries => {
+    this.companyService.getState().subscribe(states => {
+      this.companyService.getCity().subscribe(cities => {
+        const tree: TreeItem[] = [];
+
+        countries.forEach(country => {
+          const countryObj: TreeItem = {
+            key: country.cid.toString(),
+            label: country.country,
+            data: 'Country Data Placeholder',
+            children: []
+          };
+
+          const statesOfCountry = states.filter(state => state.cid === country.cid);
+
+          statesOfCountry.forEach(state => {
+            const stateObj: StateObj = {
+              key: `${country.cid}-${state.sid}`,
+              label: state.state,
+              data: 'State Data Placeholder',
+              children: []
+            };
+
+            const citiesOfState = cities.filter(city => city.cid === country.cid && city.sid === state.sid);
+
+            citiesOfState.forEach(city => {
+              const cityObj: TreeItem = {
+                key: `${country.cid}-${state.sid}-${city.cityid}`,
+                label: city.city,
+                data: 'City Data Placeholder',
+                children: []
+              };
+
+              this.companyService.getShortName().subscribe(shortnames => {
+                shortnames.forEach(shortname => {
+                  if (shortname.cid === country.cid && shortname.cityid === city.cityid) {
+                    cityObj.children.push({
+                      key: `${shortname.companyid}`, 
+                      label: shortname.companyshortname,
+                      data: 'Company Short Name Data Placeholder',
+                      children: [] 
+                    });
+                  }
+                });
+              });
+
+              stateObj.children.push(cityObj);
+            });
+
+            countryObj.children.push(stateObj);
+          });
+
+          tree.push(countryObj);
+        });
+
+        this.tree = tree;
+      });
+    });
   });
+  interface StateObj {
+    key: string;
+    label: string;
+    data: string;
+    children: any[]; 
+  }
+  interface TreeItem {
+    key: string;
+    label: string;
+    data: string;
+    children: TreeItem[];
+  }
+  
 }
+
 
 files: Country[] = [];
   
+onNodeSelect(val : any){
+this.animation = true;
+  this.companyService.getById(val.node.key).subscribe(company => {
+    this.myForm.patchValue(company);
+    console.log(company);
+    Object.keys(company).forEach(controlName => {
+      if (this.myForm.get(controlName)) {
+        this.myForm.get(controlName)?.disable();
+      }
+    });
+
+    this.addReadOnlyStyles();
+    this.animation = false;
+  })
+}
+addReadOnlyStyles(): void {
+  // Example: Add a CSS class to make read-only fields visually distinct
+  const readOnlyFields = document.querySelectorAll('.readonly-field');
+  readOnlyFields.forEach(field => {
+    field.classList.add('read-only'); // Add 'read-only' class
+  });
+}
+
+
   addBudget(){
 
   }
@@ -164,8 +265,19 @@ initializeForm(): void {
     containertype:[''],
     containersize:[''],
     companyid:[''],
+    companyname:[''],
+    companyshortname:[''],
+    contact:[''],
+    zipcode:[''],
+    country:[''],
+    state : [''],
+    city:[''],
+    revenue:['']
+
 
   });
 }
+
+
   
 }

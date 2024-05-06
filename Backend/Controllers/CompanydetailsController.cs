@@ -235,16 +235,21 @@ namespace Backend.Controllers
         }
     
 
-        [HttpGet("cnt")]
-        public async Task<IActionResult> TreeData(){
-            try{
-                var students = await _companydetailsRepositry.TreeData();
-                return Ok(students);
-            }
-            catch(Exception ex){
-                return StatusCode(500, $"An error occurred: {ex.Message}");
-            }
-        }
+    [HttpGet("shortname")]
+
+    public async Task<IActionResult> getShortName(){
+        var data = await _companydetailsRepositry.getShortName();
+        return Ok(data);
+    }
+
+     [HttpGet("currency")]
+
+    public async Task<IActionResult> GetCurrency(){
+        var data = await _companydetailsRepositry.GetCurrency();
+        return Ok(data);
+    }
+
+      
 
         
     }

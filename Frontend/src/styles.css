@@ -191,4 +191,6 @@ p-dropdown .p-dropdown-label.p-placeholder{
     .p-tree {
         height: 25vh;
         overflow-y: auto;
+        font-size: 15px;
+        padding: 0%;
     }

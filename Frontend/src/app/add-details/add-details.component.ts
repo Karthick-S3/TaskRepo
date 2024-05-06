@@ -9,6 +9,7 @@ import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/a
 import { response } from 'express';
 import { Company } from '../Interfaces/company';
 import { CompanydetailsComponent } from '../companydetails/companydetails.component';
+import { Currency } from '../Interfaces/currency';
 
 @Component({
   selector: 'app-add-details',
@@ -23,6 +24,7 @@ export class AddDetailsComponent implements OnInit {
   citys: City[] = [];
   states: State[] = [];
   countrys: Country[] = [];
+  currency: Currency[] = [];
   animation: boolean = false;
   newcompany : Company[] = [];
   badgeval : string = '';
@@ -284,6 +286,7 @@ BackToList(event: Event) {
     this.loadCountry();
     this.loadState();
     this.loadCity();
+    this.loadCurrency();
 
     if(this.id == 0){
       this.initializeForm();
@@ -329,6 +332,8 @@ BackToList(event: Event) {
       address: [''],
       email: ['', [Validators.required,Validators.minLength(5),Validators.maxLength(250),Validators.email ]],
       zipcode: ['', [Validators.required,Validators.pattern('[0-9]*'),Validators.maxLength(5),Validators.minLength(5)]],
+      currency:[''],
+      currencyid:['',Validators.required]
     });
   }
 
@@ -347,6 +352,17 @@ BackToList(event: Event) {
     this.companyService.getState().subscribe({
       next: (states) => {
         this.states = states;
+      },
+      error: (response) => {
+        console.error(response);
+      },
+    });
+  }
+
+  loadCurrency():void {
+    this.companyService.GetCurrency().subscribe({
+      next: (currency) => {
+        this.currency = currency;
       },
       error: (response) => {
         console.error(response);
@@ -383,6 +399,7 @@ BackToList(event: Event) {
       // this.myForm.get('state')?.setValue('');
       // this.myForm.get('city')?.setValue('');
       if(this.id > 0){
+        console.log(this.myForm.value);
         this.companyService.updateCompany(this.myForm.value).subscribe({
           next : (company) => {
             console.log("updated succesfully");
