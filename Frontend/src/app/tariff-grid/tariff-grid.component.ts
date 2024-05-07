@@ -30,9 +30,9 @@ export class TariffGridComponent implements OnInit  {
   animation = false;
   showwwww: boolean = false;
   fileName="Budget Details.xlsx";
-  showAddBudget : boolean = true;
+  showAddBudget : boolean = false;
   Showadd: boolean | undefined;
-  Companyid:any;
+  Companyid:any = 0;
 
 
   constructor( private companyService: CompanyserviceService,
@@ -107,8 +107,11 @@ ngOnInit(): void {
 
 }
 
-routebyid(_t117: any,_t118: any) {
-throw new Error('Method not implemented.');
+routebyid(val: any,index : number) {
+  this.showAddBudget = true;
+  this.Companyid = val.companyid;
+  console.log(val.companyid);
+  console.log(index);
 }
 ExportData() {
   const event = {

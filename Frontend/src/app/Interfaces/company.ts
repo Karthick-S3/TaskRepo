@@ -17,7 +17,8 @@ export interface Company {
     city:string,
     contactid:number,
     currency:string,
-    currencyid:number
+    currencyid:number,
+    budgetid : number
 }
 
 

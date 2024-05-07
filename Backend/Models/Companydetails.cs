@@ -42,11 +42,30 @@ namespace Backend.Models
 
         public int contactid {get; set;}
 
-        public int budgetid {get; set;}
 
         public int currencyid {get; set;}
 
         public string currency {get; set;}
+
+           public int budgetid {get; set;}
+
+           public string description {get; set;}
+
+            public DateTime createdate {get; set;}
+
+            public int budgetdetailid {get; set;}
+
+            public int startamount {get; set;}
+
+            public int limitamount {get; set;}
+
+            public int manhour {get; set;}
+
+            public string containertype {get; set;}
+
+            public string containersize {get; set;}
+
+
 
 
 

@@ -222,7 +222,8 @@ CREATE OR REPLACE PACKAGE company_management AS
         p_cid IN NUMBER,
         p_sid IN NUMBER,
         p_cityid IN NUMBER,
-        p_revenue IN NUMBER
+        p_revenue IN NUMBER,
+        p_currencyid IN Number
     );
 END company_management;
 /
@@ -238,7 +239,8 @@ CREATE OR REPLACE PACKAGE BODY company_management AS
         p_cid IN NUMBER,
         p_sid IN NUMBER,
         p_cityid IN NUMBER,
-        p_revenue IN NUMBER
+        p_revenue IN NUMBER,
+        P_currencyid IN Number
     ) IS
         v_contactid contactdetail.contactid%TYPE;
     BEGIN
@@ -259,7 +261,8 @@ CREATE OR REPLACE PACKAGE BODY company_management AS
             cid,
             sid,
             cityid,
-            revenue
+            revenue,
+            currencyid
         ) VALUES (
             p_companyname,
             p_companyshortname,
@@ -270,13 +273,14 @@ CREATE OR REPLACE PACKAGE BODY company_management AS
             p_cid,
             p_sid,
             p_cityid,
-            p_revenue
+            p_revenue,
+            p_currencyid
         );
     END insert_company_detail;
 END company_management;
 /
 
-
+drop package company_management
 
 
 -- GET BY ID
@@ -295,7 +299,8 @@ PROCEDURE update_company (
     p_sid             IN NUMBER,
     p_cityid          IN NUMBER,
     p_revenue         IN NUMBER,
-    p_contactid       IN NUMBER
+    p_contactid       IN NUMBER,
+    P_currencyid      IN NUMBER
   );
 END getcompany;
 
@@ -306,7 +311,8 @@ CREATE OR REPLACE PACKAGE BODY getcompany AS
     SELECT 
         cd.companyid, cd.companyname, con.contact,con.contactid, cd.companyshortname,
         cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
-        cd.establish_date, cd.REVENUE , cd.cid, cd.sid, cd.cityid
+        cd.establish_date, cd.REVENUE , cd.cid, cd.sid, cd.cityid, cu.currency , cd.currencyid, bu.budgetid,bu.description,bu.currency,bu.active,bu.createdate,
+        bl.startamount,bl.limitamount,bl.manhour,bl.containertype,bl.containersize,bl.budgetdetailid
     FROM 
         companydetail cd
     JOIN 
@@ -315,6 +321,12 @@ CREATE OR REPLACE PACKAGE BODY getcompany AS
         statedetail st ON st.sid = cd.sid
     JOIN 
         citydetail ci ON ci.cityid = cd.cityid
+     JOIN 
+        currencydetail cu ON cu.currencyid = cd.currencyid
+    JOIN 
+        budgetdetail bu ON bu.budgetid = cd.budgetid
+    JOIN 
+        budgetdetailline bl ON bl.budgetid = cd.budgetid
     JOIN 
         contactdetail con ON con.contactid = cd.contactid
     WHERE cd.companyid = id;
@@ -333,7 +345,7 @@ PROCEDURE update_company (
     p_cityid          IN NUMBER,
     p_revenue         IN NUMBER,
     p_contactid       IN NUMBER,
-     p_currencyid     IN NUMBER
+    p_currencyid     IN NUMBER
   ) IS
   BEGIN
     -- Update company details
@@ -361,12 +373,14 @@ PROCEDURE update_company (
   END update_company;
 end getcompany;
 
-drop package update_company
-
--- Update Package
+---------------------------------------------
 
 
-drop package getcompany;
+----------------------------------------------
+
+drop package getcompany
+
+
 
 
 
@@ -638,10 +652,12 @@ select * from currencydetail
 select * from companydetail
 
 
-alter table companydetail add currencyid int
+alter table companydetail add budgetid int
+
+alter table companydetail drop column budgetid
 
 UPDATE companydetail
-SET currencyid = 100
+SET budgetid = 7401 where companyid = 1
 
 
 
@@ -663,5 +679,25 @@ SELECT
                         JOIN
                             currencydetail cu on cu.currencyid = cd.currencyid
 
+update companydetail set budgetid = 7400 where companyid = 2
 
 
+SELECT 
+                        cd.companyid, cd.companyname, con.contact, cd.companyshortname,
+                        cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
+                        cd.establish_date, cd.REVENUE,
+                        COUNT(*) OVER() AS total_records,cu.currency,bu.budgetid
+                        FROM 
+                            companydetail cd
+                        JOIN 
+                            countrydetail co ON co.cid = cd.cid
+                        JOIN 
+                            statedetail st ON st.sid = cd.sid
+                        JOIN 
+                            citydetail ci ON ci.cityid = cd.cityid
+                        JOIN 
+                            contactdetail con ON con.contactid = cd.contactid
+                        JOIN 
+                            budgetdetail bu ON bu.budgetid = cd.budgetid
+                        JOIN
+                            currencydetail cu ON cu.currencyid = cd.currencyid

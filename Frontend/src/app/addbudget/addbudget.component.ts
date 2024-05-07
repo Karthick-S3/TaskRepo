@@ -8,6 +8,11 @@ import { Company } from '../Interfaces/company';
 import { start } from 'repl';
 import { Country } from '../Interfaces/country';
 import { count } from 'console';
+import { Currency } from '../Interfaces/currency';
+import { State } from '../Interfaces/state';
+import { City } from '../Interfaces/city';
+import { BudgetDetail } from '../Interfaces/budgetdetail';
+import { first, skip } from 'rxjs';
 
 
 
@@ -19,10 +24,28 @@ import { count } from 'console';
   providers: [MessageService,ConfirmationService]  
 })
 export class AddbudgetComponent implements OnInit {
+shows() {
+alert("shows")
+}
   visible: boolean = false;
   badgeval:string = 'NEW';
   myForm!: FormGroup;
-
+  currency:Currency[] = [];
+  country:Country[] = [];
+  state:State[] = [];
+  city:City[] = [];
+  shortname: any[] = [];
+  showwwww: boolean = false;
+  budgetdetail: BudgetDetail[] = [];
+  showval:number = 0;
+  total_records: number = 0;
+  sFiledValue: string[] | undefined;
+  searchField: string[] | undefined;
+  sortField:string | undefined='';
+  sortOrder:boolean =false;
+  globalFilter:string | undefined='';
+  showAddBudgetdetail:boolean = false;
+  budgetid :number =0;
   animation = false;
 
   @Input() id= 0;
@@ -31,58 +54,101 @@ export class AddbudgetComponent implements OnInit {
   
   products = [
     {
-      start: 1000,
-      limit : 5000,
-      manhour : 25,
-      containerType : "general Purpose",
-      containerSize : 22
+      start: '0',
+      limit : '0',
+      manhour : '0',
+      containerType : "none",
+      containerSize : '0'
     }
   ];
-  
-  filess = [
-    {
-      key: '0',
-      label: 'India',
-      data: 'Documents Folder',
-      children: [
-          {
-              key: '0-0',
-              label: 'Tamilnadu',
-              data: 'Work Folder',
-              children: [
-                  { key: '0-0-0', label: 'Chennai', data: 'Expenses Document' ,
-                  children: [
-                    { key: '0-0-0-0', label: 'Abc Corp', data: 'Expenses Document' },
-        
-                ]
-                  },
-                  { key: '0-0-1', label: 'Salem', data: 'Resume Document',
-                  children: [
-                    { key: '0-0-1-0', label: 'ZXY Co', data: 'Expenses Document' },
-             
-                ]
-                   }
-              ]
-          },
 
+  LazyDataBudget(event:any){
+    if(this.budgetid==0){
 
-          {
-              key: '0-1',
-              label: 'Karnataka',
-              data: 'Home Folder',
-    
-              children: [{ key: '0-1-0', label: 'Bangalore',  data: 'Invoices for this month' }]
-          },
-          {
-            key: '0-2',
-            label: 'West Bengal',
-            data: 'Home Folder',
-      
-            children: [{ key: '0-1-0', label: 'Kolkata',  data: 'Invoices for this month' }]
+    }else{
+    this.animation = true;
+    const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
+    const sortOrder: boolean = event.sortOrder === 1 ? true : false;
+    const globalFilter : string | undefined = typeof event.globalFilter === 'string' ? event.globalFilter : undefined;
+    let searchField: string[] = [];
+    let sFiledValue: string[] = [];
+
+    if (event.filters) {
+      for (const key in event.filters) {
+        if (event.filters.hasOwnProperty(key)) {
+          const filterValue = event.filters[key];
+          if (filterValue && ('value' in filterValue) && filterValue.value !== null) {
+            if(key=="global"){
+              continue;
+            }
+            searchField.push(key);
+            sFiledValue.push(filterValue.value);
+          }
         }
-      ]
+      }
+    }
+    this.searchField=searchField;
+    this.sFiledValue=sFiledValue;
+    this.sortOrder=sortOrder;
+    this.sortField=sortField;
+    this.globalFilter = globalFilter;
+    
+    this.showval = event.rows !== null ? event.rows : undefined;
+
+    this.companyService.LazyDataBudgetDetail(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue,globalFilter,this.budgetid)
+    .subscribe((budget) => {
+      this.animation = false;
+      this.budgetdetail = budget;
+      this.total_records = budget[0].total_records;
+      // this.total_records = this.budgetdetail[0].total_records;
+    })
   }
-  ]
+  }
+  
+  // filess = [
+  //   {
+  //     key: '0',
+  //     label: 'India',
+  //     data: 'Documents Folder',
+  //     children: [
+  //         {
+  //             key: '0-0',
+  //             label: 'Tamilnadu',
+  //             data: 'Work Folder',
+  //             children: [
+  //                 { key: '0-0-0', label: 'Chennai', data: 'Expenses Document' ,
+  //                 children: [
+  //                   { key: '0-0-0-0', label: 'Abc Corp', data: 'Expenses Document' },
+        
+  //               ]
+  //                 },
+  //                 { key: '0-0-1', label: 'Salem', data: 'Resume Document',
+  //                 children: [
+  //                   { key: '0-0-1-0', label: 'ZXY Co', data: 'Expenses Document' },
+             
+  //               ]
+  //                  }
+  //             ]
+  //         },
+
+
+  //         {
+  //             key: '0-1',
+  //             label: 'Karnataka',
+  //             data: 'Home Folder',
+    
+  //             children: [{ key: '0-1-0', label: 'Bangalore',  data: 'Invoices for this month' }]
+  //         },
+  //         {
+  //           key: '0-2',
+  //           label: 'West Bengal',
+  //           data: 'Home Folder',
+      
+  //           children: [{ key: '0-1-0', label: 'Kolkata',  data: 'Invoices for this month' }]
+  //       }
+  //     ]
+  // }
+  // ]
 
 
   constructor( private companyService: CompanyserviceService,
@@ -101,7 +167,6 @@ tree : any;
 
 
 ngOnInit(): void {
-  this.initializeForm();
 
   this.companyService.getCountry().subscribe(countries => {
     this.companyService.getState().subscribe(states => {
@@ -162,6 +227,46 @@ ngOnInit(): void {
       });
     });
   });
+
+
+  if(this.id==0){
+   
+    // alert("normal");
+    this.initializeForm();
+    this.loadCurrency();
+    this.loadCountry();
+    this.loadState();
+    this.loadCity();
+    this.loadCompany();
+
+
+  
+    
+  }else{
+    
+    // alert("not normal");
+    this.initializeForm();
+    this.loadCountry();
+    this.loadState();
+    this.loadCity();
+    this.loadCompany();
+    this.loadCurrency();
+    
+    this.companyService.getById(this.id).subscribe(value => {
+      this.myForm.patchValue(value);
+      this.budgetid = this.myForm.get('budgetid')?.value;
+      console.log(this.budgetid);
+      const event = {
+        first : 0,
+        rows: 10,
+      }
+
+      this.LazyDataBudget(event);
+    })
+
+  }
+  
+  
   interface StateObj {
     key: string;
     label: string;
@@ -174,22 +279,61 @@ ngOnInit(): void {
     data: string;
     children: TreeItem[];
   }
+
+
   
 }
 
 
 files: Country[] = [];
+
+loadCurrency(){
+  this.companyService.GetCurrency().subscribe(currency => {
+      this.currency = currency;
+      // alert(currency);
+  })
+}
+loadCountry(){
+  this.companyService.getCountry().subscribe(country => {
+    this.country = country;
+  })
+}
+loadState(){
+  this.companyService.getState().subscribe(state => {
+    this.state = state;
+  })
+}
+loadCity(){
+  this.companyService.getCity().subscribe(city => {
+    this.city = city;
+  })
+}
+
+loadCompany(){
+  this.companyService.getShortName().subscribe(shortname => {
+    this.shortname = shortname;
+  })
+}
   
 onNodeSelect(val : any){
 this.animation = true;
   this.companyService.getById(val.node.key).subscribe(company => {
     this.myForm.patchValue(company);
-    console.log(company);
+    this.budgetid = this.myForm.get('budgetid')?.value;
     Object.keys(company).forEach(controlName => {
       if (this.myForm.get(controlName)) {
-        this.myForm.get(controlName)?.disable();
+        if (controlName !== 'currency' && controlName !== 'active') {
+          this.myForm.get(controlName)?.disable();
+        }
       }
     });
+    const event = {
+      first : 0,
+      rows: 10,
+    }
+
+    this.LazyDataBudget(event);
+    
 
     this.addReadOnlyStyles();
     this.animation = false;
@@ -256,14 +400,14 @@ initializeForm(): void {
   this.myForm = this.formBuilder.group({
     budgetid: ['',[Validators.required,Validators.minLength(1),Validators.maxLength(20),Validators.pattern('[a-zA-Z0-9\\-. ]*')]],
     description: ['',[Validators.maxLength(10), Validators.pattern('[a-zA-Z0-9\\- ]*')]],
-    currency: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
-    startamount: [''],
-    limitamount: ['', Validators.required],
+    currency: [''],
+    startamount: ['0'],
+    limitamount: ['0', Validators.required],
     active: ['', Validators.required],
     createdate: ['', Validators.required],
-    manhour:[''],
+    manhour:['0'],
     containertype:[''],
-    containersize:[''],
+    containersize:['0'],
     companyid:[''],
     companyname:[''],
     companyshortname:[''],
@@ -272,7 +416,12 @@ initializeForm(): void {
     country:[''],
     state : [''],
     city:[''],
-    revenue:['']
+    revenue:[''],
+    cid:[''],
+    sid:[''],
+    cityid:[''],
+    currencyid:[''],
+
 
 
   });

@@ -223,7 +223,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                         cd.companyid, cd.companyname, con.contact, cd.companyshortname,
                         cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
                         cd.establish_date, cd.REVENUE,
-                        COUNT(*) OVER() AS total_records,cu.currency
+                        COUNT(*) OVER() AS total_records,cu.currency,bu.budgetid
                         FROM 
                             companydetail cd
                         JOIN 
@@ -234,6 +234,8 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                             citydetail ci ON ci.cityid = cd.cityid
                         JOIN 
                             contactdetail con ON con.contactid = cd.contactid
+                        LEFT JOIN 
+                            budgetdetail bu ON bu.budgetid = cd.budgetid
                         JOIN
                             currencydetail cu ON cu.currencyid = cd.currencyid");
 
@@ -292,8 +294,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
 
                         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
 
-                       Console.WriteLine(query);
-
+                       
                         using (var connection = _context.CreateConnection())
                         {
                             var result = await connection.QueryAsync<Companydetails>(query.ToString()).ConfigureAwait(false);
@@ -331,6 +332,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                     oracleParams.Add("p_sid", companydetails.sid, OracleMappingType.Int32, ParameterDirection.Input);
                     oracleParams.Add("p_cityid", companydetails.cityid, OracleMappingType.Int32, ParameterDirection.Input);
                     oracleParams.Add("p_revenue", companydetails.revenue, OracleMappingType.Decimal, ParameterDirection.Input);
+                    oracleParams.Add("p_currencyid", companydetails.currencyid, OracleMappingType.Decimal, ParameterDirection.Input);
 
                     await connection.ExecuteAsync("company_management.insert_company_detail", oracleParams, commandType: CommandType.StoredProcedure);
                     return companydetails;
@@ -383,6 +385,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                     oracleParams.Add("p_cityid", companydetails.cityid, OracleMappingType.Int32, ParameterDirection.Input);
                     oracleParams.Add("p_revenue", companydetails.revenue, OracleMappingType.Decimal, ParameterDirection.Input);
                     oracleParams.Add("p_contactid", companydetails.contactid, OracleMappingType.Int32, ParameterDirection.Input);
+                    oracleParams.Add("p_currencyid", companydetails.currencyid, OracleMappingType.Int32, ParameterDirection.Input);
 
 
                     await connection.ExecuteAsync("getcompany.update_company", oracleParams, commandType: CommandType.StoredProcedure);
@@ -483,5 +486,69 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                 return result;
             }
         }
+
+       public async Task<IEnumerable<budgetdetailline>> LazyBudgetDetail(int skip, int take, string? orderby, bool isAsc, string[]? searchfield, string[]? sfieldvalue, string globalfilter, int id)
+{
+    try
+    {
+                var query = new StringBuilder();
+                query.Append(@"SELECT 
+                b.budgetdetailid, b.startamount, b.limitamount,
+                b.manhour,
+                b.containertype,
+                b.containersize,
+                b.budgetid,
+                COUNT(*) OVER() AS total_records
+            FROM 
+                budgetdetailline b
+            JOIN 
+                budgetdetail c ON c.budgetid = b.budgetid");
+
+        query.Append(" WHERE b.budgetid = :BudgetId"); // Add WHERE clause for b.budgetid
+
+        if (searchfield != null && searchfield.Length > 0 && sfieldvalue != null && sfieldvalue.Length > 0)
+        {
+            query.Append(" AND (");
+            for (int i = 0; i < searchfield.Length; i++)
+            {
+                if (i > 0)
+                    query.Append(" AND ");
+                query.Append($"lower(b.{searchfield[i]}) LIKE lower('%{sfieldvalue[i]}%')");
+            }
+            query.Append(")");
+        }
+
+        if (!string.IsNullOrEmpty(globalfilter))
+        {
+            query.Append(" AND (");
+            query.Append($" lower(b.startamount) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.limitamount) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.manhour) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.containertype) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.containersize) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.containertype) LIKE lower('%{globalfilter}%')");
+            query.Append(")");
+        }
+
+        if (!string.IsNullOrEmpty(orderby))
+        {
+            query.Append($" ORDER BY b.{orderby} {(isAsc ? "ASC" : "DESC")}");
+        }
+
+        query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
+
+        using (var connection = _context.CreateConnection())
+        {
+            var result = await connection.QueryAsync<budgetdetailline>(query.ToString(), new { BudgetId = id }).ConfigureAwait(false);
+            return result;
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("An error occurred: " + ex.Message);
+        throw;
+    }
+}
+
     }
 }

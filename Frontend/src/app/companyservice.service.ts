@@ -7,6 +7,7 @@ import { State } from './Interfaces/state';
 import { City } from './Interfaces/city';
 import { Budget } from './Interfaces/budget';
 import { Currency } from './Interfaces/currency';
+import { BudgetDetail } from './Interfaces/budgetdetail';
 
 
 @Injectable({
@@ -197,6 +198,38 @@ LazyDataBudget(
 
   const url = `${this.baseApiUrl}/api/Companydetails/LazyBudget?${queryString}`;
   return this.http.get<Budget[]>(url);
+}
+
+LazyDataBudgetDetail(
+  skip: number,
+  take: number,
+  orderby: string | undefined,
+  isAsc: boolean,
+  searchField: string[] | undefined,
+  sFieldValue: string[] | undefined,
+  globalFilter: string  | undefined,
+  id : number
+): Observable<BudgetDetail[]> {
+  let queryString = `skip=${skip}&take=${take}`;
+  if (orderby) {
+    queryString += `&orderby=${orderby}&isAsc=${isAsc}`;
+  }
+  if (searchField && sFieldValue) {
+    for (let i = 0; i < searchField.length; i++) {
+      queryString += `&searchField=${searchField[i]}&sFieldValue=${sFieldValue[i]}`;
+    }
+  }
+
+  if (globalFilter) {
+    queryString += `&globalfilter=${globalFilter}`;
+  }
+  if(id){
+    queryString += `&id=${id}`;
+  }
+
+
+  const url = `${this.baseApiUrl}/api/Companydetails/LazyBudgetDetail?${queryString}`;
+  return this.http.get<BudgetDetail[]>(url);
 }
 
 

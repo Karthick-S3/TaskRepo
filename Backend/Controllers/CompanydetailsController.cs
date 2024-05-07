@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Backend.Contract;
 using Backend.Models;
@@ -234,6 +235,39 @@ namespace Backend.Controllers
             }
         }
     
+
+     [HttpGet("LazyBudgetDetail")]
+        public async Task<IActionResult> LazyBudgetDetail(
+            [FromQuery] int skip,
+            [FromQuery] int take,
+            [FromQuery] string? orderby,
+            [FromQuery] bool isAsc,
+            [FromQuery] string[]? searchField,
+            [FromQuery] string[]? sFieldValue,
+            [FromQuery] string? globalfilter,
+            [FromQuery] int id)
+        {
+            try
+            {
+                
+                var data = await _companydetailsRepositry.LazyBudgetDetail(
+                    skip,
+                    take,
+                    orderby,
+                    isAsc,
+                    searchField,
+                    sFieldValue,
+                    globalfilter,
+                    id);
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
     [HttpGet("shortname")]
 

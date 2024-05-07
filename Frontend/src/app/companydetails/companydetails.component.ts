@@ -137,6 +137,7 @@ export class CompanydetailsComponent implements OnInit {
                       'Zip code': company.zipcode,
                       'Active': company.active,
                       'Revenue': company.revenue,
+                      'Currency' : company.currency
                     };
                 });
                 const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
