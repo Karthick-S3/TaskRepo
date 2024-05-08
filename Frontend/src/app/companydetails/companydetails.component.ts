@@ -48,6 +48,7 @@ export class CompanydetailsComponent implements OnInit {
   sortField:string | undefined='';
   sortOrder:boolean =false;
   globalFilter:string | undefined='';
+  
 
 
 
@@ -135,7 +136,7 @@ export class CompanydetailsComponent implements OnInit {
                       'City': company.city,
                       'Zip code': company.zipcode,
                       'Active': company.active,
-                      'Revenue': company.revenue
+                      'Revenue': company.revenue,
                     };
                 });
                 const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);

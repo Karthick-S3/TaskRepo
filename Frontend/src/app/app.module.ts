@@ -24,6 +24,9 @@ import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TariffGridComponent } from './tariff-grid/tariff-grid.component';
+import { AddbudgetComponent } from './addbudget/addbudget.component';
+import { DialogModule } from 'primeng/dialog';
+import { TreeModule } from 'primeng/tree';
 
 
 @NgModule({
@@ -33,6 +36,7 @@ import { TariffGridComponent } from './tariff-grid/tariff-grid.component';
     AddDetailsComponent,
     DashboardComponent,
     TariffGridComponent,
+    AddbudgetComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,10 @@ import { TariffGridComponent } from './tariff-grid/tariff-grid.component';
     BadgeModule,
     ConfirmDialogModule,
     KeyFilterModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    DialogModule,
+    TreeModule
+   
   ],
   providers: [
     provideClientHydration()

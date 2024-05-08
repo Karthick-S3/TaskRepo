@@ -15,7 +15,9 @@ export interface Company {
     country:string,
     state:string,
     city:string,
-    contactid:number
+    contactid:number,
+    currency:string,
+    currencyid:number
 }
 
 

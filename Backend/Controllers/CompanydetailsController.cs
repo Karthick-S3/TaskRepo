@@ -108,40 +108,7 @@ namespace Backend.Controllers
 
         
 
-         [HttpGet("Lazy2")]
-        public async Task<IActionResult> LazyData2(
-            [FromQuery] int skip,
-            [FromQuery] int take,
-            [FromQuery] string? orderby,
-            [FromQuery] bool isAsc,
-            [FromQuery] string[]? searchField,
-            [FromQuery] string[]? sFieldValue,
-            [FromQuery] int[]? countries,
-            [FromQuery] int[]? states,
-            [FromQuery] int[]? cities)
-        {
-            try
-            {
-                
-                var data = await _companydetailsRepositry.LazyData2(
-                    skip,
-                    take,
-                    orderby,
-                    isAsc,
-                    searchField,
-                    sFieldValue,
-                    countries,
-                    states,
-                    cities);
-
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                
-                return StatusCode(500, $"An error occurred: {ex.Message}");
-            }
-        }
+        
         
 
 
@@ -231,9 +198,59 @@ namespace Backend.Controllers
         }
     }
 
+
+
+    //Budget
+
+
+  [HttpGet("LazyBudget")]
+        public async Task<IActionResult> LazyDataBudget(
+            [FromQuery] int skip,
+            [FromQuery] int take,
+            [FromQuery] string? orderby,
+            [FromQuery] bool isAsc,
+            [FromQuery] string[]? searchField,
+            [FromQuery] string[]? sFieldValue,
+            [FromQuery] string? globalfilter)
+        {
+            try
+            {
+                
+                var data = await _companydetailsRepositry.LazyDataBudget(
+                    skip,
+                    take,
+                    orderby,
+                    isAsc,
+                    searchField,
+                    sFieldValue,
+                    globalfilter);
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
     
 
-        
+    [HttpGet("shortname")]
+
+    public async Task<IActionResult> getShortName(){
+        var data = await _companydetailsRepositry.getShortName();
+        return Ok(data);
+    }
+
+     [HttpGet("currency")]
+
+    public async Task<IActionResult> GetCurrency(){
+        var data = await _companydetailsRepositry.GetCurrency();
+        return Ok(data);
+    }
+
+      
+
         
     }
 }

@@ -20,6 +20,8 @@ namespace Backend.Contract
 
         public IEnumerable<Citydetails> GetCity();
 
+       
+
       
        
         public Task<IEnumerable<Statedetails>> GetStatesByCountries(int[] ids);
@@ -30,7 +32,6 @@ namespace Backend.Contract
 
 
 
-        public Task<IEnumerable<Companydetails>> LazyData2(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,int[]? countries,int[]? states, int[]? cities);
         public Task<IEnumerable<Companydetails>> LazyData(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,int[]? countries,int[]? states, int[]? cities, string globalfilter);
        
         //insert
@@ -44,8 +45,19 @@ namespace Backend.Contract
 
         public Task UpdateCompany(Companydetails companydetails);
 
-    
-        
+
+
+
+        //budget 
+
+
+        public Task<IEnumerable<Budgetdetails>> LazyDataBudget(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,string globalfilter);
+
+        public Task<IEnumerable<Companydetails>> getShortName();
+
+        public Task<IEnumerable<Currencydetails>> GetCurrency();
+
+   
        
     }
 
