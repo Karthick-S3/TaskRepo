@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Backend.Contract;
 using Backend.Models;
@@ -186,17 +187,68 @@ namespace Backend.Controllers
     }
 
 
-    [HttpPut("Update")]
+  
 
-    public async Task<IActionResult> UpdateCompany(Companydetails companydetails){
-        try{
-            await _companydetailsRepositry.UpdateCompany(companydetails);
-               return Ok(companydetails);
+
+    
+
+
+
+
+  
+     [HttpPut("updatebudgetlines")]
+        public async Task<IActionResult> UpdateBudgetLines(IEnumerable<Budgetdetailline> budgetdetaillines)
+        {
+            try
+            {
+                await _companydetailsRepositry.UpdateBudgetLines(budgetdetaillines);
+                return Ok(budgetdetaillines);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
-        catch (Exception ex){
-            return StatusCode(500, ex.Message);
-        }
+
+
+      
+
+
+    
+
+
+
+
+      [HttpPost("insertbudgetlines")]
+public async Task<IActionResult> InsertBudgetLines(IEnumerable<Budgetdetailline> budgetdetaillines)
+{
+    try
+    {
+        await _companydetailsRepositry.InsertBudgetLines(budgetdetaillines);
+        return Ok(budgetdetaillines);
     }
+    catch (Exception ex)
+    {
+        return StatusCode(500, ex.Message);
+    }
+}
+
+
+[HttpPost("insertbudget")]
+public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails budgetDetails)
+{
+    try
+    {
+        int generatedBudgetId = await _companydetailsRepositry.InsertBudgetDetail(budgetDetails);
+        return Ok(generatedBudgetId); 
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, ex.Message);
+    }
+}
+
+
 
 
 
@@ -234,6 +286,39 @@ namespace Backend.Controllers
             }
         }
     
+
+     [HttpGet("LazyBudgetDetail")]
+        public async Task<IActionResult> LazyBudgetDetail(
+            [FromQuery] int skip,
+            [FromQuery] int take,
+            [FromQuery] string? orderby,
+            [FromQuery] bool isAsc,
+            [FromQuery] string[]? searchField,
+            [FromQuery] string[]? sFieldValue,
+            [FromQuery] string? globalfilter,
+            [FromQuery] int id)
+        {
+            try
+            {
+                
+                var data = await _companydetailsRepositry.LazyBudgetDetail(
+                    skip,
+                    take,
+                    orderby,
+                    isAsc,
+                    searchField,
+                    sFieldValue,
+                    globalfilter,
+                    id);
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
     [HttpGet("shortname")]
 

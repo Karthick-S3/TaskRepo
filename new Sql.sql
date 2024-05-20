@@ -208,6 +208,8 @@ END COMPANYDETAIL_PACKAGE;
 
 --INSERT PACKAGE
 
+drop package company_management
+
             
 CREATE OR REPLACE PACKAGE company_management AS
     PROCEDURE insert_company_detail (
@@ -220,7 +222,8 @@ CREATE OR REPLACE PACKAGE company_management AS
         p_cid IN NUMBER,
         p_sid IN NUMBER,
         p_cityid IN NUMBER,
-        p_revenue IN NUMBER
+        p_revenue IN NUMBER,
+        P_currencyid IN NUMBER
     );
 END company_management;
 /
@@ -236,8 +239,9 @@ CREATE OR REPLACE PACKAGE BODY company_management AS
         p_cid IN NUMBER,
         p_sid IN NUMBER,
         p_cityid IN NUMBER,
-        p_revenue IN NUMBER
-    ) IS0
+        p_revenue IN NUMBER,
+        P_currencyid IN NUMBER
+    ) IS
         v_contactid contactdetail.contactid%TYPE;
     BEGIN
         -- Insert into contactdetail table
@@ -257,7 +261,8 @@ CREATE OR REPLACE PACKAGE BODY company_management AS
             cid,
             sid,
             cityid,
-            revenue
+            revenue,
+            currencyid
         ) VALUES (
             p_companyname,
             p_companyshortname,
@@ -268,16 +273,26 @@ CREATE OR REPLACE PACKAGE BODY company_management AS
             p_cid,
             p_sid,
             p_cityid,
-            p_revenue
+            p_revenue,
+            p_currencyid
         );
     END insert_company_detail;
 END company_management;
 /
 
+select * from companydetail
+
+select * from budgetdetail
+
+select * from budgetdetailline
+
+select * from currencydetail
 
 
 
 -- GET BY ID
+
+
 
 CREATE OR REPLACE PACKAGE getcompany AS
 PROCEDURE getcompanybyid(id IN NUMBER, OUT_COMPANY OUT SYS_REFCURSOR);
@@ -293,7 +308,8 @@ PROCEDURE update_company (
     p_sid             IN NUMBER,
     p_cityid          IN NUMBER,
     p_revenue         IN NUMBER,
-    p_contactid       IN NUMBER
+    p_contactid       IN NUMBER,
+    p_currencyid      IN NUMBER
   );
 END getcompany;
 
@@ -360,21 +376,321 @@ end getcompany;
 -- Update Package
 
 
-drop package getcompany;
+SELECT 
+                        cd.companyid, cd.companyname, con.contact, cd.companyshortname,
+                        cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
+                        cd.establish_date, cd.REVENUE,
+                        COUNT(*) OVER() AS total_records,cu.currency,bu.budgetid
+                        FROM
+                            companydetail cd
+                        JOIN
+                            countrydetail co ON co.cid = cd.cid
+                        JOIN
+                            statedetail st ON st.sid = cd.sid
+                        JOIN
+                            citydetail ci ON ci.cityid = cd.cityid
+                        JOIN
+                            contactdetail con ON con.contactid = cd.contactid
+                        LEFT JOIN
+                            budgetdetail bu ON bu.budgetid = cd.budgetid
+                        LEFT JOIN
+                            currencydetail cu ON cu.currencyid = cd.currencyid Where (lower(cd.companyid) LIKE lower('%india%') OR lower(co.country) LIKE lower('%india%') OR lower(cd.companyname) LIKE lower('%india%') OR lower(con.contact) LIKE lower('%india%') OR lower(cd.companyshortname) LIKE lower('%india%') OR lower(cd.address) LIKE lower('%india%') OR lower(cd.zipcode) LIKE lower('%india%') OR lower(st.state) LIKE lower('%india%') OR lower(ci.city) LIKE lower('%india%') OR lower(cd.establish_date) LIKE lower('%india%') OR lower(cu.currency) LIKE lower('%india%') OR lower(cd.REVENUE) LIKE lower('%india%'))  AND co.cid IN (2000) ORDER BY companyid ASC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
 
 
 
-update companydetail set
-companyname = 'companyname',
-companyshortname = 'companyshortname',
-address = 'address',
-zipcode = 'zipcode',
-active = 'active',
-cid = 'cid',
-sid = 'sid',
-cityid = 'cityid',
-revenue = 'revenue'
-(update contactdetail set contact='contact' where contactid = 'contactid')
+
+
+---------PROPER PACKAGE ----------------------------
+
+
+create or replace PACKAGE budget_package AS
+PROCEDURE getBudgetData(OUT_BUDGET OUT SYS_REFCURSOR);
+END budget_package;
+
+create or replace PACKAGE BODY budget_package AS
+    procedure getBudgetData(OUT_BUDGET OUT SYS_REFCURSOR) IS
+    BEGIN 
+    OPEN OUT_BUDGET FOR 
+    SELECT * FROM BUDGETDETAIL;
+    END getBudgetData;
+END budget_package;
 
 
 
+create or replace PACKAGE company_management AS
+    PROCEDURE insert_company_detail (
+        p_contact IN VARCHAR2,
+        p_companyname IN VARCHAR2,
+        p_companyshortname IN VARCHAR2,
+        p_address IN VARCHAR2,
+        p_zipcode IN NUMBER,
+        p_active IN VARCHAR2,
+        p_cid IN NUMBER,
+        p_sid IN NUMBER,
+        p_cityid IN NUMBER,
+        p_revenue IN NUMBER,
+        p_currencyid IN Number
+    );
+END company_management;
+
+
+create or replace PACKAGE BODY company_management AS
+    PROCEDURE insert_company_detail (
+        p_contact IN VARCHAR2,
+        p_companyname IN VARCHAR2,
+        p_companyshortname IN VARCHAR2,
+        p_address IN VARCHAR2,
+        p_zipcode IN NUMBER,
+        p_active IN VARCHAR2,
+        p_cid IN NUMBER,
+        p_sid IN NUMBER,
+        p_cityid IN NUMBER,
+        p_revenue IN NUMBER,
+        P_currencyid IN Number
+    ) IS
+        v_contactid contactdetail.contactid%TYPE;
+    BEGIN
+        -- Insert into contactdetail table
+        INSERT INTO contactdetail (contact) VALUES (p_contact);
+ 
+        -- Retrieve the contactid using a SELECT statement
+        SELECT contactid INTO v_contactid FROM contactdetail WHERE contact = p_contact;
+ 
+        -- Insert into companydetail table using the retrieved contactid
+        INSERT INTO companydetail (
+            companyname,
+            companyshortname,
+            address,
+            zipcode,
+            active,
+            contactid,
+            cid,
+            sid,
+            cityid,
+            revenue,
+            currencyid
+        ) VALUES (
+            p_companyname,
+            p_companyshortname,
+            p_address,
+            p_zipcode,
+            p_active,
+            v_contactid,
+            p_cid,
+            p_sid,
+            p_cityid,
+            p_revenue,
+            p_currencyid
+        );
+    END insert_company_detail;
+END company_management;
+
+
+
+create or replace PACKAGE COMPANYDETAIL_PACKAGE AS
+PROCEDURE getCountry (OUT_COUNTRY OUT SYS_REFCURSOR);
+PROCEDURE getState (OUT_STATE OUT SYS_REFCURSOR);
+PROCEDURE getCity (OUT_CITY OUT SYS_REFCURSOR);
+END COMPANYDETAIL_PACKAGE;
+
+
+create or replace PACKAGE BODY COMPANYDETAIL_PACKAGE AS
+    PROCEDURE getCountry(OUT_COUNTRY OUT SYS_REFCURSOR) IS
+        BEGIN 
+            OPEN OUT_COUNTRY FOR
+            select * from countrydetail;
+        END getCountry;
+ 
+    PROCEDURE getState(OUT_STATE OUT SYS_REFCURSOR) IS
+        BEGIN 
+            OPEN OUT_STATE FOR
+            Select * from statedetail;
+        END getState;
+ 
+    PROCEDURE getCity(OUT_CITY OUT SYS_REFCURSOR) IS
+        BEGIN 
+            OPEN OUT_CITY FOR
+            Select * from citydetail;
+        END getCity;
+ 
+ 
+ 
+END COMPANYDETAIL_PACKAGE;
+
+---------------------------------------------------------------------
+
+drop package getcompany
+
+CREATE OR REPLACE PACKAGE getcompany AS
+    PROCEDURE getcompanybyid(id IN NUMBER, OUT_COMPANY OUT SYS_REFCURSOR);
+    
+    PROCEDURE update_company (
+        p_contact         IN VARCHAR2,
+        p_companyname     IN VARCHAR2,
+        p_companyshortname IN VARCHAR2,
+        p_address         IN VARCHAR2,
+        p_zipcode         IN NUMBER,
+        p_active          IN VARCHAR2,
+        p_cid             IN NUMBER,
+        p_sid             IN NUMBER,
+        p_cityid          IN NUMBER,
+        p_revenue         IN NUMBER,
+        p_contactid       IN NUMBER,
+        p_currencyid      IN NUMBER
+    );
+END getcompany;
+/
+
+
+
+
+CREATE OR REPLACE PACKAGE BODY getcompany AS
+    PROCEDURE getcompanybyid(id IN NUMBER, OUT_COMPANY OUT SYS_REFCURSOR) IS
+    BEGIN 
+        OPEN OUT_COMPANY FOR
+        SELECT 
+            cd.companyid, cd.companyname, con.contact,con.contactid, cd.companyshortname,
+            cd.address, cd.zipcode, cd.active, co.country, st.state, ci.city,
+            cd.establish_date, cd.REVENUE , cd.cid, cd.sid, cd.cityid, cu.currency , cd.currencyid, 
+            bu.budgetid,bu.description,bu.budgetcurrencyid,bu.budgetactive,bu.createdate,
+            bl.budgetdetailid
+        FROM 
+            companydetail cd
+        JOIN 
+            countrydetail co ON co.cid = cd.cid
+        JOIN 
+            statedetail st ON st.sid = cd.sid
+        JOIN 
+            citydetail ci ON ci.cityid = cd.cityid
+        JOIN 
+            currencydetail cu ON cu.currencyid = cd.currencyid
+        JOIN 
+            contactdetail con ON con.contactid = cd.contactid
+        LEFT JOIN 
+            budgetdetail bu ON bu.budgetid = cd.budgetid
+        LEFT JOIN 
+            budgetdetailline bl ON bl.budgetid = cd.budgetid
+        WHERE 
+            cd.companyid = id;
+    END getcompanybyid;
+
+    PROCEDURE update_company (
+        p_contact         IN VARCHAR2,
+        p_companyname     IN VARCHAR2,
+        p_companyshortname IN VARCHAR2,
+        p_address         IN VARCHAR2,
+        p_zipcode         IN NUMBER,
+        p_active          IN VARCHAR2,
+        p_cid             IN NUMBER,
+        p_sid             IN NUMBER,
+        p_cityid          IN NUMBER,
+        p_revenue         IN NUMBER,
+        p_contactid       IN NUMBER,
+        p_currencyid      IN NUMBER
+    ) IS
+    BEGIN
+        -- Update company details
+        UPDATE companydetail
+        SET
+            companyname       = p_companyname,
+            companyshortname  = p_companyshortname,
+            address           = p_address,
+            zipcode           = p_zipcode,
+            active            = p_active,
+            cid               = p_cid,
+            sid               = p_sid,
+            cityid            = p_cityid,
+            revenue           = p_revenue,
+            currencyid        = p_currencyid
+        WHERE
+            contactid = p_contactid;
+     
+        -- Update contact details
+        UPDATE contactdetail
+        SET
+            contact = p_contact
+        WHERE
+            contactid = p_contactid;
+    END update_company;
+END getcompany;
+/
+
+----------------------------------------------------------------
+select * from budgetdetailline
+
+drop package manage_budgetdetailline
+
+create or replace PACKAGE manage_budgetdetailline AS
+    PROCEDURE insertbudgetline(
+        p_startamount IN NUMBER,
+        p_limitamount IN NUMBER,
+        p_manhour IN NUMBER,
+        p_containertype IN VARCHAR2,
+        p_containersize IN NUMBER,
+        p_budgetid  IN NUMBER
+    );
+
+        PROCEDURE update_budgetdetailline(
+        p_startamount IN NUMBER,
+        p_limitamount IN NUMBER,
+        p_manhour IN NUMBER,
+        p_containertype IN VARCHAR2,
+        p_containersize IN NUMBER,
+        p_budgetid IN NUMBER,
+        p_budgetdetailid IN NUMBER
+    );
+
+END manage_budgetdetailline;
+
+
+
+
+create or replace PACKAGE BODY manage_budgetdetailline AS
+    PROCEDURE insertbudgetline(
+        p_startamount IN NUMBER,
+        p_limitamount IN NUMBER,
+        p_manhour IN NUMBER,
+        p_containertype IN VARCHAR2,
+        p_containersize IN NUMBER,
+        p_budgetid  IN NUMBER
+    ) IS 
+    BEGIN
+        INSERT INTO budgetdetailline (
+            startamount,
+            limitamount,
+            manhour,
+            containertype,
+            containersize,
+            budgetid
+        ) VALUES (
+            p_startamount,
+            p_limitamount,
+            p_manhour,
+            p_containertype,
+            p_containersize,
+            p_budgetid
+        );
+    END insertbudgetline;
+
+ PROCEDURE update_budgetdetailline(
+        p_startamount IN NUMBER,
+        p_limitamount IN NUMBER,
+        p_manhour IN NUMBER,
+        p_containertype IN VARCHAR2,
+        p_containersize IN NUMBER,
+        p_budgetid IN NUMBER,
+        p_budgetdetailid IN NUMBER
+    ) IS
+    BEGIN
+        UPDATE budgetdetailline
+        SET
+            startamount = p_startamount,
+            limitamount = p_limitamount,
+            manhour = p_manhour,
+            containertype = p_containertype,
+            containersize = p_containersize,
+            budgetid = p_budgetid
+        WHERE
+            budgetdetailid = p_budgetdetailid;
+    END update_budgetdetailline;
+END manage_budgetdetailline;

@@ -209,6 +209,7 @@ export class AddDetailsComponent implements OnInit {
       this.myForm.reset();
       this.badgeval = "NEW";
       this.id=0;
+      this.initializeForm();
     }else{
       this.messageService.add({ 
         severity: 'error', 
@@ -293,7 +294,7 @@ BackToList(event: Event) {
       this.badgeval = 'NEW';
       
     }else{
-      this.badgeval = 'EDIT'
+      this.badgeval = 'EDIT';
       this.animation = true;
       this.initializeForm();
       this.companyService.getById(Number(this.id)).subscribe({
@@ -331,9 +332,13 @@ BackToList(event: Event) {
       revenue: ['', [Validators.required, Validators.pattern('^[0-9]+(\.[0-9]{1,2})?$'), Validators.maxLength(12)]],
       address: [''],
       email: ['', [Validators.required,Validators.minLength(5),Validators.maxLength(250),Validators.email ]],
-      zipcode: ['', [Validators.required,Validators.pattern('[0-9]*'),Validators.maxLength(5),Validators.minLength(5)]],
+      zipcode: ['', [Validators.required,Validators.pattern('[0-9]*'),Validators.maxLength(5)]],
       currency:[''],
-      currencyid:['',Validators.required]
+      currencyid:['',Validators.required],
+      containertype:[''],
+      containersize:[''],
+      description:[''],
+      budgetactive:['']
     });
   }
 
@@ -399,7 +404,10 @@ BackToList(event: Event) {
       // this.myForm.get('state')?.setValue('');
       // this.myForm.get('city')?.setValue('');
       if(this.id > 0){
-        console.log(this.myForm.value);
+        this.myForm.get('description')?.setValue('');
+        this.myForm.get('containertype')?.setValue('');
+        this.myForm.get('containersize')?.setValue('');
+        this.myForm.get('budgetactive')?.setValue('');
         this.companyService.updateCompany(this.myForm.value).subscribe({
           next : (company) => {
             console.log("updated succesfully");
@@ -409,7 +417,9 @@ BackToList(event: Event) {
           }
         })
       }else{
+
         this.myForm.get('contactid')?.setValue(0);
+        console.log(this.myForm.value);
           this.companyService.insertCompany(this.myForm.value).subscribe({
             next: (company) => {
               console.log("Inserted successfully");

@@ -79,10 +79,10 @@
                     <label for="companyshortname" class="form-label">Short Name </label>
                     <input pInputText type="text" class="form-control" id="companyshortname" formControlName="companyshortname" placeholder="Short Name" autocomplete="off" />
                     <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
-                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
+                        *it allows only Alphabet,Numeric And Special Character '-'
                     </small>
                     <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 10
+                        *Short name should lesser than 10
                     </small>
                 </div>
 
@@ -206,9 +206,9 @@
         
         <div class="input-group" style="height:200px;">
             <label for="cid" class="form-label">Currency<span style="color: red;"> * </span></label>
-            <p-dropdown class="fullwidth form-control" formControlName="currency"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
+            <p-dropdown class="fullwidth form-control" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
             
-            <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
+            <small *ngIf="myForm.get('currencyid')?.errors?.['required'] && myForm.get('currencyid')?.touched " >
                 *This field is required.
             </small>
          

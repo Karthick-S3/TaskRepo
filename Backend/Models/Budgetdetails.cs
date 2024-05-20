@@ -13,11 +13,14 @@ namespace Backend.Models
 
         public string description {get; set;}
 
-        public string currency { get; set;}
+        public int budgetcurrencyid { get; set;}
 
-        public string active { get; set;}
+        public string budgetactive { get; set;}
         public DateTime createdate { get; set;}
         public int companyid { get; set;}
+
+
+        public string currency { get; set;}
 
         public int total_records {get; set;}
     }

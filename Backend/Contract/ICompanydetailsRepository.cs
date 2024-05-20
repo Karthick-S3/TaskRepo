@@ -53,9 +53,25 @@ namespace Backend.Contract
 
         public Task<IEnumerable<Budgetdetails>> LazyDataBudget(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,string globalfilter);
 
+        public Task<IEnumerable<Budgetdetailline>> LazyBudgetDetail(int skip,int take,string? orderby,bool isAsc,string[]?  searchfield,string[]? sfieldvalue,string globalfilter,int id);
+
         public Task<IEnumerable<Companydetails>> getShortName();
 
         public Task<IEnumerable<Currencydetails>> GetCurrency();
+
+
+
+        public Task UpdateBudgetLines(IEnumerable<Budgetdetailline> budgetdetaillines);
+
+        public Task InsertBudgetLines(IEnumerable<Budgetdetailline> budgetdetaillines);
+
+
+        // public Task<IEnumerable<Budgetdetails>> AddBudget(Budgetdetails budgetdetails);
+
+        public  Task<int> InsertBudgetDetail(Budgetdetails budgetDetails);
+
+
+
 
    
        

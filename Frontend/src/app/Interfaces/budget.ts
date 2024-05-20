@@ -1,9 +1,10 @@
 export interface Budget {
     budgetid : number,
     description:string,
-    currency:string,
-    active:string,
+    budgetcurrencyid:number,
+    budgetactive:string,
     createdate:Date,
     companyid:number,
-    total_records : number
+    total_records : number,
+    currency : string
 }

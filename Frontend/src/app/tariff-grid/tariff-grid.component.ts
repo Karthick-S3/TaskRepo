@@ -32,7 +32,7 @@ export class TariffGridComponent implements OnInit  {
   fileName="Budget Details.xlsx";
   showAddBudget : boolean = true;
   Showadd: boolean | undefined;
-  Companyid:any;
+  Companyid:any = 0;
 
 
   constructor( private companyService: CompanyserviceService,
@@ -107,8 +107,9 @@ ngOnInit(): void {
 
 }
 
-routebyid(_t117: any,_t118: any) {
-throw new Error('Method not implemented.');
+routebyid(val: any,index : number) {
+  this.showAddBudget = true;
+  this.Companyid = val.companyid;
 }
 ExportData() {
   const event = {
@@ -125,8 +126,8 @@ ExportData() {
                   return {
                     'Budget Code': company.budgetid,
                     'Description': company.description,
-                    'Currency': company.currency,
-                    'Active': company.active,
+                    'Currency': company.budgetcurrencyid,
+                    'Active': company.budgetactive,
                     'Create Date': company.createdate,
                   };
               });
@@ -178,6 +179,8 @@ reload() {
 
 shows() {
   this.showAddBudget = true;
+  this.Companyid = 0;
+  
 }
 show(val : boolean){
   this.showAddBudget = val;

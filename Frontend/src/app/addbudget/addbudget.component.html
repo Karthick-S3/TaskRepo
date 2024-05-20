@@ -53,45 +53,18 @@
                 <div class="input-group" style="height: 90px;">
                     <label for="companyname" class="form-label">Budget Code</label>
                     <input style="cursor: not-allowed; background-color: #f5f5f5; color: #808080;"  pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Budegt code" autocomplete="off" readonly />
-                    
-                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
-                        *it allows only Alphabet, Numeric Values
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 20
-                    </small> -->
                 </div>
                 
 
                 <div class="input-group" style="height:90px;">
                     <label for="companyshortname" class="form-label">Description<span style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Description" autocomplete="off" />
-                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
-                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
-                    </small>
-                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 10
-                    </small> -->
+
                 </div>
 
                 <div class="input-group" style="height:90px;">
-                    <label for="contact" class="form-label">Currency<span style="color: red;">*</span></label>
-                    <input pInputText class="form-control" id="contact" formControlName="currency"  placeholder="Currency" autocomplete="off"  />
-                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
-                        *This field is required.
-                    </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
-                        *Enter Valid Number & it allow only Numeric Value
-                    </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
-                        *Length should be 10
-                    </small> -->
-                    
+                    <label for="currencyid" class="form-label">Currency<span style="color: red;"> * </span></label>
+                    <p-dropdown class="fullwidth fullform-control" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
                 </div>
 
             
@@ -99,13 +72,13 @@
 
                 <div class="input-group" style="height:90px;">
                     <label for="active" class="form-label">Active</label>
-                    <p-inputSwitch class="form-control" type="" formControlName="active" ></p-inputSwitch>
+                    <p-inputSwitch class="form-control" type="" formControlName="budgetactive" ></p-inputSwitch>
                     
                 </div>    
             </div>
         </div>
 
-        <p-card>
+        <p-card  class="first">
             <ng-template pTemplate="header">
                 <h4 style="font-weight: 600;">
                     Budget Detail Entry
@@ -115,8 +88,8 @@
             <div class="body2">
 
 
-                <div class="budget-tree" >
-                    <p-card class="budget-tree-card">
+                <div class="budget-tree"  >
+                    <p-card class="budget-tree-card second">
                         <ng-template pTemplate="header">
                             <h4 style="font-weight: 600;">
                                 Budget Tree
@@ -130,49 +103,56 @@
 
 
 
-                <div class="budget-view">
-                   <div class="rowss">
+                <div class="budget-view" style="display: flex;flex-direction: column;">
+                   
+            <div class="rowss" style="max-height: 110px;">
                 <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Company Name<span style="color: red;">*</span></label>
+                    <label for="cid" class="form-label">Country <span style="color: red;"> * </span></label>
+                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
+                </div>
+                
+
+                <div class="input-group" style="height:90px;">
+                    <label for="username" class="form-label">State<span style="color: rgb(255, 0, 0);"> * </span></label>
+                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
+                    
+                </div>
+
+                <div class="input-group" style="height:90px;">
+                    <label for="username" class="form-label">City<span style="color: red;"> * </span></label>
+                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
+                    
+                </div>
+
+            
+
+
+                <div class="input-group" style="height: 90px;">
+                    
+                    <label for="cid" class="form-label">Short Name <span style="color: red;"> * </span></label>
+                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
+                    
+                </div>    
+            </div>
+
+            <div class="rowss" style="max-height: 110px;">
+                <div class="input-group" style="height: 90px;">
+                    <label for="companyname" class="form-label">Company Name</label>
                     <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
                     
-                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
-                        *it allows only Alphabet, Numeric Values
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 20
-                    </small> -->
+                    
                 </div>
                 
 
                 <div class="input-group" style="height:90px;">
-                    <label for="companyshortname" class="form-label">Short name</label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyshortname" formControlName="companyshortname" placeholder="Short Name" autocomplete="off" />
-                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
-                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
-                    </small>
-                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 10
-                    </small> -->
+                    <label for="companyname" class="form-label">Revenue</label>
+                    <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="revenue" placeholder="Revenue" autocomplete="off" />
+                   
                 </div>
 
                 <div class="input-group" style="height:90px;">
-                    <label for="contact" class="form-label">Contact<span style="color: red;">*</span></label>
-                    <input pInputText class="form-control readonly-field" id="contact" formControlName="contact" placeholder="Phone Number" autocomplete="off"  />
-                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
-                        *This field is required.
-                    </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
-                        *Enter Valid Number & it allow only Numeric Value
-                    </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
-                        *Length should be 10
-                    </small> -->
+                    <label for="currencyid" class="form-label">Company Currency</label>
+                    <input pInputText class="form-control readonly-field" id="currencyid" formControlName="currency" placeholder="Currency" autocomplete="off"  />
                     
                 </div>
 
@@ -180,108 +160,32 @@
 
 
                 <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Zipcode<span style="color: red;">*</span></label>
+                    <label for="companyname" class="form-label">Zipcode</label>
                     <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="zipcode" placeholder="Zipcode" autocomplete="off" />
                     
-                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
-                        *it allows only Alphabet, Numeric Values
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 20
-                    </small> -->
                 </div>   
-            </div>
-            <div class="rowss">
-                <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Country<span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="country" placeholder="Country" autocomplete="off" />
-                    
-                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
-                        *it allows only Alphabet, Numeric Values
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 20
-                    </small> -->
-                </div>
-                
-
-                <div class="input-group" style="height:90px;">
-                    <label for="companyshortname" class="form-label">State</label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyshortname" formControlName="state" placeholder="State" autocomplete="off" />
-                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
-                        *Company Name allows only Alphabet, Numeric And Only Special Character '-'
-                    </small>
-                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 10
-                    </small> -->
-                </div>
-
-                <div class="input-group" style="height:90px;">
-                    <label for="contact" class="form-label">City<span style="color: red;">*</span></label>
-                    <input pInputText class="form-control readonly-field" id="contact" formControlName="city"  placeholder="City" autocomplete="off"  />
-                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
-                        *This field is required.
-                    </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
-                        *Enter Valid Number & it allow only Numeric Value
-                    </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
-                        *Length should be 10
-                    </small> -->
-                    
-                </div>
-
-            
-
-
-                <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Revenue<span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="revenue" placeholder="Revenue" autocomplete="off" />
-                    
-                    <!-- <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
-                        *it allows only Alphabet, Numeric Values
-                    </small>
-
-                    <small *ngIf="myForm.get('companyname')?.errors?.['maxlength']" >
-                        *Company name should lesser than 20
-                    </small> -->
-                </div>    
             </div>
 
             <div class="rows">
                
-<div class="card">
+<div class="card" *ngIf="showentrrytable">
     <p-table styleClass="p-datatable-gridlines" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th>Start</th>
-                <th>Limit</th>
-                <th>ManHour</th>
-                <th>Container Type</th>
-                <th>Container Size</th>
+                <th style="width: 20%;">Start</th>
+                <th style="width: 20%;">Limit</th>
+                <th style="width: 20%;">ManHour</th>
+                <th style="width: 20%;">Container Type</th>
+                <th style="width: 20%;">Container Size</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
-            <tr class="tarif-tab" (click)="showDialog()">
-                <td>{{ product.start }}</td>
-                <td>{{ product.limit }}</td>
-                <td>{{ product.manhour }}</td>
-                <td>{{ product.containerType }}</td>
-                <td>{{ product.containerSize }}</td>
+            <tr class="tarif-tab" (click)="showDialog()" >
+                <td > {{ myForm.get('startamount')?.value}}</td>
+                <td>{{ myForm.get('limitamount')?.value }}</td>
+                <td>{{ myForm.get('manhour')?.value }}</td>
+                <td>{{ myForm.get('containertype')?.value }}</td>
+                <td>{{ myForm.get('containersize')?.value }}</td>
             </tr>
         </ng-template>
     </p-table>
@@ -289,6 +193,236 @@
             </div>
             
                 </div>
+
+               
+            </div>
+
+
+
+            <ng-template pTemplate="footer"  style="display: flex;width: 100%;align-items: center;justify-content: flex-end;">
+               <button (click)="Addintoentry()" type="button" >Add</button>
+               <button style="margin-left: 10px;" (click)="resetdetailentry()">Reset</button>
+            </ng-template>
+
+
+        </p-card>
+
+        <p-dialog  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+            <ng-template pTemplate="header">
+                <h4 style="color: white;">Detail line Entry</h4>
+              </ng-template>
+
+              <ng-template pTemplate="body" style="height: 30vh;">
+                <div class="entryrow" >
+                    <div class="input-group" style="height:90px">
+                        <label for="containertype" class="form-label">Container Type<span style="color: rgb(255, 0, 0);"> * </span></label>
+                        <p-dropdown class="fullwidth form-control" formControlName="containertype" [options]="containertype"  placeholder="Container Type" ></p-dropdown>
+                        
+                    </div>
+            
+                    <div class="input-group" style="height: 90px;">
+                        <label for="startamount" class="form-label">Start Amount <span style="color: red;">*</span></label>
+                        <input pInputText type="number" class="form-control" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
+                       
+                    </div>
+                    
+    
+                    <div class="input-group" style="height:90px;">
+                        <label for="limitamount" class="form-label">Limit Amount <span style="color: red;">*</span></label>
+                        <input pInputText type="number" class="form-control" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
+                       
+                    </div>
+    
+                    
+    
+                    
+                    
+                    
+                    
+    
+               </div>
+               <div class="entryrow" >
+                
+                <div class="input-group" style="height:90px;">
+                    <label for="containersize" class="form-label">Container Size <span style="color: red;">*</span></label>
+                    <input pInputText type="number" class="form-control" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
+                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
+                        *it allows only Alphabet,Numeric And Special Character '-'
+                    </small>
+                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
+                        *Short name should lesser than 10
+                    </small> -->
+                </div>
+               
+                
+                <div class="input-group" style="height:90px;">
+                    <label for="manhour" class="form-label">Man Hour <span style="color: red;">*</span></label>
+                    <input pInputText type="number" class="form-control" id="manhour" formControlName="manhour"  placeholder="Man Hour" autocomplete="off"  />
+                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
+                        *This field is required.
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
+                        *Enter Valid Number & it allow only Numeric Value
+                    </small>
+                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
+                        *Length should be 10
+                    </small> -->
+                    
+                </div>
+
+                
+
+                <div>
+
+                </div>
+                
+                
+                
+                
+
+           </div>
+              </ng-template>
+
+               
+          
+            
+            <ng-template pTemplate="footer" >
+                <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="true">Save</button>
+                <!-- <p-button icon="pi pi-check" (click)="visible = false" label="Save" pAutoFocus [autofocus]="true"></p-button> -->
+            </ng-template>
+        
+        </p-dialog>
+
+
+
+        <p-card>
+            <ng-template pTemplate="header">
+                <h4 style="font-weight: 600;">
+                    Budget Detail View
+                </h4>
+            </ng-template>
+
+            <div class="body2" style="width: 100%;height: 100%;">
+                <div class="body" style="height:100%;width: 100%;" [class.hide]="showAddBudgetdetail" >
+                <div class="container-fluid">
+     
+                    <div  style="max-height: calc(100vh - 110px)">
+                      <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
+                        <p-table  id="demo" #demo styleClass="p-datatable-gridlines"
+                          [value]="budgetdetail" 
+                          [paginator]="true"
+                          [rows]="showval"
+                          [lazy]="true"
+                          (onLazyLoad)="LazyDataBudget($event)"
+                          [loading]="animation"
+                          [totalRecords]="total_records"
+                          [showCurrentPageReport]="true"
+                          [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [rowsPerPageOptions]="[10,15,20]"
+                          [scrollable]="true"
+                          scrollHeight="700px"
+                          [customSort]="true"
+                          [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
+                          
+                          >
+              
+              
+                          <ng-template pTemplate="caption"  >
+                            <div class="" style="width: 100%;display: flex;align-items:center;justify-content: space-between;height: 30px;">
+                            
+                                
+                                <div class="cap">
+                                  <div class="p-input-icon-left ginput">
+                                    <span class="p-input-icon-right ml-auto">
+                                      <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                                      <i class="pi pi-search"></i>
+                                  </span>
+                                </div>
+                                  <i class="fa-solid fa-rotate"   style="color : #1e7d23;" pTooltip="Reload" tooltipPosition="bottom" ></i>
+                                  <i class="fa-solid fa-filter" (click)="showfil()"   pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
+                                  <i class="fa-solid fa-eraser"  *ngIf="showwwww" (click)="hidefil()"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
+                                  <i class="fa-regular fa-file-excel"  pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
+                                </div>
+                                
+                                
+                            </div>
+                        </ng-template>
+              
+              
+                          
+                            
+                          <ng-template pTemplate="header">
+                           
+                            
+                              <tr style="height: 40px;">
+                                  <th style="width: 10%;" pSortableColumn="startamount">Start Amount<p-sortIcon field="startamount"></p-sortIcon></th>
+                                  <th style="width: 10%;" pSortableColumn="limitamount">Limit Amount<p-sortIcon field="limitamount"></p-sortIcon></th>
+                                  <th style="width: 10%;" pSortableColumn="manhour">Man Hour<p-sortIcon field="manhour"></p-sortIcon></th>
+                                  <th style="width: 10%;" pSortableColumn="containertype">Container Type<p-sortIcon field="containertype"></p-sortIcon></th>
+                                  <th style="width: 10%;" pSortableColumn="containersize">Container Size<p-sortIcon field="containersize"></p-sortIcon></th>
+                                  
+                              </tr>
+              
+                              
+              
+              
+                              <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
+                
+                              <th style="width: 10%;">
+                                  <p-columnFilter  type="text" field="startamount" ></p-columnFilter>
+                              </th>
+                              <th style="width: 10%;">
+                                  <p-columnFilter type="text" field="limitamount"></p-columnFilter>
+                              </th>
+                              <th style="width: 10%;">
+                                  <p-columnFilter type="text" field="manhour"></p-columnFilter>
+                              </th>
+                
+                            <th style="width: 10%;">
+                                <p-columnFilter type="text" field="containertype"></p-columnFilter>
+                            </th>
+                            <th style="width: 10%;">
+                              <p-columnFilter type="Number" field="containersize"></p-columnFilter>
+                          </th>
+                          
+                    
+              
+                              </tr>
+                          </ng-template>
+                          <ng-template  pTemplate="body" let-budgetdetail  let-rowIndex="rowIndex">
+                            <tr class="tr-body" (click)="showindetailtable(budgetdetail,rowIndex)" >
+                                <td style="display: none;">{{budgetdetail.budgetdetailid }}</td>
+                              <td >{{budgetdetail.startamount }}</td>
+                              <td >{{budgetdetail.limitamount }}</td>
+                              <td >{{budgetdetail.manhour}}</td>
+                              <td >{{budgetdetail.containertype}}</td>
+                              <td >{{ budgetdetail.containersize }}</td>
+                              
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="11">No Budget Detail found.</td>
+                            </tr>
+                        </ng-template>
+                          
+                          <ng-template pTemplate="paginatorleft" class="print">
+                          </ng-template>
+                          <ng-template pTemplate="paginatorright" class="print">
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+
+                
+
+
+
+                </div>
+
+
             </div>
         </p-card>
         
@@ -310,15 +444,3 @@
     <img src="../assets/idepo container.svg" alt="">
 </div>
 
-<p-dialog  [(visible)]="visible" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-    <ng-template pTemplate="header">
-        <h4 style="color: black;">Detail line header</h4>
-      </ng-template>
-    <form action="">
-  
-    <p>Detail line data</p>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="visible = false" label="Ok" pAutoFocus [autofocus]="true"></p-button>
-    </ng-template>
-</form>
-</p-dialog>
