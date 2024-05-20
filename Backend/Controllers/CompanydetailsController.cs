@@ -171,6 +171,21 @@ namespace Backend.Controllers
         }
       }
 
+      [HttpPut("Update")] 
+        public async Task<IActionResult> UpdateCompany(Companydetails companydetails)
+        {
+            try
+            {
+                await _companydetailsRepositry.UpdateCompany(companydetails);
+                return Ok(companydetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
 
     [HttpGet("byId")]
     public async Task<IActionResult> GetCompany([FromQuery]int id)
@@ -209,6 +224,9 @@ namespace Backend.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        
+
 
 
       

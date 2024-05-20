@@ -563,6 +563,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             query.Append($" lower(b.description) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(b.budgetcurrency) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(b.createdate) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(cu.currencyid) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(b.budgetactive) LIKE lower('%{globalfilter}%')");
             query.Append(")");
         }

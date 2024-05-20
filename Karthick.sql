@@ -504,6 +504,8 @@ drop table budgetdetail
 
 drop table budgetdetailline
 
+drop table currencydetail
+
 
 
 select * from budgetdetail
@@ -523,13 +525,13 @@ END budget_package;
 
 INSERT INTO budgetdetail (
     description,
-    currency,
-    active,
+    budgetcurrencyid,
+    budgetactive,
     createdate,
     companyid
 ) VALUES (
-    'Sample Budget',
-    'INR',
+    'Test 1',
+    100,
     'True', 
     TO_DATE('2024-05-02', 'YYYY-MM-DD'),
     1
@@ -571,15 +573,18 @@ LOWER(createdate) LIKE LOWER('%2%');
 
 update companydetail set budgetid = 7401 where companyid = 2
 INSERT INTO budgetdetail (description, budgetcurrencyid, budgetactive, createdate, companyid)
-VALUES ('test3', 123, 'True', '09-may-2024', 3);
+VALUES ('test2', 123, 'True', '09-may-2024', 2);
 
     
 
 
 alter table companydetail drop column budgetid
 
+SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME = "tabnam";
 
 select * from budgetdetail
+
+drop table budgetdetail
 
 
 CREATE TABLE budgetdetailline (
@@ -593,6 +598,8 @@ CREATE TABLE budgetdetailline (
     CONSTRAINT fk_compid_budgetdeatil FOREIGN KEY (budgetid) REFERENCES budgetdetail(budgetid)
 );
 
+truncate table  budgetdetailline
+
 
 
 
@@ -605,10 +612,10 @@ INSERT INTO budgetdetailline (
     budgetid
 ) VALUES (
     3000,
-    7000,
-    25,
-    'Refrigrated',
-    22,
+    5000,
+    14,
+    'Genera Purpose',
+    20,
     7401
 );
 INSERT INTO budgetdetailline (
@@ -670,9 +677,13 @@ alter table companydetail add budgetid int
 alter table companydetail add currencyid int
 
 update companydetail
-set currencyid = 121 where companyid = 22
+set currencyid = 107 where sid = 3007
+
+select * from currencydetail
 
 select * from companydetail
+
+
 
 select * from contactdetail
 
@@ -785,6 +796,9 @@ delete from budgetdetail where budgetid = 7450
 update companydetail set budgetid = null
 
 truncate table budgetdetail
+delete from budgetdetail where budgetid = 7405
+
+truncate table budgetdetailline
 
 
 select * from companydetail
@@ -793,7 +807,7 @@ select * from budgetdetail
 
 select * from budgetdetailline
 
-drop table 
+drop table budgetdetailline
 
 select * from currencydetail
 

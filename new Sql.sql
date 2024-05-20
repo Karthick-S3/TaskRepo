@@ -402,6 +402,8 @@ SELECT
 
 ---------PROPER PACKAGE ----------------------------
 
+drop package budget_package
+
 
 create or replace PACKAGE budget_package AS
 PROCEDURE getBudgetData(OUT_BUDGET OUT SYS_REFCURSOR);
@@ -414,6 +416,8 @@ create or replace PACKAGE BODY budget_package AS
     SELECT * FROM BUDGETDETAIL;
     END getBudgetData;
 END budget_package;
+
+drop package  company_management
 
 
 
@@ -484,6 +488,9 @@ create or replace PACKAGE BODY company_management AS
         );
     END insert_company_detail;
 END company_management;
+
+
+drop package COMPANYDETAIL_PACKAGE
 
 
 

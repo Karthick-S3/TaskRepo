@@ -30,7 +30,7 @@ export class TariffGridComponent implements OnInit  {
   animation = false;
   showwwww: boolean = false;
   fileName="Budget Details.xlsx";
-  showAddBudget : boolean = true;
+  showAddBudget : boolean = false;
   Showadd: boolean | undefined;
   Companyid:any = 0;
 

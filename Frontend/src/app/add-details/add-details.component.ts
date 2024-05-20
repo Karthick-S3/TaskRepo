@@ -51,12 +51,15 @@ export class AddDetailsComponent implements OnInit {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'No Records Found',
-        header: 'Warning',
+        header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
-        acceptIcon:"true",
-        rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text", 
-        
+        acceptIcon: "none",
+        rejectIcon: "none",
+        rejectButtonStyleClass: "p-button-text",
+        acceptLabel: 'Ok', 
+        rejectVisible: false, 
+        accept: () => {
+        }
     });
       this.animation = false; 
       return;
@@ -84,12 +87,15 @@ export class AddDetailsComponent implements OnInit {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'No Records Found',
-        header: 'Warning',
+        header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
-        acceptIcon:"true",
-        rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text",
-        
+        acceptIcon: "none",
+        rejectIcon: "none",
+        rejectButtonStyleClass: "p-button-text",
+        acceptLabel: 'Ok', 
+        rejectVisible: false, 
+        accept: () => {
+        }
     });
       this.animation = false; 
       return;
@@ -119,12 +125,15 @@ export class AddDetailsComponent implements OnInit {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'No Records Found',
-        header: 'Warning',
+        header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
-        acceptIcon:"true",
-        rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text",
-        
+        acceptIcon: "none",
+        rejectIcon: "none",
+        rejectButtonStyleClass: "p-button-text",
+        acceptLabel: 'Ok', 
+        rejectVisible: false, 
+        accept: () => {
+        }
     });
       this.animation = false; 
       return;
@@ -153,12 +162,15 @@ export class AddDetailsComponent implements OnInit {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'No Records Found',
-        header: 'Warning',
+        header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
-        acceptIcon:"true",
-        rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text",
-        
+        acceptIcon: "none",
+        rejectIcon: "none",
+        rejectButtonStyleClass: "p-button-text",
+        acceptLabel: 'Ok', 
+        rejectVisible: false, 
+        accept: () => {
+        }
     });
       this.animation = false; 
       return;

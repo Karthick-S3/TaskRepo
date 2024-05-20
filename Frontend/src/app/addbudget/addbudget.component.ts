@@ -1,7 +1,7 @@
 import { Component, OnInit, Input , Output , EventEmitter} from '@angular/core';
 import { CompanyserviceService } from '../companyservice.service';
 import { Router } from '@angular/router';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { response } from 'express';
 import { Company } from '../Interfaces/company';
@@ -86,11 +86,15 @@ alert("shows")
     this.detaillinerow = null;
   }
 
-  Addintoentry(){
+  Addintoentry(event : any){
+
+    
 
     // alert("Working");  
     // console.log(this.detaillinerow);
     // this.budgetdetail[this.budgetdetail.length].containersize = this.myForm.get('containersize')?.value;
+
+    
 
     const containersize = this.myForm.get('containersize')?.value;
     const containertype = this.myForm.get('containertype')?.value;
@@ -119,10 +123,69 @@ alert("shows")
 
     
     if (budgetdetailid == 0 && this.detaillinerow == null) {
-      this.budgetdetail.push(newItem);
-      console.log(this.budgetdetail);
+
+
+   
+   
+  const isDuplicate = this.budgetdetail.some(item => {
+       
+    return item.containertype === newItem.containertype  && item.startamount === newItem.startamount  && item.limitamount === newItem.limitamount; 
+});
+
+
+
+if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamount == 0){
+  this.confirmationService.confirm({
+    target: event.target as EventTarget,
+    message: 'Please enter valid values in the fields to create a budget detailline.',
+      header: 'Invalid Input',
+    icon: 'pi pi-exclamation-triangle',
+    acceptIcon: "none",
+    rejectIcon: "none",
+    rejectButtonStyleClass: "p-button-text",
+    acceptLabel: 'Ok', 
+    rejectVisible: false, 
+    accept: () => {
+    }
+});
+
+}else{
+  if (!isDuplicate) {
+    this.budgetdetail.push(newItem);
+    console.log("Item added successfully");
     } else {
-      this.budgetdetail.splice(this.detaillinerow, 1, newItem);
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'This combination already exists. Please enter a new combination.',
+        header: 'Duplicate Entry',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon: "none",
+        rejectIcon: "none",
+        rejectButtonStyleClass: "p-button-text",
+        acceptLabel: 'Ok', 
+        rejectVisible: false, 
+        accept: () => {
+        }
+    });
+    }
+}
+
+
+
+
+
+    
+  
+
+      // this.budgetdetail.push(newItem);
+      // console.log(this.budgetdetail);
+      // console.log(newItem);
+    } else {
+     
+        
+        this.budgetdetail.splice(this.detaillinerow, 1, newItem);
+    
+      
     }
     this.myForm.get('startamount')?.setValue(0);
     this.myForm.get('limitamount')?.setValue(0);
@@ -188,50 +251,6 @@ alert("shows")
   }
   }
   
-  // filess = [
-  //   {
-  //     key: '0',
-  //     label: 'India',
-  //     data: 'Documents Folder',
-  //     children: [
-  //         {
-  //             key: '0-0',
-  //             label: 'Tamilnadu',
-  //             data: 'Work Folder',
-  //             children: [
-  //                 { key: '0-0-0', label: 'Chennai', data: 'Expenses Document' ,
-  //                 children: [
-  //                   { key: '0-0-0-0', label: 'Abc Corp', data: 'Expenses Document' },
-        
-  //               ]
-  //                 },
-  //                 { key: '0-0-1', label: 'Salem', data: 'Resume Document',
-  //                 children: [
-  //                   { key: '0-0-1-0', label: 'ZXY Co', data: 'Expenses Document' },
-             
-  //               ]
-  //                  }
-  //             ]
-  //         },
-
-
-  //         {
-  //             key: '0-1',
-  //             label: 'Karnataka',
-  //             data: 'Home Folder',
-    
-  //             children: [{ key: '0-1-0', label: 'Bangalore',  data: 'Invoices for this month' }]
-  //         },
-  //         {
-  //           key: '0-2',
-  //           label: 'West Bengal',
-  //           data: 'Home Folder',
-      
-  //           children: [{ key: '0-1-0', label: 'Kolkata',  data: 'Invoices for this month' }]
-  //       }
-  //     ]
-  // }
-  // ]
 
 
   constructor( private companyService: CompanyserviceService,
@@ -250,6 +269,7 @@ tree : any;
 
 
 ngOnInit(): void {
+
 
   this.companyService.getCountry().subscribe(countries => {
     this.companyService.getState().subscribe(states => {
@@ -326,9 +346,14 @@ ngOnInit(): void {
     this.companyService.getById(this.id).subscribe(value => {
       this.myForm.patchValue(value);
       this.budgetid = this.myForm.get('budgetid')?.value;
+      if(this.myForm.get('budgetactive')?.value == 'true'){
+        this.myForm.get('budgetactive')?.setValue(true);
+      }else{
+        this.myForm.get('budgetactive')?.setValue(false);
+      }
       Object.keys(value).forEach(controlName => {
         if (this.myForm.get(controlName)) {
-          const disableFields = ['budgetcurrencyid', 'budgetactive', 'description', 'startamount', 'limitamount','manhour','containertype','containersize'];
+          const disableFields = [ 'budgetactive', 'description', 'startamount', 'limitamount','manhour','containertype','containersize'];
           if (!disableFields.includes(controlName) ) {
             this.myForm.get(controlName)?.disable();
           }
@@ -361,11 +386,12 @@ ngOnInit(): void {
   }
 
 
-  
+  console.log(this.myForm);
 }
 
 
-addBudget(){
+addBudget( event : any){
+ 
 
   if(this.myForm.valid){
     const updatedetail:any = [];
@@ -381,7 +407,7 @@ addBudget(){
   
     if(this.badgeval == 'EDIT'){
   
-      if(this.myForm.get('budgetcurrencyid')?.value == this.myForm.get('currencyid')?.value){
+ 
         this.companyService.updatebudgetlines(updatedetail).subscribe(value => {
           console.log(value);
         })
@@ -389,9 +415,8 @@ addBudget(){
         this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
           console.log(value);
         })
-      }else{
-        alert("Currency Mismatch")
-      }
+
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Updated Successfully !' });
   
       
     }else{
@@ -421,7 +446,7 @@ addBudget(){
         })
   
         this.companyService.insertBudgetLines(insertdetail).subscribe( val => {
-          console.log("Budget Created & budget line added")
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Created Successfully !' });
         })
         });
         
@@ -430,11 +455,35 @@ addBudget(){
         
       }else{
         console.log(this.myForm)
-        alert("Currency Mismatching");
+        this.confirmationService.confirm({
+          target: event.target as EventTarget,
+          message: 'The budget currency must match the company currency.',
+          header: 'Currency Mismatch',
+          icon: 'pi pi-exclamation-triangle',
+          acceptIcon: "none",
+          rejectIcon: "none",
+          rejectButtonStyleClass: "p-button-text",
+          acceptLabel: 'Ok', 
+          rejectVisible: false, 
+          accept: () => {
+          }
+      });
       }
     }
   }else{
-    alert("Insert proper detail");
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Please enter valid values in the fields to create a budget detail.',
+      header: 'Invalid Input',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectButtonStyleClass: "p-button-text",
+      acceptLabel: 'Ok', 
+      rejectVisible: false, 
+      accept: () => {
+      }
+  });
   }
   
 }
@@ -481,10 +530,11 @@ if(val.node.children.length == 0){
       this.budgetid = this.myForm.get('budgetid')?.value;
       Object.keys(company).forEach(controlName => {
         if (this.myForm.get(controlName)) {
-          const disableFields = ['budgetcurrencyid', 'budgetactive', 'description', 'startamount', 'limitamount','manhour','containertype','containersize'];
+          const disableFields = ['budgetactive', 'description', 'startamount', 'limitamount','manhour','containertype','containersize'];
           if (!disableFields.includes(controlName) ) {
             this.myForm.get(controlName)?.disable();
           }
+
         }
       });
       const event = {
@@ -499,14 +549,27 @@ if(val.node.children.length == 0){
       this.animation = false;
       if(this.myForm.get('budgetid')?.value != 0){
         this.badgeval = 'EDIT';
+        this.myForm.get('budgetcurrencyid')?.disable();
       }else{
         this.badgeval = 'NEW';
+        this.myForm.get('budgetcurrencyid')?.enable();
         this.budgetdetail = [];
       }
     })
 }else{
-  // console.log(val)
-  alert("choose proper company name")
+  this.confirmationService.confirm({
+    target: val.target as EventTarget,
+    message: 'Choose Proper Company Short name in the filed',
+    header: 'Choose Proper Company',
+    icon: 'pi pi-exclamation-triangle',
+    acceptIcon: "none",
+    rejectIcon: "none",
+    rejectButtonStyleClass: "p-button-text",
+    acceptLabel: 'Ok', 
+    rejectVisible: false, 
+    accept: () => {
+    }
+});
 }
 
 }
@@ -571,18 +634,33 @@ BackToList(event: Event) {
 }
 
 
+
+
 initializeForm(): void {
   this.myForm = this.formBuilder.group({
     budgetid: [''],
-    description: ['',[Validators.minLength(1),Validators.maxLength(20), Validators.pattern('[a-zA-Z0-9\\- ]*')]],
+    description: ['', [
+      Validators.required,
+      Validators.minLength(1),
+      Validators.maxLength(20),
+      Validators.pattern('[a-zA-Z0-9\\- ]*')
+    ]],
     currency: [''],
-    startamount: [0,Validators.required,Validators.pattern('[0-9]*')],
-    limitamount: [0, Validators.required,Validators.pattern('[0-9]*')],
-    active: ['', Validators.required],
+    startamount: [0, [
+      Validators.pattern('[0-9]*')
+    ]],
+    limitamount: [0, [
+      Validators.pattern('[0-9]*')
+    ]],
+    active: [''],
     createdate: [''],
-    manhour:[0,Validators.required,Validators.pattern('[0-9]*')],
-    containertype:['',Validators.required],
-    containersize:[0,Validators.required,Validators.pattern('[0-9]*')],
+    manhour:[0, [
+      Validators.pattern('[0-9]*')
+    ]],
+    containertype:[''],
+    containersize:[0, [
+      Validators.pattern('[0-9]*')
+    ]],
     companyid:[''],
     companyname:[''],
     companyshortname:['',Validators.required],
@@ -602,9 +680,24 @@ initializeForm(): void {
 
 
 
-  });
+
+  } ,{ validators: startAmountLessThanLimitAmountValidator() });
 }
 
 
+deleteline(){
+  alert("delete")
+}
   
+}
+export function startAmountLessThanLimitAmountValidator(): ValidatorFn {
+  return (formGroup: AbstractControl): { [key: string]: boolean } | null => {
+    const startAmount = formGroup.get('startamount')?.value;
+    const limitAmount = formGroup.get('limitamount')?.value;
+
+    if (startAmount !== null && limitAmount !== null && (startAmount >= limitAmount && startAmount !=0  && limitAmount != 0)) {
+      return { 'startAmountGreaterThanOrEqualLimitAmount': true };
+    }
+    return null;
+  };
 }
