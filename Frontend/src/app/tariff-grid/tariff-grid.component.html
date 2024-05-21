@@ -1,5 +1,5 @@
 
-<div class="body" style="max-height: calc(100vh -110px);" [class.hide]="showAddBudget" >
+<div class="body" style="max-height: calc(100vh -110px);" *ngIf="!showAddBudget"  >
   <p-toast></p-toast>
     <div class="container-fluid">
      

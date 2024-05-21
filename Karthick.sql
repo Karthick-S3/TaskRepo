@@ -582,7 +582,7 @@ alter table companydetail drop column budgetid
 
 SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME = "tabnam";
 
-select * from budgetdetail
+    select * from budgetdetailline
 
 drop table budgetdetail
 
@@ -600,7 +600,10 @@ CREATE TABLE budgetdetailline (
 
 truncate table  budgetdetailline
 
+select companyid,companyshortname from companydetail where cityid = 4014
 
+
+DELETE FROM budgetdetailline WHERE budget_id IN (8500, 8501);
 
 
 INSERT INTO budgetdetailline (

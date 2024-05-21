@@ -519,7 +519,18 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             }
       
 
+     public async Task DeleteBudgetDetailLine(int[] ids)
+{
+    var query = @"DELETE FROM budgetdetailline WHERE budgetdetailid IN :Ids";
 
+    using (var connection = _context.CreateConnection())
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("Ids", ids);
+
+        await connection.ExecuteAsync(query, parameters);
+    }
+}
 
 
 
@@ -561,7 +572,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             query.Append(" AND (");
             query.Append($" lower(b.budgetid) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(b.description) LIKE lower('%{globalfilter}%') OR ");
-            query.Append($" lower(b.budgetcurrency) LIKE lower('%{globalfilter}%') OR ");
+            query.Append($" lower(b.budgetcurrencyid) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(b.createdate) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(cu.currencyid) LIKE lower('%{globalfilter}%') OR ");
             query.Append($" lower(b.budgetactive) LIKE lower('%{globalfilter}%')");
@@ -597,6 +608,8 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                 return result;
             }
         }
+
+      
 
         public async Task<IEnumerable<Currencydetails>> GetCurrency()
         {
@@ -670,6 +683,17 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
         throw;
     }
 }
+
+        public async Task<IEnumerable<Companydetails>> getShortNamebyid(int id)
+        {
+            var query = @"SELECT companyid, companyshortname FROM companydetail WHERE cityid = :Id";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var result = await connection.QueryAsync<Companydetails>(query, new { Id = id });
+                return result;
+            }
+        }
 
         
     }

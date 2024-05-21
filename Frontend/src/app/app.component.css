@@ -29,7 +29,7 @@
     .topbar2{
         background-color: #04246A;
         width: 100%;
-        height: 60px;
+        height: 58px;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -51,7 +51,8 @@
         cursor: pointer;
         i{
             color: white;
-            font-size: 20px;
+            font-size: 22px;
+            font-weight: 900;
         }
      
        }

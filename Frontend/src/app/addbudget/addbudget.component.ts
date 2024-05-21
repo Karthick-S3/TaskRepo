@@ -25,6 +25,8 @@ import { Budget } from '../Interfaces/budget';
   providers: [MessageService,ConfirmationService]  
 })
 export class AddbudgetComponent implements OnInit {
+
+single:any;
 shows() {
 alert("shows")
 }
@@ -36,10 +38,11 @@ alert("shows")
   country:Country[] = [];
   state:State[] = [];
   city:City[] = [];
+  citys:City[] = [];
   shortname: any[] = [];
   showwwww: boolean = false;
   budgetdetail: BudgetDetail[] = [];
-  showval:number = 0;
+  showval:number = 10;
   total_records: number = 0;
   sFiledValue: string[] | undefined;
   searchField: string[] | undefined;
@@ -50,6 +53,7 @@ alert("shows")
   budgetid :number =0;
   animation = false;
   showentrrytable:boolean = false;
+  deletedetail:any = [];
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
@@ -57,7 +61,7 @@ alert("shows")
   
   products : any = [
     {
-      start: '0',
+      startamount: '0',
       limit : '0',
       manhour : '0',
       containerType : "none",
@@ -76,24 +80,81 @@ alert("shows")
   ]
 
 
-  resetdetailentry(){
-    this.myForm.get('startamount')?.setValue(0);
-    this.myForm.get('limitamount')?.setValue(0);
-    this.myForm.get('manhour')?.setValue(0);
-    this.myForm.get('containersize')?.setValue(0);
-    this.myForm.get('containertype')?.setValue('');
+  resetdetailentry(event : any){
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure to reset budgetdetailline',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectButtonStyleClass: "p-button-danger",
+      acceptButtonStyleClass: 'p-button-success',
+      acceptLabel: 'Yes' ,
+      accept: () => {
+        this.myForm.get('startamount')?.setValue(0);
+        this.myForm.get('limitamount')?.setValue(0);
+        this.myForm.get('manhour')?.setValue(0);
+        this.myForm.get('containersize')?.setValue(0);
+        this.myForm.get('containertype')?.setValue('');
+    
+        this.detaillinerow = null;
+        this.messageService.add({ severity: 'info', summary: 'Reset', detail: 'Detailline reset successfully.' });
+      },
+      reject : () =>{
 
-    this.detaillinerow = null;
+      }
+      
+        
+  });
+    
+  }
+
+  reloadbudget(){
+    this.budgetdetail
+  }
+
+  deleteline(event : any){
+    
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure to delete this detail line?',
+      header: 'Confirmation',
+      icon: 'pi pi-trash',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      acceptButtonStyleClass: 'p-button-success',
+      rejectButtonStyleClass: 'p-button-danger',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        let index = 0;
+        this.budgetdetail.forEach(element => {
+          if(element.budgetdetailid == event.controls.budgetdetailid.value){
+            this.deletedetail.push(element.budgetdetailid);
+            this.budgetdetail.splice(index, 1);
+            this.myForm.get('startamount')?.setValue(0);
+            this.myForm.get('limitamount')?.setValue(0);
+            this.myForm.get('manhour')?.setValue(0);
+            this.myForm.get('containersize')?.setValue(0);
+            this.myForm.get('containertype')?.setValue('');
+            
+          }
+          index ++;
+        });
+        this.messageService.add({ severity: 'warn', summary: 'Deleted', detail: 'Detailline Deleted Successfully' });
+        index = 0;
+      },
+      reject : () =>{
+
+      },
+      
+      
+        
+  });
   }
 
   Addintoentry(event : any){
-
-    
-
-    // alert("Working");  
-    // console.log(this.detaillinerow);
-    // this.budgetdetail[this.budgetdetail.length].containersize = this.myForm.get('containersize')?.value;
-
     
 
     const containersize = this.myForm.get('containersize')?.value;
@@ -142,17 +203,39 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
     rejectIcon: "none",
-    rejectButtonStyleClass: "p-button-text",
+    acceptButtonStyleClass: 'p-button-danger',
     acceptLabel: 'Ok', 
     rejectVisible: false, 
     accept: () => {
     }
+    
+      
 });
+
+
 
 }else{
   if (!isDuplicate) {
     this.budgetdetail.push(newItem);
-    console.log("Item added successfully");
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Detailline added Successfully',
+      header: 'Confirmation',
+      icon: 'pi pi-check-circle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      acceptButtonStyleClass: 'p-button-success',
+      acceptLabel: 'Ok', 
+      rejectVisible: false, 
+      accept: () => {
+        
+      }
+  });
+    this.myForm.get('startamount')?.setValue(0);
+    this.myForm.get('limitamount')?.setValue(0);
+    this.myForm.get('manhour')?.setValue(0);
+    this.myForm.get('containersize')?.setValue(0);
+    this.myForm.get('containertype')?.setValue('');
     } else {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
@@ -161,7 +244,7 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
         icon: 'pi pi-exclamation-triangle',
         acceptIcon: "none",
         rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
+        rejectButtonStyleClass: 'p-button-danger',
         acceptLabel: 'Ok', 
         rejectVisible: false, 
         accept: () => {
@@ -187,13 +270,10 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     
       
     }
-    this.myForm.get('startamount')?.setValue(0);
-    this.myForm.get('limitamount')?.setValue(0);
-    this.myForm.get('manhour')?.setValue(0);
-    this.myForm.get('containersize')?.setValue(0);
-    this.myForm.get('containertype')?.setValue('');
+    
 
     this.detaillinerow = null;
+    this.total_records = this.budgetdetail.length;
 
     
   }
@@ -269,6 +349,7 @@ tree : any;
 
 
 ngOnInit(): void {
+
 
 
   this.companyService.getCountry().subscribe(countries => {
@@ -386,7 +467,9 @@ ngOnInit(): void {
   }
 
 
-  console.log(this.myForm);
+  // console.log(this.myForm);
+
+  this.myForm.get('startamount')?.setValue(100);
 }
 
 
@@ -394,8 +477,9 @@ addBudget( event : any){
  
 
   if(this.myForm.valid){
-    const updatedetail:any = [];
+    let updatedetail:any = [];
     let insertdetail:any = [];
+    
   
     this.budgetdetail.forEach((data:any) => {
         if(data.budgetdetailid != 0){
@@ -409,12 +493,19 @@ addBudget( event : any){
   
  
         this.companyService.updatebudgetlines(updatedetail).subscribe(value => {
-          console.log(value);
+          // console.log(value);
         })
         
         this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
-          console.log(value);
+          // console.log(value);
         })
+
+        if(this.deletedetail){
+          this.companyService.deleteDetailLine(this.deletedetail).subscribe(value => {
+            console.log(value);
+          })
+        }
+        
 
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Updated Successfully !' });
   
@@ -448,13 +539,14 @@ addBudget( event : any){
         this.companyService.insertBudgetLines(insertdetail).subscribe( val => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Created Successfully !' });
         })
+
         });
         
         
         
         
       }else{
-        console.log(this.myForm)
+      
         this.confirmationService.confirm({
           target: event.target as EventTarget,
           message: 'The budget currency must match the company currency.',
@@ -462,12 +554,15 @@ addBudget( event : any){
           icon: 'pi pi-exclamation-triangle',
           acceptIcon: "none",
           rejectIcon: "none",
-          rejectButtonStyleClass: "p-button-text",
+          acceptButtonStyleClass: 'p-button-warning',
           acceptLabel: 'Ok', 
           rejectVisible: false, 
           accept: () => {
           }
       });
+
+      this.myForm.get('budgetcurrencyid')?.markAsTouched;
+      this.myForm.get('budgetcurrencyid')?.setValue('');
       }
     }
   }else{
@@ -478,12 +573,18 @@ addBudget( event : any){
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      rejectButtonStyleClass: "p-button-text",
+      acceptButtonStyleClass: 'p-button-danger',
       acceptLabel: 'Ok', 
       rejectVisible: false, 
       accept: () => {
       }
   });
+  if (this.myForm.invalid) {
+      this.myForm.get('budgetcurrencyid')?.setValue('');
+        for (const control of Object.keys(this.myForm.controls)) {
+          this.myForm.controls[control].markAsTouched();
+        }
+      }
   }
   
 }
@@ -559,12 +660,12 @@ if(val.node.children.length == 0){
 }else{
   this.confirmationService.confirm({
     target: val.target as EventTarget,
-    message: 'Choose Proper Company Short name in the filed',
+    message: 'Choose Proper Company Short name in the Hierarchy',
     header: 'Choose Proper Company',
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
     rejectIcon: "none",
-    rejectButtonStyleClass: "p-button-text",
+    acceptButtonStyleClass: 'p-button-warning',
     acceptLabel: 'Ok', 
     rejectVisible: false, 
     accept: () => {
@@ -572,13 +673,70 @@ if(val.node.children.length == 0){
 });
 }
 
+
+console.log(this.myForm.get('budgetcurrency')?.value);
 }
 addReadOnlyStyles(): void {
-  // Example: Add a CSS class to make read-only fields visually distinct
+ 
   const readOnlyFields = document.querySelectorAll('.readonly-field');
   readOnlyFields.forEach(field => {
-    field.classList.add('read-only'); // Add 'read-only' class
+    field.classList.add('read-only');
   });
+}
+
+onCountryChange(event: any) {
+  const selectedCountryid: number[] = [];
+  if (event) {
+    selectedCountryid.push(event.value);
+    this.getCitybyCountryIds(selectedCountryid);
+    this.getStatesByIds(selectedCountryid);
+  }
+}
+
+onStateChange(event: any) {
+  const selectedStateid: number[] = [];
+  if (event) {
+    selectedStateid.push(event.value);
+    this.getCityBystateIds(selectedStateid);
+  }
+}
+
+onCityChange(event : any){
+  let selectedCityid:number = 0;
+  if(event){
+    selectedCityid = event.value;
+    this.companyService.getShortNameByid(selectedCityid).subscribe ( data => {
+      this.shortname = [];
+      data.forEach(element => {
+        this.shortname.push(element);
+      });
+      
+    })
+
+  } 
+}
+
+
+
+getStatesByIds(selectedCountryIds: number[]): void {
+  this.companyService.getStatesByIds(selectedCountryIds)
+    .subscribe(states => {
+      this.state = states;
+    });
+}
+
+getCitybyCountryIds(selectedCountryIds: number[]): void {
+  this.companyService.getCitybyCountryIds(selectedCountryIds)
+    .subscribe(citys => {
+      this.city = citys;
+    });
+}
+
+getCityBystateIds(selectedCountryIds: number[]): void {
+  this.companyService.getCityBystateIds(selectedCountryIds)
+    .subscribe(citys => {
+      this.citys = citys;
+    });
 }
 
 
@@ -606,9 +764,16 @@ throw new Error('Method not implemented.');
 }
 showfil(){
   this.showwwww = !this.showwwww;
+  this.budgetdetail = [];
+  
 }
 hidefil(){
+  alert("Working")
   this.showwwww = false;
+  this.budgetdetail = [];
+ 
+
+  this.LazyDataBudget(event);
 }
 BackToList(event: Event) {
   if(this.myForm.touched){
@@ -619,7 +784,7 @@ BackToList(event: Event) {
       icon: 'pi pi-exclamation-triangle',
       acceptIcon:"none",
       rejectIcon:"none",
-      rejectButtonStyleClass:"p-button-text",
+      rejectButtonStyleClass: 'p-button-danger',
       accept: () => {
         this.Flag.emit(false);
       },
@@ -645,35 +810,31 @@ initializeForm(): void {
       Validators.maxLength(20),
       Validators.pattern('[a-zA-Z0-9\\- ]*')
     ]],
-    currency: [''],
-    startamount: [0, [
-      Validators.pattern('[0-9]*')
-    ]],
-    limitamount: [0, [
-      Validators.pattern('[0-9]*')
-    ]],
+    currency: ['',Validators.required],
+    startamount: ['0', [Validators.required, Validators.pattern('[0-9]*')]],
+      limitamount: ['0', [Validators.required, Validators.pattern('[0-9]*')]],
     active: [''],
     createdate: [''],
     manhour:[0, [
       Validators.pattern('[0-9]*')
     ]],
     containertype:[''],
-    containersize:[0, [
+    containersize:['0', [
       Validators.pattern('[0-9]*')
     ]],
-    companyid:[''],
-    companyname:[''],
+    companyid:['',Validators.required],
+    companyname:['',Validators.required],
     companyshortname:['',Validators.required],
-    contact:[''],
-    zipcode:[''],
+    contact:['',Validators.required],
+    zipcode:['',Validators.required],
     country:[''],
     state : [''],
     city:[''],
-    revenue:[''],
+    revenue:['',Validators.required],
     cid:[''],
     sid:[''],
     cityid:[''],
-    currencyid:[''],
+    currencyid:['',Validators.required],
     budgetcurrencyid:['',Validators.required],
     budgetactive:['False'],
     budgetdetailid:[]
@@ -685,9 +846,7 @@ initializeForm(): void {
 }
 
 
-deleteline(){
-  alert("delete")
-}
+
   
 }
 export function startAmountLessThanLimitAmountValidator(): ValidatorFn {
@@ -695,9 +854,12 @@ export function startAmountLessThanLimitAmountValidator(): ValidatorFn {
     const startAmount = formGroup.get('startamount')?.value;
     const limitAmount = formGroup.get('limitamount')?.value;
 
-    if (startAmount !== null && limitAmount !== null && (startAmount >= limitAmount && startAmount !=0  && limitAmount != 0)) {
+    if (  startAmount !== null && limitAmount !== null && (startAmount >= limitAmount && startAmount !=0  && limitAmount != 0)) {
       return { 'startAmountGreaterThanOrEqualLimitAmount': true };
     }
     return null;
   };
+
+
+  
 }

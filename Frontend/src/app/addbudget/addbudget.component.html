@@ -58,21 +58,29 @@
 
                 <div class="input-group" style="height:90px;">
                     <label for="companyshortname" class="form-label">Description<span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="companyshortname" formControlName="description" placeholder="Description" autocomplete="off" />
+                    <input pInputText type="text" class="form-control" id="description" formControlName="description" placeholder="Description" autocomplete="off" />
 
 
                     <small *ngIf="myForm.get('description')?.errors?.['required'] && myForm.get('description')?.touched " >
                         *This field is required.
                     </small>
+                    <small *ngIf="myForm.get('description')?.errors?.['maxlength']" >
+                        *Description should be lesser than 20
+                    </small>
+                    <small *ngIf="myForm.get('description')?.errors?.['pattern']" >
+                        *it allows only Alphabet, Numeric Values
+                    </small>
+                    
                 </div>
 
                 <div class="input-group" style="height:90px;">
                     <label for="currencyid" class="form-label">Currency<span style="color: red;"> * </span></label>
                     <p-dropdown class="fullwidth fullform-control readonly-field" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
 
-                    <small *ngIf="myForm.get('budgetcurrencyid')?.errors?.['required'] && myForm.get('budgetcurrencyid')?.touched " >
+                    <small *ngIf="myForm.get('budgetcurrencyid')?.touched  && myForm.get('budgetcurrencyid')?.errors?.['required'] " >
                         *This field is required.
                     </small>
+                    
                 </div>
 
             
@@ -116,19 +124,19 @@
             <div class="rowss" style="max-height: 110px;">
                 <div class="input-group" style="height: 90px;">
                     <label for="cid" class="form-label">Country <span style="color: red;"> * </span></label>
-                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
+                    <p-dropdown (onChange)="onCountryChange($event)" class="fullwidth form-control readonly-field" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
                 </div>
                 
 
                 <div class="input-group" style="height:90px;">
                     <label for="username" class="form-label">State<span style="color: rgb(255, 0, 0);"> * </span></label>
-                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
+                    <p-dropdown (onChange)="onStateChange($event)" class="fullwidth form-control readonly-field" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
                     
                 </div>
 
                 <div class="input-group" style="height:90px;">
                     <label for="username" class="form-label">City<span style="color: red;"> * </span></label>
-                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
+                    <p-dropdown (onChange)="onCityChange($event)" class="fullwidth form-control readonly-field" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
                     
                 </div>
 
@@ -140,6 +148,10 @@
                     <label for="cid" class="form-label">Short Name <span style="color: red;"> * </span></label>
                     <p-dropdown class="fullwidth form-control readonly-field" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
                     
+                    <small *ngIf="myForm.get('companyid')?.errors?.['required'] && myForm.get('companyid')?.touched " >
+                        *This field is required.
+                    </small>
+
                 </div>    
             </div>
 
@@ -147,7 +159,9 @@
                 <div class="input-group" style="height: 90px;">
                     <label for="companyname" class="form-label">Company Name</label>
                     <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
-                    
+                    <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
+                        *This field is required.
+                    </small>
                     
                 </div>
                 
@@ -155,13 +169,17 @@
                 <div class="input-group" style="height:90px;">
                     <label for="companyname" class="form-label">Revenue</label>
                     <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="revenue" placeholder="Revenue" autocomplete="off" />
-                   
+                    <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched " >
+                        *This field is required.
+                    </small>
                 </div>
 
                 <div class="input-group" style="height:90px;">
                     <label for="currencyid" class="form-label">Company Currency</label>
                     <input pInputText class="form-control readonly-field" id="currencyid" formControlName="currency" placeholder="Currency" autocomplete="off"  />
-                    
+                    <small *ngIf="myForm.get('currency')?.errors?.['required'] && myForm.get('currency')?.touched " >
+                        *This field is required.
+                    </small>
                 </div>
 
             
@@ -169,8 +187,10 @@
 
                 <div class="input-group" style="height: 90px;">
                     <label for="companyname" class="form-label">Zipcode</label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="zipcode" placeholder="Zipcode" autocomplete="off" />
-                    
+                    <input pInputText type="text" class="form-control readonly-field" id="zipcode" formControlName="zipcode" placeholder="Zipcode" autocomplete="off" />
+                    <small *ngIf="myForm.get('zipcode')?.errors?.['required'] && myForm.get('zipcode')?.touched " >
+                        *This field is required.
+                    </small>
                 </div>   
             </div>
 
@@ -185,7 +205,7 @@
                 <th style="width: 20%;">ManHour</th>
                 <th style="width: 20%;">Container Type</th>
                 <th style="width: 20%;">Container Size</th>
-                <th (click)="deleteline()" style="width: 20%; align-items: center;text-align: center;"><i class="fa-solid fa-trash-can"></i></th>
+                <th (click)="deleteline(myForm)" style="width: 20%; align-items: center;text-align: center;"><i class="fa-solid fa-trash-can"></i></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
@@ -196,7 +216,7 @@
                 <td>{{ myForm.get('containertype')?.value }}</td>
                 <td>{{ myForm.get('containersize')?.value }}</td>
                 <td>
-                    <a style="display: block;width: 100%; height: 100%; text-align: center; line-height: 30px;" (click)="deleteline(); $event.stopPropagation()">
+                    <a style="display: block;width: 100%; height: 100%; text-align: center; line-height: 30px;" (click)="deleteline(myForm); $event.stopPropagation()">
                       <i style="color: red;" class="fa-solid fa-trash-can"></i>
                     </a>
                   </td>
@@ -216,7 +236,7 @@
 
             <ng-template pTemplate="footer"  style="display: flex;width: 100%;align-items: center;justify-content: flex-end;">
                <button (click)="Addintoentry($event)" type="button" >Add</button>
-               <button style="margin-left: 10px;" (click)="resetdetailentry()">Reset</button>
+               <button type="button" style="margin-left: 10px;" (click)="resetdetailentry($event)">Reset</button>
             </ng-template>
 
 
@@ -233,29 +253,33 @@
                         <label for="containertype" class="form-label">Container Type<span style="color: rgb(255, 0, 0);"> * </span></label>
                         <p-dropdown class="fullwidth form-control" formControlName="containertype" [options]="containertype"  placeholder="Container Type" ></p-dropdown>
 
-                        
+                        <small *ngIf="myForm.get('containertype')?.errors?.['required'] && myForm.get('containertype')?.touched " >
+                            *This field is required.
+                        </small>
                         
                     </div>
             
                     <div class="input-group" style="height: 90px;">
                         <label for="startamount" class="form-label">Start Amount <span style="color: red;">*</span></label>
                         <input pInputText type="number" class="form-control" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
-                        <small *ngIf="myForm.errors?.['startAmountGreaterThanOrEqualLimitAmount'] && myForm.get('startamount')?.touched" class="text-danger">
-                            Start amount must be less than limit amount
-                          </small>
-
-
-                    </div>
+                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched" class="text-danger">
+                          Start amount must be less than limit amount
+                        </small>
+                        <small *ngIf="myForm.get('startamount')?.hasError('required') && myForm.get('startamount')?.touched">
+                          *This field is required.
+                        </small>
+                      </div>
                     
-    
-                    <div class="input-group" style="height:90px;">
+                      <div class="input-group" style="height: 90px;">
                         <label for="limitamount" class="form-label">Limit Amount <span style="color: red;">*</span></label>
                         <input pInputText type="number" class="form-control" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
-                       
-                        <small *ngIf="myForm.errors?.['startAmountGreaterThanOrEqualLimitAmount'] && myForm.get('limitamount')?.touched" class="text-danger">
-                            Limit amount must be Higher than start amount
-                          </small>
-                    </div>
+                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched" class="text-danger">
+                          Limit amount must be higher than start amount
+                        </small>
+                        <small *ngIf="myForm.get('limitamount')?.hasError('required') && myForm.get('limitamount')?.touched">
+                          *This field is required.
+                        </small>
+                      </div>
     
                     
     
@@ -332,7 +356,7 @@
      
                     <div  style="max-height: calc(100vh - 110px)">
                       <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
-                        <p-table  id="demo" #demo styleClass="p-datatable-gridlines"
+                        <!-- <p-table  id="demo" #demo styleClass="p-datatable-gridlines"
                           [value]="budgetdetail" 
                           [paginator]="true"
                           [rows]="showval"
@@ -435,28 +459,90 @@
                           </ng-template>
                           <ng-template pTemplate="paginatorright" class="print">
                           </ng-template>
+                        </p-table> -->
+
+
+
+                        <p-table id="demo" #demo styleClass="p-datatable-gridlines"
+                        [value]="budgetdetail" 
+                        [paginator]="true"
+                        [rows]="showval"
+                        [loading]="animation"
+                        [totalRecords]="total_records"
+                        [showCurrentPageReport]="true"
+                        [tableStyle]="{ 'max-width': '100%', 'height': '100%', 'background-color': 'white' }" 
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[10, 15, 20]"
+                        [scrollable]="true"
+                        scrollHeight="700px"
+                        [globalFilterFields]="['startamount', 'limitamount', 'manhour', 'containertype', 'containersize']"
+                        [sortMode]="single"
+                        >
+
+                        <ng-template pTemplate="caption">
+                            <div class="" style="width: 100%; display: flex; align-items: center; justify-content: space-between; height: 30px;">
+                            <div class="cap">
+                                <div class="p-input-icon-left ginput">
+                                <span class="p-input-icon-right ml-auto">
+                                    <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                                    <i class="pi pi-search"></i>
+                                </span>
+                                </div>
+                                <i class="fa-solid fa-rotate" (click)="reloadbudget()" style="color: #1e7d23;" pTooltip="Reload" tooltipPosition="bottom"></i>
+                                <i class="fa-solid fa-filter" (click)="showfil()" pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
+                                <i class="fa-solid fa-eraser" *ngIf="showwwww" (click)="hidefil()" style="color: #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
+                                <i class="fa-regular fa-file-excel" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
+                            </div>
+                            </div>
+                        </ng-template>
+
+                        <ng-template pTemplate="header">
+                            <tr style="height: 40px;">
+                            <th style="width: 10%;" pSortableColumn="startamount">Start Amount<p-sortIcon field="startamount"></p-sortIcon></th>
+                            <th style="width: 10%;" pSortableColumn="limitamount">Limit Amount<p-sortIcon field="limitamount"></p-sortIcon></th>
+                            <th style="width: 10%;" pSortableColumn="manhour">Man Hour<p-sortIcon field="manhour"></p-sortIcon></th>
+                            <th style="width: 10%;" pSortableColumn="containertype">Container Type<p-sortIcon field="containertype"></p-sortIcon></th>
+                            <th style="width: 10%;" pSortableColumn="containersize">Container Size<p-sortIcon field="containersize"></p-sortIcon></th>
+                            </tr>
+                            <tr style="height: 5vh;" class="try" *ngIf="showwwww">
+                            <th style="width: 10%;"><p-columnFilter type="text" field="startamount"></p-columnFilter></th>
+                            <th style="width: 10%;"><p-columnFilter type="text" field="limitamount"></p-columnFilter></th>
+                            <th style="width: 10%;"><p-columnFilter type="text" field="manhour"></p-columnFilter></th>
+                            <th style="width: 10%;"><p-columnFilter type="text" field="containertype"></p-columnFilter></th>
+                            <th style="width: 10%;"><p-columnFilter type="text" field="containersize"></p-columnFilter></th>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-budgetdetail let-rowIndex="rowIndex">
+                            <tr class="tr-body" (click)="showindetailtable(budgetdetail, rowIndex)">
+                            <td style="display: none;">{{budgetdetail.budgetdetailid}}</td>
+                            <td>{{budgetdetail.startamount}}</td>
+                            <td>{{budgetdetail.limitamount}}</td>
+                            <td>{{budgetdetail.manhour}}</td>
+                            <td>{{budgetdetail.containertype}}</td>
+                            <td>{{budgetdetail.containersize}}</td>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                            <td colspan="11">No Budget Detail found.</td>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="paginatorleft"></ng-template>
+                        <ng-template pTemplate="paginatorright"></ng-template>
                         </p-table>
+
+
+
+
                       </div>
                     </div>
                   </div>
-
-                
-
-
-
                 </div>
-
-
             </div>
         </p-card>
-        
-
-           
-
-        
-       
-
-       
     </p-card>
 
 

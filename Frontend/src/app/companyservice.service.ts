@@ -252,6 +252,10 @@ LazyDataBudgetDetail(
   return this.http.get<BudgetDetail[]>(url);
 }
 
+getShortNameByid(id : number):Observable<Company[]>{
+  const val =  this.http.get<Company[]>(`${this.baseApiUrl}/api/Companydetails/shortnamebyid?id=${id}`);
+  return val;
+}
 
 
 getShortName():Observable<Company[]>{
@@ -260,8 +264,22 @@ getShortName():Observable<Company[]>{
 }
 
 GetCurrency():Observable<Currency[]>{
-  const val =  this.http.get<Currency[]>(`${this.baseApiUrl}/api/Companydetails/currency`);
-  return val;
+  const val =  (`${this.baseApiUrl}/api/Companydetails/currency`);
+  return this.http.get<Currency[]>(val);
+
+}
+
+
+deleteDetailLine(ids: number[]): Observable<string> { 
+  let idParams = '';
+  for (let i = 0; i < ids.length; i++) {
+    idParams += `ids=${ids[i]}`;
+    if (i !== ids.length - 1) {
+      idParams += '&';
+    }
+  }
+  const url = `${this.baseApiUrl}/api/Companydetails/delete?${idParams}`;
+  return this.http.delete(url, { responseType: 'text' }); 
 }
 
 

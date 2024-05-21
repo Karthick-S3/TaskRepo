@@ -202,8 +202,39 @@ namespace Backend.Controllers
     }
 
 
-  
+    [HttpGet("shortnamebyid")]
+    public async Task<IActionResult> getShortNamebyid([FromQuery] int id)
+    {
+        try
+        {
+            var company = await _companydetailsRepositry.getShortNamebyid(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return Ok(company);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
 
+
+  
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteBudgetDetailLine([FromQuery] int[] ids)
+        {
+            try
+            {
+                await _companydetailsRepositry.DeleteBudgetDetailLine(ids);
+                return Ok("Budget detail lines deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
     
 
@@ -344,6 +375,8 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
         var data = await _companydetailsRepositry.getShortName();
         return Ok(data);
     }
+
+    
 
      [HttpGet("currency")]
 

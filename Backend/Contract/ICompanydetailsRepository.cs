@@ -57,7 +57,11 @@ namespace Backend.Contract
 
         public Task<IEnumerable<Companydetails>> getShortName();
 
+        public Task<IEnumerable<Companydetails>> getShortNamebyid(int id);
+
         public Task<IEnumerable<Currencydetails>> GetCurrency();
+
+        public Task DeleteBudgetDetailLine(int[] ids);
 
 
 
