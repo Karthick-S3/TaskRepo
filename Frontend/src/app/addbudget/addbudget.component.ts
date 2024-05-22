@@ -43,7 +43,7 @@ alert("shows")
   showwwww: boolean = false;
   budgetdetail: BudgetDetail[] = [];
   showval:number = 10;
-  total_records: number = 0;
+  total_records: number = 5;
   sFiledValue: string[] | undefined;
   searchField: string[] | undefined;
   sortField:string | undefined='';
@@ -63,7 +63,7 @@ alert("shows")
     {
       startamount: '0',
       limit : '0',
-      manhour : '0',
+      manhour : '1',
       containerType : "none",
       containerSize : '0'
     }
@@ -94,8 +94,8 @@ alert("shows")
       accept: () => {
         this.myForm.get('startamount')?.setValue(0);
         this.myForm.get('limitamount')?.setValue(0);
-        this.myForm.get('manhour')?.setValue(0);
-        this.myForm.get('containersize')?.setValue(0);
+        this.myForm.get('manhour')?.setValue(1);
+        this.myForm.get('containersize')?.setValue(1);
         this.myForm.get('containertype')?.setValue('');
     
         this.detaillinerow = null;
@@ -135,8 +135,8 @@ alert("shows")
             this.budgetdetail.splice(index, 1);
             this.myForm.get('startamount')?.setValue(0);
             this.myForm.get('limitamount')?.setValue(0);
-            this.myForm.get('manhour')?.setValue(0);
-            this.myForm.get('containersize')?.setValue(0);
+            this.myForm.get('manhour')?.setValue(1);
+            this.myForm.get('containersize')?.setValue(1);
             this.myForm.get('containertype')?.setValue('');
             
           }
@@ -190,15 +190,15 @@ alert("shows")
    
   const isDuplicate = this.budgetdetail.some(item => {
        
-    return item.containertype === newItem.containertype  && item.startamount === newItem.startamount  && item.limitamount === newItem.limitamount; 
+    return ((item.containertype === newItem.containertype  && item.startamount == newItem.startamount) || (item.containertype === newItem.containertype && item.limitamount == newItem.limitamount) || item.containertype == newItem.containertype); 
 });
 
 
 
-if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamount == 0){
+if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamount == 0  || (newItem.startamount > newItem.limitamount)  || newItem.manhour == 0  || newItem.containersize == 0){
   this.confirmationService.confirm({
     target: event.target as EventTarget,
-    message: 'Please enter valid values in the fields to create a budget detailline.',
+    message: 'Please enter valid values in the fields to create a budget detailline.1',
       header: 'Invalid Input',
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
@@ -233,8 +233,8 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
   });
     this.myForm.get('startamount')?.setValue(0);
     this.myForm.get('limitamount')?.setValue(0);
-    this.myForm.get('manhour')?.setValue(0);
-    this.myForm.get('containersize')?.setValue(0);
+    this.myForm.get('manhour')?.setValue(1);
+    this.myForm.get('containersize')?.setValue(1);
     this.myForm.get('containertype')?.setValue('');
     } else {
       this.confirmationService.confirm({
@@ -265,9 +265,13 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
       // console.log(newItem);
     } else {
      
-        
+      this.myForm.get('startamount')?.setValue(0);
+      this.myForm.get('limitamount')?.setValue(0);
+      this.myForm.get('manhour')?.setValue(1);
+      this.myForm.get('containersize')?.setValue(1);
+      this.myForm.get('containertype')?.setValue('');
         this.budgetdetail.splice(this.detaillinerow, 1, newItem);
-    
+        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Detailline Updated Successfully' });
       
     }
     
@@ -470,11 +474,14 @@ ngOnInit(): void {
   // console.log(this.myForm);
 
   this.myForm.get('startamount')?.setValue(100);
+
+  setTimeout
 }
 
 
 addBudget( event : any){
  
+  console.log(this.myForm);
 
   if(this.myForm.valid){
     let updatedetail:any = [];
@@ -488,29 +495,10 @@ addBudget( event : any){
           insertdetail.push(data);
         }
     })
-  
-    if(this.badgeval == 'EDIT'){
-  
- 
-        this.companyService.updatebudgetlines(updatedetail).subscribe(value => {
-          // console.log(value);
-        })
-        
-        this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
-          // console.log(value);
-        })
 
-        if(this.deletedetail){
-          this.companyService.deleteDetailLine(this.deletedetail).subscribe(value => {
-            console.log(value);
-          })
-        }
-        
+    if(this.badgeval == 'NEW'){
 
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Updated Successfully !' });
-  
-      
-    }else{
+
       if(this.myForm.get('budgetcurrencyid')?.value == this.myForm.get('currencyid')?.value){
         const budgetActiveValue = this.myForm.get('budgetactive')?.value;
         const budgetActive = budgetActiveValue === null ? false : budgetActiveValue;
@@ -536,14 +524,12 @@ addBudget( event : any){
             
         })
   
-        this.companyService.insertBudgetLines(insertdetail).subscribe( val => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Created Successfully !' });
-        })
+        
 
         });
         
         
-        
+        this.badgeval = 'EDIT';
         
       }else{
       
@@ -564,11 +550,46 @@ addBudget( event : any){
       this.myForm.get('budgetcurrencyid')?.markAsTouched;
       this.myForm.get('budgetcurrencyid')?.setValue('');
       }
+
+      
+
+      
+    }
+  
+    if(this.badgeval == 'EDIT'){
+  
+ 
+      if(updatedetail.length>0){
+        this.companyService.updatebudgetlines(updatedetail).subscribe(value => {
+          // console.log(value);
+        })
+      }
+       
+        
+        if(insertdetail.length >0){
+          this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
+            // console.log(value);
+          })
+        }
+        
+
+        if(this.deletedetail.length>0){
+          this.companyService.deleteDetailLine(this.deletedetail).subscribe(value => {
+            console.log(value);
+          })
+
+          this.deletedetail = [];
+        }
+        
+
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Updated Successfully !' });
+  
+      
     }
   }else{
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Please enter valid values in the fields to create a budget detail.',
+      message: 'Please enter valid values in the fields to create a budget detail2.',
       header: 'Invalid Input',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
@@ -718,6 +739,43 @@ onCityChange(event : any){
 
 
 
+onShortnameChange(event:any){
+  this.companyService.getById(event.value).subscribe(company => {
+      
+    this.myForm.patchValue(company);
+    this.budgetid = this.myForm.get('budgetid')?.value;
+    Object.keys(company).forEach(controlName => {
+      if (this.myForm.get(controlName)) {
+        const disableFields = ['budgetactive', 'description', 'startamount', 'limitamount','manhour','containertype','containersize'];
+        if (!disableFields.includes(controlName) ) {
+          this.myForm.get(controlName)?.disable();
+        }
+
+      }
+    });
+    const event = {
+      first : 0,
+      rows: 10,
+    }
+
+    this.LazyDataBudget(event);
+    
+    this.showentrrytable = true;
+    this.addReadOnlyStyles();
+    this.animation = false;
+    if(this.myForm.get('budgetid')?.value != 0){
+      this.badgeval = 'EDIT';
+      this.myForm.get('budgetcurrencyid')?.disable();
+    }else{
+      this.badgeval = 'NEW';
+      this.myForm.get('budgetcurrencyid')?.enable();
+      this.budgetdetail = [];
+    }
+  })
+}
+
+
+
 getStatesByIds(selectedCountryIds: number[]): void {
   this.companyService.getStatesByIds(selectedCountryIds)
     .subscribe(states => {
@@ -764,16 +822,12 @@ throw new Error('Method not implemented.');
 }
 showfil(){
   this.showwwww = !this.showwwww;
-  this.budgetdetail = [];
   
 }
 hidefil(){
   alert("Working")
   this.showwwww = false;
-  this.budgetdetail = [];
- 
 
-  this.LazyDataBudget(event);
 }
 BackToList(event: Event) {
   if(this.myForm.touched){
@@ -811,17 +865,25 @@ initializeForm(): void {
       Validators.pattern('[a-zA-Z0-9\\- ]*')
     ]],
     currency: ['',Validators.required],
-    startamount: ['0', [Validators.required, Validators.pattern('[0-9]*')]],
-      limitamount: ['0', [Validators.required, Validators.pattern('[0-9]*')]],
+    startamount: [0, [
+      Validators.pattern('^[0-9]*$'),
+  ]],
+  limitamount: [0, [
+      Validators.pattern('^[0-9]*$'),
+
+  ]],
     active: [''],
     createdate: [''],
-    manhour:[0, [
-      Validators.pattern('[0-9]*')
-    ]],
+    manhour: [1, [
+      Validators.pattern('^[0-9]*$'),
+      Validators.max(100)
+  ]],
     containertype:[''],
-    containersize:['0', [
-      Validators.pattern('[0-9]*')
-    ]],
+    containersize: [1, [
+      Validators.pattern('^[0-9]*$'),
+      Validators.min(1),
+      Validators.max(40)
+  ]],
     companyid:['',Validators.required],
     companyname:['',Validators.required],
     companyshortname:['',Validators.required],
@@ -847,15 +909,18 @@ initializeForm(): void {
 
 
 
+
   
 }
 export function startAmountLessThanLimitAmountValidator(): ValidatorFn {
   return (formGroup: AbstractControl): { [key: string]: boolean } | null => {
+
     const startAmount = formGroup.get('startamount')?.value;
     const limitAmount = formGroup.get('limitamount')?.value;
+    const containerType = formGroup.get('containertype')?.value;
 
-    if (  startAmount !== null && limitAmount !== null && (startAmount >= limitAmount && startAmount !=0  && limitAmount != 0)) {
-      return { 'startAmountGreaterThanOrEqualLimitAmount': true };
+    if ( startAmount >= limitAmount && startAmount != '0'  && limitAmount !='0') {
+        return { 'startAmountGreaterThanOrEqualLimitAmount': true };
     }
     return null;
   };

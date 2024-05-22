@@ -50,13 +50,13 @@
 
         <div class="body">
             <div class="rowss">
-                <div class="input-group" style="height: 90px;">
+                <div class="input-group" style="height: 80px;">
                     <label for="companyname" class="form-label">Budget Code</label>
                     <input style="cursor: not-allowed; background-color: #f5f5f5; color: #808080;"  pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Budegt code" autocomplete="off" readonly />
                 </div>
                 
 
-                <div class="input-group" style="height:90px;">
+                <div class="input-group" style="height:80px;">
                     <label for="companyshortname" class="form-label">Description<span style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control" id="description" formControlName="description" placeholder="Description" autocomplete="off" />
 
@@ -73,9 +73,9 @@
                     
                 </div>
 
-                <div class="input-group" style="height:90px;">
+                <div class="input-group" style="height:80px;">
                     <label for="currencyid" class="form-label">Currency<span style="color: red;"> * </span></label>
-                    <p-dropdown class="fullwidth fullform-control readonly-field" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
+                    <p-dropdown  class="fullwidth fullform-control readonly-field" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
 
                     <small *ngIf="myForm.get('budgetcurrencyid')?.touched  && myForm.get('budgetcurrencyid')?.errors?.['required'] " >
                         *This field is required.
@@ -86,7 +86,7 @@
             
 
 
-                <div class="input-group" style="height:90px;">
+                <div class="input-group" style="height:80px;">
                     <label for="active" class="form-label">Active</label>
                     <p-inputSwitch class="form-control" type="" formControlName="budgetactive" ></p-inputSwitch>
                     
@@ -146,7 +146,7 @@
                 <div class="input-group" style="height: 90px;">
                     
                     <label for="cid" class="form-label">Short Name <span style="color: red;"> * </span></label>
-                    <p-dropdown class="fullwidth form-control readonly-field" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
+                    <p-dropdown  (onChange)="onShortnameChange($event)" class="fullwidth form-control readonly-field" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
                     
                     <small *ngIf="myForm.get('companyid')?.errors?.['required'] && myForm.get('companyid')?.touched " >
                         *This field is required.
@@ -243,8 +243,13 @@
         </p-card>
 
         <p-dialog  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-            <ng-template pTemplate="header">
+            <ng-template pTemplate="header" class="detailline">
                 <h4 style="color: white;">Detail line Entry</h4>
+                <div class="btss">
+                    <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="true"><i class="fa-solid fa-floppy-disk" style="color: green;margin-right: 5px;"></i>Save</button>     
+                    <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark" style="color: red;margin-right: 5px;"></i>Close</button>     
+                </div>
+                
               </ng-template>
 
               <ng-template pTemplate="body" style="height: 30vh;">
@@ -261,25 +266,23 @@
             
                     <div class="input-group" style="height: 90px;">
                         <label for="startamount" class="form-label">Start Amount <span style="color: red;">*</span></label>
-                        <input pInputText type="number" class="form-control" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
+                        <input pInputText type="text" class="form-control" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
                         <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched" class="text-danger">
-                          Start amount must be less than limit amount
+                            Start amount must be less than limit amount
                         </small>
-                        <small *ngIf="myForm.get('startamount')?.hasError('required') && myForm.get('startamount')?.touched">
-                          *This field is required.
-                        </small>
-                      </div>
+                       
+                    </div>
                     
-                      <div class="input-group" style="height: 90px;">
+                    <div class="input-group" style="height: 90px;">
                         <label for="limitamount" class="form-label">Limit Amount <span style="color: red;">*</span></label>
-                        <input pInputText type="number" class="form-control" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
+                        <input pInputText type="text" class="form-control" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
                         <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched" class="text-danger">
-                          Limit amount must be higher than start amount
+                            Limit amount must be higher than start amount
                         </small>
-                        <small *ngIf="myForm.get('limitamount')?.hasError('required') && myForm.get('limitamount')?.touched">
-                          *This field is required.
-                        </small>
-                      </div>
+                       
+                    </div>
+                    
+                    
     
                     
     
@@ -293,30 +296,35 @@
                 
                 <div class="input-group" style="height:90px;">
                     <label for="containersize" class="form-label">Container Size <span style="color: red;">*</span></label>
-                    <input pInputText type="number" class="form-control" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
-                    <!-- <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
-                        *it allows only Alphabet,Numeric And Special Character '-'
+                    <input pInputText type="text" class="form-control" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
+                    <small *ngIf="myForm.get('containersize')?.errors?.['min']">
+                        *Value should be at least 1
                     </small>
-                    <small *ngIf="myForm.get('companyshortname')?.errors?.['maxlength']" >
-                        *Short name should lesser than 10
-                    </small> -->
+                    <small *ngIf="myForm.get('containersize')?.errors?.['max']">
+                        *Value should not exceed 40
+                    </small>
+                    <small *ngIf="myForm.get('containersize')?.errors?.['pattern'] && myForm.get('containersize')?.touched">
+                        *Enter valid number
+                    </small>
                 </div>
+                
                
                 
                 <div class="input-group" style="height:90px;">
                     <label for="manhour" class="form-label">Man Hour <span style="color: red;">*</span></label>
-                    <input pInputText type="number" class="form-control" id="manhour" formControlName="manhour"  placeholder="Man Hour" autocomplete="off"  />
-                    <!-- <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
-                        *This field is required.
+                    <input pInputText type="text" class="form-control" id="manhour" formControlName="manhour" placeholder="Man Hour" autocomplete="off" />
+                    <small *ngIf="myForm.get('manhour')?.errors?.['min'] && myForm.get('manhour')?.touched ">
+                        *Value should be at least 1
                     </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
-                        *Enter Valid Number & it allow only Numeric Value
+                    <small *ngIf="myForm.get('manhour')?.errors?.['max'] && myForm.get('manhour')?.touched">
+                        *Value should not exceed 100
                     </small>
-                    <small *ngIf="myForm.get('contact')?.errors?.['maxlength']">
-                        *Length should be 10
-                    </small> -->
+                    <small *ngIf="myForm.get('manhour')?.errors?.['pattern'] && myForm.get('manhour')?.touched">
+                        *Enter valid number
+                    </small>
                     
                 </div>
+                
 
                 
 
@@ -334,10 +342,9 @@
                
           
             
-            <ng-template pTemplate="footer" >
+            <!-- <ng-template pTemplate="footer" >
                 <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="true">Save</button>
-                <!-- <p-button icon="pi pi-check" (click)="visible = false" label="Save" pAutoFocus [autofocus]="true"></p-button> -->
-            </ng-template>
+            </ng-template> -->
         
         </p-dialog>
 
@@ -345,17 +352,17 @@
 
         <p-card>
             <ng-template pTemplate="header">
-                <h4 style="font-weight: 600;">
+                <h4 style="font-weight: 600;font-size: 16px">
                     Budget Detail View
                 </h4>
             </ng-template>
 
-            <div class="body2" style="width: 100%;height: 100%;">
-                <div class="body" style="height:100%;width: 100%;" [class.hide]="showAddBudgetdetail" >
+           
+                <div class="body2" style="height:100%;width: 100%;" [class.hide]="showAddBudgetdetail" >
                 <div class="container-fluid">
      
                     <div  style="max-height: calc(100vh - 110px)">
-                      <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
+                      <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131);">
                         <!-- <p-table  id="demo" #demo styleClass="p-datatable-gridlines"
                           [value]="budgetdetail" 
                           [paginator]="true"
@@ -472,7 +479,7 @@
                         [showCurrentPageReport]="true"
                         [tableStyle]="{ 'max-width': '100%', 'height': '100%', 'background-color': 'white' }" 
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="[10, 15, 20]"
+                        [rowsPerPageOptions]="[5, 10, 15]"
                         [scrollable]="true"
                         scrollHeight="700px"
                         [globalFilterFields]="['startamount', 'limitamount', 'manhour', 'containertype', 'containersize']"
@@ -541,7 +548,7 @@
                     </div>
                   </div>
                 </div>
-            </div>
+
         </p-card>
     </p-card>
 

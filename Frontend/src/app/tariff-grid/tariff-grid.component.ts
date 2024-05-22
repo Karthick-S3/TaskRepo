@@ -4,7 +4,7 @@ import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { CompanyserviceService } from '../companyservice.service';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
-import { Console } from 'console';
+
 
 
 @Component({
