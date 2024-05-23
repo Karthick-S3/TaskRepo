@@ -9,6 +9,10 @@
             
             <div class="bts">
                 <p-toast></p-toast>
+                <button type="button" (click)="AttachmentPop()" pTooltip="Back to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-paperclip" style="color: red;"></i>
+                    Attachments
+                </button>
                 <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
                     Back To List
@@ -231,3 +235,35 @@
     <img src="../assets/idepo container.svg" alt="">
 </div>
 
+
+<p-dialog  *ngIf="visible" [visible]="true" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <ng-template pTemplate="header" class="detailline" style="display: flex;align-items: center;justify-content: space-between;background-color: red;">
+        <h4 style="color: white;">Attachment(s)</h4>
+        <div class="btss">   
+            <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark" style="color: red;margin-right: 5px;"></i>Close</button>     
+        </div>
+        
+      </ng-template>
+
+      <ng-template pTemplate="body" style="height: 30vh;">
+        <div>
+            <input type="file" multiple="multiple" id="fileInput" class="file-input"  (input)="onFileSelected($event)">
+            <button type="button"  (click)="triggerFileInput()" id="customButton" title="Add Files" class="btn">
+              <i class="fa fa-fw fa-plus"></i> Add Files
+            </button>
+          </div>
+          
+          
+            
+        
+        <p>Accepted formats are ".jpg, .png, .jpeg, .xls, .xlsx, .csv, .doc, .ods, .docx, .pdf, .gif, .txt, .zip, .msg, .jfif"</p>
+        <p>Max File Size: <strong>15 MB</strong>; Max length of File Name:<strong>50 characters</strong>;</p>
+
+      </ng-template>
+
+       
+  
+    
+ 
+
+</p-dialog>

@@ -10,6 +10,8 @@ import { response } from 'express';
 import { Company } from '../Interfaces/company';
 import { CompanydetailsComponent } from '../companydetails/companydetails.component';
 import { Currency } from '../Interfaces/currency';
+// import { FileUploadService } from './file-upload.service';
+
 
 @Component({
   selector: 'app-add-details',
@@ -28,6 +30,7 @@ export class AddDetailsComponent implements OnInit {
   animation: boolean = false;
   newcompany : Company[] = [];
   badgeval : string = '';
+  visible:boolean = false;
 
 
   @Input() id= 0;
@@ -42,7 +45,8 @@ export class AddDetailsComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private companydetail:CompanydetailsComponent
+    private companydetail:CompanydetailsComponent,
+    // private fileUploadService: FileUploadService
   ) {}
   GetFirst(event : any){
     this.animation = true;
@@ -421,6 +425,7 @@ BackToList(event: Event) {
         this.myForm.get('containersize')?.setValue('');
         this.myForm.get('budgetactive')?.setValue('');
         this.companyService.updateCompany(this.myForm.value).subscribe({
+         
           next : (company) => {
             console.log("updated succesfully");
           },
@@ -470,4 +475,71 @@ BackToList(event: Event) {
       });
   }
 
+  AttachmentPop(){
+    this.visible = true;
+  }
+  triggerFileInput() {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    fileInput.click(); 
+
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const formData = new FormData();
+      let Flag:boolean = false;
+      for (let i = 0; i < input.files.length; i++) {
+        if(input.files[i].name.length > 50){
+          this.showFileNameExceedsLimitWarning();
+          input.innerHTML = '';
+          const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+          fileInput.click(); 
+          break;
+        }else{
+          formData.append('files', input.files[i]);
+        }
+       
+      }
+      
+    }
+    console.log(input.files);
+  }
+  
+  uploadFiles(formData: FormData) {
+    this.companyService.uploadFiles(formData, this.id)
+    .subscribe((response: any) => {
+      console.log('Response:', response);
+      if (response === 'Files uploaded successfully.') {
+        console.log('Files uploaded successfully');
+      } else {
+        console.error('Unexpected response:', response);
+      }
+    }, (error: any) => {
+      console.error('Error uploading files:', error);
+
+    });
+    
+  }
+
+  showFileNameExceedsLimitWarning() {
+  this.confirmationService.confirm({
+    message: 'File Name should be lesser than or equal to 50 characters.',
+    header: 'Invalid File Names',
+    icon: 'pi pi-exclamation-triangle',
+    acceptIcon: "none",
+    rejectIcon: "none",
+    acceptButtonStyleClass: 'p-button-danger',
+    acceptLabel: 'Ok',
+    rejectVisible: false,
+    accept: () => {
+      // Handle accept action if needed
+    }
+  });
 }
+  
+  
+
+}
+
+

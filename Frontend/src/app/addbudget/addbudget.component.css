@@ -354,7 +354,7 @@
   .footerbtn{
     
         padding: 6px 10px ;
-        border-radius: 10px;
+        border-radius: 5px;
         border: none;
         cursor: pointer;
         transition: 0.3s all;
@@ -371,8 +371,7 @@
         
   }
   .footerbtn:hover{
-    background-color: black;
-    color: white;
+    outline: 1px solid white;
 }
 
 

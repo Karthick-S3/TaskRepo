@@ -53,13 +53,17 @@
               "target": "Package",
               "version": "[2.0.3, )"
             },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.1, )"
             },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
-              "version": "[3.21.130, )"
+              "version": "[23.4.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -75,6 +75,8 @@ namespace Backend.Contract
         public  Task<int> InsertBudgetDetail(Budgetdetails budgetDetails);
 
 
+        public Task<int> uploadfiles(filesdetails filesDetails);
+
 
 
    

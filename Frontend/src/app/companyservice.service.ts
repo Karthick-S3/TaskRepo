@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, retry, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Company } from './Interfaces/company';
 import { Country } from './Interfaces/country';
 import { State } from './Interfaces/state';
@@ -8,6 +8,7 @@ import { City } from './Interfaces/city';
 import { Budget } from './Interfaces/budget';
 import { Currency } from './Interfaces/currency';
 import { BudgetDetail } from './Interfaces/budgetdetail';
+
 
 
 @Injectable({
@@ -280,6 +281,11 @@ deleteDetailLine(ids: number[]): Observable<string> {
   }
   const url = `${this.baseApiUrl}/api/Companydetails/delete?${idParams}`;
   return this.http.delete(url, { responseType: 'text' }); 
+}
+
+uploadFiles(formData: FormData, companyId: number): Observable<any> {
+  formData.append('companyId', companyId.toString());
+  return this.http.post<any>(`${this.baseApiUrl}/api/Companydetails/uploadfiles?companyId=${companyId}`, formData);
 }
 
 

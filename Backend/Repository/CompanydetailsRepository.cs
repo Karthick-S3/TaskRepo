@@ -37,10 +37,11 @@ namespace Backend.Repository
 
         public CompanydetailsRepository( DapperContext context)
         {
-            _context = context;
+            // _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-
+ 
 
 
 
@@ -694,6 +695,29 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                 return result;
             }
         }
+
+            public async Task<int> uploadfiles(filesdetails filesDetails)
+            {
+                string sql = @"INSERT INTO filesdetail (originalname, storedname, filesize, uploaddate, companyid) 
+                            VALUES (:originalname, :storedname, :filesize, :uploaddate, :companyid) 
+                            RETURNING fid INTO :Id";
+
+                using (var connection = _context.CreateConnection())
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add(":originalname", filesDetails.originalname, DbType.String, ParameterDirection.Input);
+                    parameters.Add(":storedname", filesDetails.storedname, DbType.String, ParameterDirection.Input);
+                    parameters.Add(":filesize", filesDetails.filesize, DbType.Int64, ParameterDirection.Input);
+                    parameters.Add(":uploaddate", filesDetails.uploaddate, DbType.Date, ParameterDirection.Input);
+                    parameters.Add(":companyid", filesDetails.companyid, DbType.Int32, ParameterDirection.Input);
+                    parameters.Add(":Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                    await connection.ExecuteAsync(sql, parameters);
+
+                    return parameters.Get<int>(":Id");
+                }
+            }
+
 
         
     }

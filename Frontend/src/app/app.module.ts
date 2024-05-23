@@ -27,6 +27,7 @@ import { TariffGridComponent } from './tariff-grid/tariff-grid.component';
 import { AddbudgetComponent } from './addbudget/addbudget.component';
 import { DialogModule } from 'primeng/dialog';
 import { TreeModule } from 'primeng/tree';
+import { NgxUploaderModule } from 'ngx-uploader';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { TreeModule } from 'primeng/tree';
     KeyFilterModule,
     OverlayPanelModule,
     DialogModule,
-    TreeModule
+    TreeModule,
+    NgxUploaderModule
    
   ],
   providers: [

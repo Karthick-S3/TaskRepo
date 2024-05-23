@@ -14,11 +14,19 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class CompanydetailsController : ControllerBase
     {
-        private readonly ICompanydetailsRepository  _companydetailsRepositry;
 
-        public CompanydetailsController (ICompanydetailsRepository companydetailsRepository){
+
+        private readonly ICompanydetailsRepository  _companydetailsRepositry;
+       private readonly string _uploadFolder;
+
+        public CompanydetailsController (ICompanydetailsRepository companydetailsRepository,string uploadFolder){
             _companydetailsRepositry = companydetailsRepository;
+            // _uploadFolder = uploadFolder;
+
+             _uploadFolder = uploadFolder ?? throw new ArgumentNullException(nameof(uploadFolder));
         }
+
+ 
 
 
        
@@ -384,6 +392,41 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
         var data = await _companydetailsRepositry.GetCurrency();
         return Ok(data);
     }
+
+
+        [HttpPost("uploadfiles")]
+        public async Task<IActionResult> uploadfiles(IFormFileCollection files, [FromQuery] int companyId)
+        {
+            if (files == null || files.Count == 0)
+            {
+                return BadRequest("No files uploaded."+files+"company id"+companyId);
+            }
+
+            foreach (var file in files)
+            {
+                var storedName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                var filePath = Path.Combine(_uploadFolder, storedName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                var filesDetails = new filesdetails
+                {
+                    originalname = file.FileName,
+                    storedname = storedName,
+                    filesize = file.Length,
+                    uploaddate = DateTime.Now,
+                    companyid = companyId
+                };
+
+                int newId = await _companydetailsRepositry.uploadfiles(filesDetails);
+            }
+
+            return Ok("Files uploaded successfully.");
+        }
+
 
       
 
