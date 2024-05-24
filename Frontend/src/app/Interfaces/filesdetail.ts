@@ -4,5 +4,6 @@ export interface Filedetail {
     storedname :string,
     filesize: number,
     uploaddate :Date,
-    companyid:number
+    companyid:number,
+    message: string;
 }

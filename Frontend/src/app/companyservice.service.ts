@@ -8,6 +8,7 @@ import { City } from './Interfaces/city';
 import { Budget } from './Interfaces/budget';
 import { Currency } from './Interfaces/currency';
 import { BudgetDetail } from './Interfaces/budgetdetail';
+import { Filedetail } from './Interfaces/filesdetail';
 
 
 
@@ -283,9 +284,9 @@ deleteDetailLine(ids: number[]): Observable<string> {
   return this.http.delete(url, { responseType: 'text' }); 
 }
 
-uploadFiles(formData: FormData, companyId: number): Observable<any> {
+uploadFiles(formData: FormData, companyId: number): Observable<Filedetail> {
   formData.append('companyId', companyId.toString());
-  return this.http.post<any>(`${this.baseApiUrl}/api/Companydetails/uploadfiles?companyId=${companyId}`, formData);
+  return this.http.post<Filedetail>(`${this.baseApiUrl}/api/Companydetails/uploadfiles?companyId=${companyId}`, formData);
 }
 
 

@@ -46,7 +46,7 @@ body{
     background: #0B3A77;
     font-size: 13px;
     transition: box-shadow 0.2s;
-   width: 100%;
+   /* width: 100%; */
 }
 
 
@@ -241,7 +241,7 @@ p-dropdown .p-dropdown-label.p-placeholder{
         /* background: red; */
       }
       .p-dialog-draggable .p-dialog-header .btss{
-        margin-left:1045px ;
+        margin-left:900px ;
         display: flex;
 
         button{
@@ -281,4 +281,3 @@ p-dropdown .p-dropdown-label.p-placeholder{
         line-height: 13px;
     }
 
-   

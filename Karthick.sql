@@ -871,7 +871,7 @@ VALUES ('test1', 'test2', 122323, SYSDATE, 3)
 RETURNING fid INTO :Id;
 
 
-drop table filesdetail
+truncate table filesdetail
 
 
 select * from filesdetail

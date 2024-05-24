@@ -10,7 +10,8 @@ import { response } from 'express';
 import { Company } from '../Interfaces/company';
 import { CompanydetailsComponent } from '../companydetails/companydetails.component';
 import { Currency } from '../Interfaces/currency';
-// import { FileUploadService } from './file-upload.service';
+import { Filedetail } from '../Interfaces/filesdetail';
+
 
 
 @Component({
@@ -474,6 +475,8 @@ BackToList(event: Event) {
         this.citys = citys;
       });
   }
+   
+
 
   AttachmentPop(){
     this.visible = true;
@@ -481,62 +484,173 @@ BackToList(event: Event) {
   triggerFileInput() {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     fileInput.click(); 
-
   }
+  
+attachmentdata: any[] = [];
+attachmentlength: number = 0;
+attlen: boolean = false;
+attachavailable: boolean = false;
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const formData = new FormData();
-      let Flag:boolean = false;
-      for (let i = 0; i < input.files.length; i++) {
-        if(input.files[i].name.length > 50){
-          this.showFileNameExceedsLimitWarning();
-          input.innerHTML = '';
-          const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-          fileInput.click(); 
-          break;
-        }else{
-          formData.append('files', input.files[i]);
-        }
-       
+preview(product: any) {
+    const url = product.file ? URL.createObjectURL(product.file) : product.thumbnail;
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = product.name;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+openimg(product: any) {
+    const url = product.file ? URL.createObjectURL(product.file) : product.thumbnail;
+    window.open(url, '_blank');
+}
+
+deleteattachment(index: number) {
+  this.confirmationService.confirm({
+    message: 'Are you sure to delete the file? Click Yes to Confirm and No to ignore requested action.',
+    header: 'Confirmation',
+    icon: 'pi pi-exclamation-triangle',
+    acceptIcon:"none",
+    rejectIcon:"none",
+    acceptButtonStyleClass:"p-button-success",
+    rejectButtonStyleClass:"p-button-danger",
+    accept: () => {
+      if(this.attachmentdata.length==1){
+        this.attachavailable = false;
+        this.attlen= false;
       }
-      
+      this.attachmentdata.splice(index, 1);
+      this.attachmentlength = this.attachmentdata.length;
+    },
+    reject: () => {
+        
     }
-    console.log(input.files);
+});
+ 
+}
+
+onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+
+  if (input.files && input.files.length > 0) {
+      const formData = new FormData();
+      const acceptedformat = ['jpg', 'png', 'jpeg', 'xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
+      let Flag = true;
+
+      for (let i = 0; i < input.files.length; i++) {
+          const file = input.files[i];
+          if (file.name.length > 50) {
+              this.showFileNameExceedsLimitWarning();
+              input.value = '';
+              Flag = false;
+              continue;
+          } else if (Math.round(file.size / 1048576) > 15) {
+              input.value = '';
+              Flag = false;
+              this.showFileSizeExceedsLimitWarning();
+              continue;
+          } else if (file.type) {
+              const fileExtension = file.name.split('.').pop()?.toLowerCase();
+              if (fileExtension && !acceptedformat.includes(fileExtension)) {
+                  this.showFileTypeExceedsLimitWarning();
+                  Flag = false;
+                  input.value = '';
+                  continue;
+              }
+          }
+
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+              this.attachmentdata.push({
+                  file,
+                  name: file.name,
+                  size: file.size,
+                  type: file.type,
+                  thumbnail: e.target.result
+              });
+          };
+
+          reader.readAsDataURL(file);
+          formData.append('files', file);
+      }
+
+      if (Flag) {
+          this.attachmentlength = this.attachmentdata.length;
+          this.attlen = true;
+          this.attachavailable = true;
+          console.log(formData);
+      }
   }
+}
+
   
   uploadFiles(formData: FormData) {
     this.companyService.uploadFiles(formData, this.id)
-    .subscribe((response: any) => {
-      console.log('Response:', response);
-      if (response === 'Files uploaded successfully.') {
-        console.log('Files uploaded successfully');
-      } else {
-        console.error('Unexpected response:', response);
+      .subscribe({
+        next: (response: Filedetail ) => {
+          console.log('Response:', response);
+          if (response.message === 'Files uploaded successfully.') {
+            console.log('Files uploaded successfully');
+          } else {
+            console.error('Unexpected response:', response);
+          }
+        },
+        error: (error: any) => {
+          console.error('Error uploading files:', error);
+        }
+      });
+  }
+  
+  showFileNameExceedsLimitWarning() {
+    this.confirmationService.confirm({
+      message: 'File Name should be lesser than or equal to 50 characters.',
+      header: 'Invalid File Name',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      acceptButtonStyleClass: 'p-button-danger',
+      acceptLabel: 'Ok',
+      rejectVisible: false,
+      accept: () => {
+        // Handle accept action if needed
       }
-    }, (error: any) => {
-      console.error('Error uploading files:', error);
-
     });
-    
   }
 
-  showFileNameExceedsLimitWarning() {
-  this.confirmationService.confirm({
-    message: 'File Name should be lesser than or equal to 50 characters.',
-    header: 'Invalid File Names',
-    icon: 'pi pi-exclamation-triangle',
-    acceptIcon: "none",
-    rejectIcon: "none",
-    acceptButtonStyleClass: 'p-button-danger',
-    acceptLabel: 'Ok',
-    rejectVisible: false,
-    accept: () => {
-      // Handle accept action if needed
-    }
-  });
-}
+  showFileSizeExceedsLimitWarning() {
+    this.confirmationService.confirm({
+      message: 'File Size should be lesser than or equal to 15 MB.',
+      header: 'Invalid File Size',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      acceptButtonStyleClass: 'p-button-danger',
+      acceptLabel: 'Ok',
+      rejectVisible: false,
+      accept: () => {
+        // Handle accept action if needed
+      }
+    });
+  }
+  
+  showFileTypeExceedsLimitWarning() {
+  
+    this.confirmationService.confirm({
+      message: 'Incorrect File Format. Please upload the files with recommended formats.',
+      header: 'Invalid File Format',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      acceptButtonStyleClass: 'p-button-danger',
+      acceptLabel: 'Ok',
+      rejectVisible: false,
+
+      accept: () => {
+      
+      }
+    });
+  }
+  
   
   
 

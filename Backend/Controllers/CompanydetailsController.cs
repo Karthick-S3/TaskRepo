@@ -395,7 +395,7 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
 
 
         [HttpPost("uploadfiles")]
-        public async Task<IActionResult> uploadfiles(IFormFileCollection files, [FromQuery] int companyId)
+        public async Task<IActionResult> uploadfiles([FromForm] List<IFormFile> files, [FromQuery] int companyId)
         {
             if (files == null || files.Count == 0)
             {
@@ -424,7 +424,7 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
                 int newId = await _companydetailsRepositry.uploadfiles(filesDetails);
             }
 
-            return Ok("Files uploaded successfully.");
+              return Ok(new { message = "Files uploaded successfully." });
         }
 
 
