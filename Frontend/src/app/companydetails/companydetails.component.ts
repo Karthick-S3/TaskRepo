@@ -48,17 +48,23 @@ export class CompanydetailsComponent implements OnInit {
   sortField:string | undefined='';
   sortOrder:boolean =false;
   globalFilter:string | undefined='';
-  
+  selectedRowIndex: number | null = null;
+  expand:boolean = true;
 
 
 
-  
+
+  expandTable(){
+  this.expand = !this.expand;
+  }
 
  
 
   routebyid(company:any,rowIndex:number){
     this.Companyid = company.companyid
+
     this.rowIndex = rowIndex;
+    this.selectedRowIndex = rowIndex;
     this.Showadd = true;
 
     this.companyService.lazyData2(0 || 0, this.total_record || 10, this.sortField, this.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds, this.globalFilter)
@@ -71,6 +77,7 @@ export class CompanydetailsComponent implements OnInit {
     if(this.rowIndex==0){
       return undefined;
     }else{
+     this.selectedRowIndex=this.rowIndex-1;
       return this.Tempcompany[--this.rowIndex].companyid;
     }
     
@@ -80,7 +87,9 @@ export class CompanydetailsComponent implements OnInit {
     if(this.rowIndex==this.Tempcompany.length-1){
       return undefined;
     }else{
+      this.selectedRowIndex=this.rowIndex+1;
       return this.Tempcompany[++this.rowIndex]?.companyid;
+
     }
   }
   
@@ -90,6 +99,7 @@ export class CompanydetailsComponent implements OnInit {
       return undefined;
     }else{
       this.rowIndex = this.Tempcompany.length-1;
+      this.selectedRowIndex = this.rowIndex;
       return this.Tempcompany[this.rowIndex].companyid;
     }
     
@@ -99,6 +109,7 @@ export class CompanydetailsComponent implements OnInit {
       return undefined;
     }else{
       this.rowIndex = 0;
+      this.selectedRowIndex = 0;
       return this.Tempcompany[0].companyid;
     }
     
@@ -180,6 +191,7 @@ export class CompanydetailsComponent implements OnInit {
     reload(){
       this.messageService.add({ severity: 'success', summary: 'Reload', detail: 'Company Details Reloaded' });
     this.showwwww = false;
+    this.selectedRowIndex =null;
     this.demoTable.reset();
     if (this.filterInput) {
       this.filterInput.nativeElement.value = ''; 
@@ -413,6 +425,7 @@ export class CompanydetailsComponent implements OnInit {
     if (this.filterInput) {
       this.filterInput.nativeElement.value = ''; 
     }
+    this.selectedRowIndex = null;
     this.loadCountry();
     this.loadState();
     this.loadCity();

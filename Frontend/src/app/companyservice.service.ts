@@ -289,6 +289,10 @@ uploadFiles(formData: FormData, companyId: number): Observable<Filedetail> {
   return this.http.post<Filedetail>(`${this.baseApiUrl}/api/Companydetails/uploadfiles?companyId=${companyId}`, formData);
 }
 
+getFilesByCompanyId(companyId: number): Observable<Filedetail[]> {
+  return this.http.get<Filedetail[]>(`${this.baseApiUrl}/api/Companydetails/getfilesbycompanyid?companyId=${companyId}`);
+}
+
 
 
 }

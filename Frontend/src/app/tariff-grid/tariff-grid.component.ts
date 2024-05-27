@@ -33,6 +33,7 @@ export class TariffGridComponent implements OnInit  {
   showAddBudget : boolean = false;
   Showadd: boolean | undefined;
   Companyid:any = 0;
+  selectedRowIndex: number | null = null;
 
 
   constructor( private companyService: CompanyserviceService,
@@ -110,6 +111,7 @@ ngOnInit(): void {
 routebyid(val: any,index : number) {
   this.showAddBudget = true;
   this.Companyid = val.companyid;
+  this.selectedRowIndex = index;
 }
 ExportData() {
   const event = {
@@ -175,6 +177,7 @@ reload() {
     if (this.filterInput) {
       this.filterInput.nativeElement.value = ''; 
     }
+    this.selectedRowIndex = null;
 }
 
 shows() {

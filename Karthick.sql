@@ -740,7 +740,7 @@ SELECT
                         JOIN
                             currencydetail cu ON cu.currencyid = cd.currencyid
                             
-update companydetail set budgetid = 7400 where companyid = 1
+update companydetail set budgetid = null 
 
 
 
@@ -789,10 +789,10 @@ SELECT
 drop package manage_budgetdetailline
 
 
-delete from budgetdetailline where budgetid = 7402
+delete from budgetdetail where budgetid = 7402
 
 INSERT INTO budgetdetail(description, budgetcurrencyid, budgetactive, createdate, companyid) 
-VALUES ('Testing', 100, 'True', SYSDATE, 1);
+VALUES ('Testing', 100, 'True', SYSDATE, 2);
 
 delete from budgetdetail where budgetid = 7450
 

@@ -9,7 +9,8 @@
 
             <div class="bts">
                 <p-toast></p-toast>
-                <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
+                <p-confirmDialog ></p-confirmDialog>
+                <button type="button" (click)="BackToList()" pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
                     Back To List
                 </button>
@@ -56,9 +57,9 @@
                 </div>
                 
 
-                <div class="input-group" style="height:80px;">
+                <div class="input-group" style="height:81px;">
                     <label for="companyshortname" class="form-label">Description<span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="description" formControlName="description" placeholder="Description" autocomplete="off" />
+                    <input pInputText type="text" class="form-control" id="description" formControlName="description" placeholder="Description" autocomplete="off" (input)="transformToUppercase($event)"  />
 
 
                     <small *ngIf="myForm.get('description')?.errors?.['required'] && myForm.get('description')?.touched " >
@@ -125,19 +126,26 @@
                 <div class="input-group" style="height: 90px;">
                     <label for="cid" class="form-label">Country <span style="color: red;"> * </span></label>
                     <p-dropdown (onChange)="onCountryChange($event)" class="fullwidth form-control readonly-field" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
+                    <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
+                        *This field is required.
+                    </small>
                 </div>
                 
 
                 <div class="input-group" style="height:90px;">
                     <label for="username" class="form-label">State<span style="color: rgb(255, 0, 0);"> * </span></label>
                     <p-dropdown (onChange)="onStateChange($event)" class="fullwidth form-control readonly-field" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
-                    
+                    <small *ngIf="myForm.get('sid')?.errors?.['required'] && myForm.get('sid')?.touched " >
+                        *This field is required.
+                    </small>
                 </div>
 
                 <div class="input-group" style="height:90px;">
                     <label for="username" class="form-label">City<span style="color: red;"> * </span></label>
                     <p-dropdown (onChange)="onCityChange($event)" class="fullwidth form-control readonly-field" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
-                    
+                    <small *ngIf="myForm.get('cityid')?.errors?.['required'] && myForm.get('cityid')?.touched " >
+                        *This field is required.
+                    </small>
                 </div>
 
             
@@ -256,7 +264,7 @@
                 <div class="entryrow" >
                     <div class="input-group" style="height:90px">
                         <label for="containertype" class="form-label">Container Type<span style="color: rgb(255, 0, 0);"> * </span></label>
-                        <p-dropdown class="fullwidth form-control" formControlName="containertype" [options]="containertype"  placeholder="Container Type" ></p-dropdown>
+                        <p-dropdown appendTo="body" class="fullwidth form-control" formControlName="containertype" [options]="containertype"  placeholder="Container Type"  ></p-dropdown>
 
                         <small *ngIf="myForm.get('containertype')?.errors?.['required'] && myForm.get('containertype')?.touched " >
                             *This field is required.

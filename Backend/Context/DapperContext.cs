@@ -21,7 +21,7 @@ namespace Backend.Context
         }
 
 
-        public object Database { get; internal set; }
+        // public object Database { get; internal set; }
 
         public IDbConnection CreateConnection() => new OracleConnection(_connectionString);
     }

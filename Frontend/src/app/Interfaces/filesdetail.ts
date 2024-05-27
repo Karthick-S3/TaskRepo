@@ -5,5 +5,6 @@ export interface Filedetail {
     filesize: number,
     uploaddate :Date,
     companyid:number,
-    message: string;
+    message: string,
+    url: string;
 }

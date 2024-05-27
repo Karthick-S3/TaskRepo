@@ -70,7 +70,7 @@ alert("shows")
   ];
 
   containertype : any =[
-    { label: 'General Purpose', value: 'General Purpose' },
+  { label: 'General Purpose', value: 'General Purpose' },
   { label: 'Refrigerated', value: 'Refrigerated' },
   { label: 'OpenTop Container', value: 'OpenTop Container' },
   { label: 'Flatrack Container', value: 'Flatrack Container' },
@@ -354,6 +354,7 @@ tree : any;
 
 ngOnInit(): void {
 
+  this.animation = true;
 
 
   this.companyService.getCountry().subscribe(countries => {
@@ -445,7 +446,6 @@ ngOnInit(): void {
         }
       });
       this.addReadOnlyStyles();
-      // console.log(this.budgetid);
       const event = {
         first : 0,
         rows: 10,
@@ -471,11 +471,8 @@ ngOnInit(): void {
   }
 
 
-  // console.log(this.myForm);
-
-  this.myForm.get('startamount')?.setValue(100);
-
-  setTimeout
+  this.animation = false;
+  
 }
 
 
@@ -516,11 +513,17 @@ addBudget( event : any){
         
         
         this.companyService.insertBudget(budget).subscribe( val => {
+          alert("WORKING")
           this.myForm.get('budgetid')?.setValue(val)
           insertdetail = [];
           this.budgetdetail.forEach((data:any) => {
               data.budgetid = val;
               insertdetail.push(data);
+              if(insertdetail.length >0){
+                this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
+                  // console.log(value);
+                })
+              }
             
         })
   
@@ -529,7 +532,6 @@ addBudget( event : any){
         });
         
         
-        this.badgeval = 'EDIT';
         
       }else{
       
@@ -610,6 +612,11 @@ addBudget( event : any){
   
 }
 
+transformToUppercase(event:any){
+  const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+    this.myForm.get('description')?.setValue(input.value);
+}
 
 files: Country[] = [];
 
@@ -829,16 +836,17 @@ hidefil(){
   this.showwwww = false;
 
 }
-BackToList(event: Event) {
+BackToList() {
   if(this.myForm.touched){
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      
       message: 'You have unsaved changes in the screen. Do you want to continue?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon:"none",
       rejectIcon:"none",
-      rejectButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass:"p-button-text",
+      acceptButtonStyleClass:"p-button-danger",
       accept: () => {
         this.Flag.emit(false);
       },
@@ -893,9 +901,9 @@ initializeForm(): void {
     state : [''],
     city:[''],
     revenue:['',Validators.required],
-    cid:[''],
-    sid:[''],
-    cityid:[''],
+    cid:['',[Validators.required]],
+    sid:['',[Validators.required]],
+    cityid:['',[Validators.required]],
     currencyid:['',Validators.required],
     budgetcurrencyid:['',Validators.required],
     budgetactive:['False'],

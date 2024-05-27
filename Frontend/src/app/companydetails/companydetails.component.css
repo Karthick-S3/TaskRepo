@@ -212,3 +212,7 @@ h4{
 .hide {
     display: none;
   }
+
+  .clicked{
+    background-color: #CBDDC3;
+  }

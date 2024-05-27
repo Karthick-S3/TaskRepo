@@ -21,8 +21,6 @@ namespace Backend.Controllers
 
         public CompanydetailsController (ICompanydetailsRepository companydetailsRepository,string uploadFolder){
             _companydetailsRepositry = companydetailsRepository;
-            // _uploadFolder = uploadFolder;
-
              _uploadFolder = uploadFolder ?? throw new ArgumentNullException(nameof(uploadFolder));
         }
 
@@ -426,6 +424,41 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
 
               return Ok(new { message = "Files uploaded successfully." });
         }
+
+
+
+       [HttpGet("getfilesbycompanyid")]
+        public async Task<IActionResult> GetFilesByCompanyId([FromQuery] int companyId)
+        {
+            if (companyId <= 0)
+            {
+                return Ok("Invalid company ID.");
+            }
+
+            var files = await _companydetailsRepositry.getFilesbyId(companyId);
+
+            if (files == null || !files.Any())
+            {
+                return Ok("No files found for the given company ID.");
+            }
+
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/uploads/";
+
+            var fileDetailsWithUrls = files.Select(file => new
+            {
+                file.fid,
+                file.originalname,
+                file.storedname,
+                file.filesize,
+                file.uploaddate,
+                file.companyid,
+                Url = $"{baseUrl}{file.storedname}"
+            });
+
+            return Ok(fileDetailsWithUrls);
+        }
+
+
 
 
       

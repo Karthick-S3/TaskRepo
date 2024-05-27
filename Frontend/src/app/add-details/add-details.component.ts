@@ -6,7 +6,6 @@ import { State } from '../Interfaces/state';
 import { Country } from '../Interfaces/country';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
-import { response } from 'express';
 import { Company } from '../Interfaces/company';
 import { CompanydetailsComponent } from '../companydetails/companydetails.component';
 import { Currency } from '../Interfaces/currency';
@@ -36,6 +35,7 @@ export class AddDetailsComponent implements OnInit {
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
+
   
   
   
@@ -53,20 +53,7 @@ export class AddDetailsComponent implements OnInit {
     this.animation = true;
     const val = this.companydetail.returnFirstCompId();
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     const id:number =val;
@@ -84,25 +71,13 @@ export class AddDetailsComponent implements OnInit {
           }
      }
      });
+     this.loadAttachements(id);
   }
   GetLast(event : any){
     this.animation = true;
     const val = this.companydetail.returnLastCompId();
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     const id:number =val;
@@ -119,28 +94,18 @@ export class AddDetailsComponent implements OnInit {
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+          this.loadAttachements(id);
      }
      });
+     
   }
 
   GetPrevious(event : any){
     this.animation = true;
     const val = this.companydetail.returnPreviousCompId();
+   
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     const id:number =val;
@@ -158,26 +123,14 @@ export class AddDetailsComponent implements OnInit {
           }
      }
      });
+     this.loadAttachements(id);
   }
 
   GetNext(event : any) {
     this.animation = true;
     const val = this.companydetail.returnNextCompId();
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     
@@ -197,6 +150,23 @@ export class AddDetailsComponent implements OnInit {
         }
       }
     });
+    this.loadAttachements(this.id);
+  }
+
+  noRecordFoundError(){
+    this.animation = false; 
+    this.confirmationService.confirm({
+      message: 'No Records Found',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      acceptButtonStyleClass: "p-button-warning",
+      acceptLabel: 'Ok', 
+      rejectVisible: false, 
+      accept: () => {
+      }
+  });
   }
   
 
@@ -266,6 +236,7 @@ export class AddDetailsComponent implements OnInit {
         acceptIcon:"none",
         rejectIcon:"none",
         rejectButtonStyleClass:"p-button-text",
+        acceptButtonStyleClass:"p-button-danger",
         accept: () => {
             this.resetForm();
         },
@@ -276,6 +247,7 @@ export class AddDetailsComponent implements OnInit {
     }
     
 }
+
 BackToList(event: Event) {
   if(this.myForm.touched){
     this.confirmationService.confirm({
@@ -285,6 +257,7 @@ BackToList(event: Event) {
       icon: 'pi pi-exclamation-triangle',
       acceptIcon:"none",
       rejectIcon:"none",
+      acceptButtonStyleClass:"p-button-danger",
       rejectButtonStyleClass:"p-button-text",
       accept: () => {
         this.Flag.emit(false);
@@ -327,11 +300,35 @@ BackToList(event: Event) {
             this.myForm.get('active')?.setValue(false);
           }
         }
+        
+        
       });
-      
+      this.loadAttachements(this.id);
     }
 
   }
+  loadAttachements(companyid: number) {
+    this.companyService.getFilesByCompanyId(companyid).subscribe(value => {
+      if (value && value.length > 0) {
+        this.attlen = true;
+        // Initialize attachmentdata array
+        this.attachmentdata = value.map(file => ({
+          name: file.originalname,
+          size: file.filesize,
+          thumbnail: file.url
+        }));
+        this.attachavailable = true;
+        this.attachmentlength = value.length;
+      } else {
+        this.attlen = false;
+        this.attachmentdata = [];
+        this.attachavailable = false;
+        this.attachmentlength = 0;
+        console.log('No files found for the company.');
+      }
+    });
+  }
+  
 
   initializeForm(): void {
     this.myForm = this.formBuilder.group({
@@ -417,9 +414,7 @@ BackToList(event: Event) {
     else{
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');
-      // this.myForm.get('country')?.setValue('');
-      // this.myForm.get('state')?.setValue('');
-      // this.myForm.get('city')?.setValue('');
+      
       if(this.id > 0){
         this.myForm.get('description')?.setValue('');
         this.myForm.get('containertype')?.setValue('');
@@ -429,6 +424,7 @@ BackToList(event: Event) {
          
           next : (company) => {
             console.log("updated succesfully");
+            this.uploadFiles(this.formData);
           },
           error: (response) => {
             console.log(response);
@@ -446,6 +442,7 @@ BackToList(event: Event) {
               console.log(response);
             },
           });
+          this.uploadFiles(this.formData);
         }
 
     }
@@ -529,11 +526,12 @@ deleteattachment(index: number) {
  
 }
 
+formData: FormData = new FormData();
+
 onFileSelected(event: Event) {
   const input = event.target as HTMLInputElement;
 
   if (input.files && input.files.length > 0) {
-      const formData = new FormData();
       const acceptedformat = ['jpg', 'png', 'jpeg', 'xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
       let Flag = true;
 
@@ -568,17 +566,18 @@ onFileSelected(event: Event) {
                   type: file.type,
                   thumbnail: e.target.result
               });
+              this.attachmentlength++;
           };
 
           reader.readAsDataURL(file);
-          formData.append('files', file);
+          this.formData.append('files', file);
       }
 
       if (Flag) {
-          this.attachmentlength = this.attachmentdata.length;
+         
           this.attlen = true;
           this.attachavailable = true;
-          console.log(formData);
+          console.log(this.formData);
       }
   }
 }
@@ -650,6 +649,7 @@ onFileSelected(event: Event) {
       }
     });
   }
+  
   
   
   

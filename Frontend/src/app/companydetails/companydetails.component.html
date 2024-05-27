@@ -1,6 +1,6 @@
 <div class="mainbody"  [class.hide]="Showadd">
   
-  <div class="sidebar">
+  <div class="sidebar" *ngIf="expand">
 
     <h3>Filters</h3>
 
@@ -79,11 +79,16 @@
                     <i class="fa-solid fa-filter" (click)="showFilter()"  pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
                     <i class="fa-solid fa-eraser" (click)="erase(demo)" *ngIf="showwwww"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
                     <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
+                    
                   </div>
-                  <h4>
-                    Company Details
-                  </h4>
-                  
+                  <div style="display: flex;align-items: center;justify-content: center;">
+                    <h4 style="margin-right: 20px;">
+                      Company Details
+                    </h4>
+                    <i class="fa-solid fa-up-right-and-down-left-from-center" *ngIf="expand"  style="color: #000000;font-size: 15px;cursor: pointer;" (click)="expandTable()"></i>
+                    <i class="fa-solid fa-down-left-and-up-right-to-center" *ngIf="!expand"  style="color: #000000;font-size: 15px;cursor: pointer;" (click)="expandTable()"></i>
+                  </div>
+                 
               </div>
           </ng-template>
 
@@ -155,23 +160,24 @@
 
                 </tr>
             </ng-template>
-            <ng-template  pTemplate="body" let-company let-rowIndex="rowIndex">
-              <tr class="tr-body" (click)="routebyid(company,rowIndex)" >
-                <!-- <td >{{ company.companyid }}</td> -->
-                <td >{{ company.companyname }}</td>
-                <td >{{ company.companyshortname }}</td>
-                <td >{{ company.contact }}</td>
-                <td >{{ company.address }}</td>
-                <td >{{ company.country }}</td>
-                <td >{{ company.state }}</td>
-                <td >{{ company.city }}</td>
-                <td >{{ company.zipcode }}</td>
-                <td >{{ company.active }}</td>
-                <td >{{ company.currency }}</td>
-                <!-- <td >{{ company.establish_date | date : 'MMM/dd/yyyy'}}</td> -->
-                <td >{{ company.revenue }}</td>
+            <ng-template pTemplate="body" let-company let-rowIndex="rowIndex">
+              <tr class="tr-body" (click)="routebyid(company, rowIndex)" [ngClass]="{'clicked': rowIndex === selectedRowIndex}">
+                <!-- <td>{{ company.companyid }}</td> -->
+                <td>{{ company.companyname }}</td>
+                <td>{{ company.companyshortname }}</td>
+                <td>{{ company.contact }}</td>
+                <td>{{ company.address }}</td>
+                <td>{{ company.country }}</td>
+                <td>{{ company.state }}</td>
+                <td>{{ company.city }}</td>
+                <td>{{ company.zipcode }}</td>
+                <td>{{ company.active }}</td>
+                <td>{{ company.currency }}</td>
+                <!-- <td>{{ company.establish_date | date : 'MMM/dd/yyyy'}}</td> -->
+                <td>{{ company.revenue }}</td>
               </tr>
             </ng-template>
+            
             <ng-template pTemplate="emptymessage">
               <tr>
                   <td colspan="11">No Company found.</td>
