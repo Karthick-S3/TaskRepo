@@ -1,9 +1,12 @@
 
 <div class="body" style="max-height: calc(100vh -110px);" *ngIf="!showAddBudget"  >
   <p-toast></p-toast>
-    <div class="container-fluid">
-     
-      <div  style="max-height: calc(100vh - 110px)">
+    <div class="container-fluid" style="padding: 5px 5px;">
+      <div style="width: 100%;height: 50px;padding: 0%;margin: 0%;display: flex;
+      align-items: center;border: 1px solid rgb(231, 231, 231);background-color:#04246A;border-radius: 6px 6px 0px 0px ;">
+        <h1 style="color: white;font-size: 18px;padding-left: 10px;font-weight: 600;">Budget Details</h1>
+      </div>
+      <div  style="max-height: calc(100vh - 110px);">
         <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
           <p-table id="demo" #demo styleClass="p-datatable-gridlines"
             [value]="budget" 

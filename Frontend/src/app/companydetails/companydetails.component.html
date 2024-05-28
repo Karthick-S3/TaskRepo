@@ -34,14 +34,18 @@
   
 
 
- 
+
+  
 
   <div class="body" style="max-height: calc(100vh -110px);"  >
-    
-    <div class="container-fluid">
-     
+   
+    <div class="container-fluid" style="padding:5px 5px ;">
+      <div style="width: 100%;height: 50px;padding: 0%;margin: 0%;display: flex;
+      align-items: center;border: 1px solid rgb(231, 231, 231);background-color:#04246A;border-radius: 6px 6px 0px 0px ;">
+        <h1 style="color: white;font-size: 18px;padding-left: 10px;font-weight: 600;">Company Details</h1>
+      </div>
       <div  style="max-height: calc(100vh - 110px)">
-        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131);">
+        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131);padding: 10px;">
           <p-table id="demo" #demo styleClass="p-datatable-gridlines"
             [value]="companys" 
             [paginator]="true"
@@ -82,9 +86,9 @@
                     
                   </div>
                   <div style="display: flex;align-items: center;justify-content: center;">
-                    <h4 style="margin-right: 20px;">
+                    <!-- <h4 style="margin-right: 20px;">
                       Company Details
-                    </h4>
+                    </h4> -->
                     <i class="fa-solid fa-up-right-and-down-left-from-center" *ngIf="expand"  style="color: #000000;font-size: 15px;cursor: pointer;" (click)="expandTable()"></i>
                     <i class="fa-solid fa-down-left-and-up-right-to-center" *ngIf="!expand"  style="color: #000000;font-size: 15px;cursor: pointer;" (click)="expandTable()"></i>
                   </div>
@@ -104,9 +108,9 @@
                     <th style="width: 10%;" pSortableColumn="companyshortname">Shortname<p-sortIcon field="companyshortname"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="contact">Business Cont <p-sortIcon field="contact"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="address">Address <p-sortIcon field="Address"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="country">Country<p-sortIcon field="country"></p-sortIcon></th>
+                    <!-- <th style="width: 10%;" pSortableColumn="country">Country<p-sortIcon field="country"></p-sortIcon></th>
                     <th style="width: 10%;" pSortableColumn="state">State <p-sortIcon field="state"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th> -->
                     <th style="width: 10%;" pSortableColumn="zipcode">Zip code <p-sortIcon field="zipcode"></p-sortIcon></th>
                     <th style="width: 7%;" pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon></th>
                     <th style="width: 7%;" pSortableColumn="currency">Currency<p-sortIcon field="currency"></p-sortIcon></th>
@@ -134,7 +138,7 @@
               <th style="width: 10%;">
                   <p-columnFilter type="text" field="address"></p-columnFilter>
               </th>
-              <th style="width: 10%;">
+              <!-- <th style="width: 10%;">
                   <p-columnFilter type="text" field="country"></p-columnFilter>
               </th>
               <th style="width: 10%;">
@@ -142,7 +146,7 @@
             </th>
             <th style="width: 10%;">
               <p-columnFilter type="text" field="city"></p-columnFilter>
-          </th>
+          </th> -->
           <th style="width: 10%;">
             <p-columnFilter type="text" field="zipcode"></p-columnFilter>
         </th>
@@ -167,9 +171,9 @@
                 <td>{{ company.companyshortname }}</td>
                 <td>{{ company.contact }}</td>
                 <td>{{ company.address }}</td>
-                <td>{{ company.country }}</td>
+                <!-- <td>{{ company.country }}</td>
                 <td>{{ company.state }}</td>
-                <td>{{ company.city }}</td>
+                <td>{{ company.city }}</td> -->
                 <td>{{ company.zipcode }}</td>
                 <td>{{ company.active }}</td>
                 <td>{{ company.currency }}</td>

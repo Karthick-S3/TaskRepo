@@ -13,6 +13,8 @@ import { Filedetail } from '../Interfaces/filesdetail';
 
 
 
+
+
 @Component({
   selector: 'app-add-details',
   templateUrl: './add-details.component.html',
@@ -33,8 +35,10 @@ export class AddDetailsComponent implements OnInit {
   visible:boolean = false;
 
 
+
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
+  types: any;
 
   
   
@@ -71,7 +75,7 @@ export class AddDetailsComponent implements OnInit {
           }
      }
      });
-     this.loadAttachements(id);
+     this.loadAttachments(id);
   }
   GetLast(event : any){
     this.animation = true;
@@ -94,7 +98,7 @@ export class AddDetailsComponent implements OnInit {
           }else{
             this.myForm.get('active')?.setValue(false);
           }
-          this.loadAttachements(id);
+          this.loadAttachments(id);
      }
      });
      
@@ -123,7 +127,7 @@ export class AddDetailsComponent implements OnInit {
           }
      }
      });
-     this.loadAttachements(id);
+     this.loadAttachments(id);
   }
 
   GetNext(event : any) {
@@ -150,7 +154,7 @@ export class AddDetailsComponent implements OnInit {
         }
       }
     });
-    this.loadAttachements(this.id);
+    this.loadAttachments(this.id);
   }
 
   noRecordFoundError(){
@@ -303,15 +307,24 @@ BackToList(event: Event) {
         
         
       });
-      this.loadAttachements(this.id);
+      this.loadAttachments(this.id);
     }
 
   }
-  loadAttachements(companyid: number) {
-    this.companyService.getFilesByCompanyId(companyid).subscribe(value => {
+
+  // filetype: string = '';
+  // typeoffile = ['xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
+
+  loadAttachments(companyid: number) {
+    this.companyService.getFilesByID(companyid).subscribe(value => {
       if (value && value.length > 0) {
         this.attlen = true;
-        // Initialize attachmentdata array
+        // value.forEach(file => {
+        //   const fileType = this.getFileType(file.originalname);
+        //   if (fileType && this.typeoffile.includes(fileType)) {
+        //     file.url = this.getFileURL(fileType);
+        //   }
+        // });
         this.attachmentdata = value.map(file => ({
           name: file.originalname,
           size: file.filesize,
@@ -328,6 +341,35 @@ BackToList(event: Event) {
       }
     });
   }
+  
+  // getFileType(originalname: string): string | undefined {
+  //   const parts = originalname.split('.');
+  //   if (parts.length > 1) {
+  //     return parts.pop()?.toLowerCase(); 
+  //   }
+  //   return undefined;
+  // }
+  
+
+getFileURL(type: string): string {
+  switch (type) {
+    case 'gif':
+      return '../assets/filetype/gif.jpg';
+    case 'txt':
+      return '../assets/filetype/txt.jpg';
+    case 'doc':
+      return '../assets/filetype/doc.jpg';
+    case 'pdf':
+      return '../assets/filetype/pdf.jpg';
+    case 'xls':
+      return '../assets/filetype/xls.jpg';
+    case 'zip':
+      return '../assets/filetype/zip.jpg';
+    default:
+      return '../assets/default.jpg'; // Default URL for unknown file types
+  }
+}
+
   
 
   initializeForm(): void {

@@ -718,18 +718,20 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                 }
             }
 
-        public async Task<IEnumerable<filesdetails>> getFilesbyId(int companyid)
+        public async Task<IEnumerable<filesdetails>> GetFilesById(int companyId)
         {
-             string sql = "SELECT * FROM filesdetail WHERE companyid = :companyId";
+            string sql = "SELECT * FROM filesdetail WHERE companyid = :companyId";
 
             using (var connection = _context.CreateConnection())
             {
                 var parameters = new DynamicParameters();
-                parameters.Add(":companyId", companyid, DbType.Int32, ParameterDirection.Input);
+                parameters.Add(":companyId", companyId, DbType.Int32, ParameterDirection.Input);
 
                 var files = await connection.QueryAsync<filesdetails>(sql, parameters);
                 return files;
             }
-                }
-            }
+        }
+
+    }
+
 }

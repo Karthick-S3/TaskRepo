@@ -267,13 +267,14 @@
                 <ng-template pTemplate="body" let-product let-i="rowIndex">
                     <tr style="height: 50px;">
                         <td (click)="openimg(product)" style="cursor: pointer;">
-                            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="" style="max-width: 140px; max-height: 140px;">
+                            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="{{product.name}}" style="max-width: 140px; max-height: 140px;">
                         </td>
                         <td>
                             Name: <a (click)="preview(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;">{{ product.name }}</a><br>
                             Size: {{ product.size }} bytes <br>
                             Uploaded By: User1
                         </td>
+                      
                         <td>
                             <a style="display: block; width: 100%; height: 100%; text-align: center; line-height: 30px; cursor: pointer;" (click)="deleteattachment(i)">
                                 <i style="color: red;" class="fa-solid fa-trash-can"></i>

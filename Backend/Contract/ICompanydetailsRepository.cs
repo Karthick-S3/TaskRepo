@@ -77,7 +77,7 @@ namespace Backend.Contract
 
         public Task<int> uploadfiles(filesdetails filesDetails);
 
-        public Task<IEnumerable<filesdetails>> getFilesbyId(int companyid);
+        public Task<IEnumerable<filesdetails>> GetFilesById(int companyid);
 
 
 

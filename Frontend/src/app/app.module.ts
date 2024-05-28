@@ -28,6 +28,8 @@ import { AddbudgetComponent } from './addbudget/addbudget.component';
 import { DialogModule } from 'primeng/dialog';
 import { TreeModule } from 'primeng/tree';
 import { NgxUploaderModule } from 'ngx-uploader';
+import { CompanyserviceService } from './companyservice.service';
+
 
 
 @NgModule({
@@ -62,11 +64,13 @@ import { NgxUploaderModule } from 'ngx-uploader';
     OverlayPanelModule,
     DialogModule,
     TreeModule,
-    NgxUploaderModule
+    NgxUploaderModule,
+
    
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    CompanyserviceService
   ],
   bootstrap: [AppComponent]
 })

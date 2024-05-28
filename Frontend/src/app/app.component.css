@@ -96,17 +96,20 @@
         i{
             font-size: 15px;
             font-weight: 400;
-            color: #1c537a;
+            color: #000000;
             margin-right: 0px;
         }
         input{
-            width: 250px;
-            height: 35px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 0, 0, 0.199);
-            padding: 0px 0px 0px 10px;
+            width: 200px;
+            height: 32px;
+            border-radius: 30px;
+            border: 1px solid #ced4da;
+            padding: 5px 10px;
             outline: none;
             background-color: #ffef97;
+            font-size: 13px;
+            font-weight: normal;
+            letter-spacing: normal;
         }
     }
 }

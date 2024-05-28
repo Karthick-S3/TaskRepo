@@ -2,27 +2,33 @@ using Backend.Context;
 using Backend.Contract;
 using Backend.Repository;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllers();
 
-// Configure form options for file uploads
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = 15728640;
 });
 
 
-// Add DapperContext as a singleton
 builder.Services.AddSingleton<DapperContext>();
 
-// Add CompanydetailsRepository with the connection string
+
 builder.Services.AddScoped<ICompanydetailsRepository, CompanydetailsRepository>();
 
-// Add the upload folder path as a singleton
-builder.Services.AddSingleton(builder.Configuration["UploadFolder"]);
+// Configure the upload folder path
+string uploadFolder = builder.Configuration["UploadFolder"];
+if (!Directory.Exists(uploadFolder))
+{
+    Directory.CreateDirectory(uploadFolder);
+}
+
+builder.Services.AddSingleton(uploadFolder);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -37,6 +43,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadFolder),
+    RequestPath = "/uploads"
+});
 
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 

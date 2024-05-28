@@ -393,70 +393,70 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
 
 
         [HttpPost("uploadfiles")]
-        public async Task<IActionResult> uploadfiles([FromForm] List<IFormFile> files, [FromQuery] int companyId)
+    public async Task<IActionResult> UploadFiles([FromForm] List<IFormFile> files, [FromQuery] int companyId)
+    {
+        if (files == null || files.Count == 0)
         {
-            if (files == null || files.Count == 0)
-            {
-                return BadRequest("No files uploaded."+files+"company id"+companyId);
-            }
-
-            foreach (var file in files)
-            {
-                var storedName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                var filePath = Path.Combine(_uploadFolder, storedName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                var filesDetails = new filesdetails
-                {
-                    originalname = file.FileName,
-                    storedname = storedName,
-                    filesize = file.Length,
-                    uploaddate = DateTime.Now,
-                    companyid = companyId
-                };
-
-                int newId = await _companydetailsRepositry.uploadfiles(filesDetails);
-            }
-
-              return Ok(new { message = "Files uploaded successfully." });
+            return BadRequest("No files uploaded. Company ID: " + companyId);
         }
 
-
-
-       [HttpGet("getfilesbycompanyid")]
-        public async Task<IActionResult> GetFilesByCompanyId([FromQuery] int companyId)
+        foreach (var file in files)
         {
-            if (companyId <= 0)
+            var storedName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var filePath = Path.Combine(_uploadFolder, storedName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                return Ok("Invalid company ID.");
+                await file.CopyToAsync(stream);
             }
 
-            var files = await _companydetailsRepositry.getFilesbyId(companyId);
-
-            if (files == null || !files.Any())
+            var filesDetails = new filesdetails
             {
-                return Ok("No files found for the given company ID.");
-            }
+                originalname = file.FileName,
+                storedname = storedName,
+                filesize = file.Length,
+                uploaddate = DateTime.Now,
+                companyid = companyId
+            };
 
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/uploads/";
-
-            var fileDetailsWithUrls = files.Select(file => new
-            {
-                file.fid,
-                file.originalname,
-                file.storedname,
-                file.filesize,
-                file.uploaddate,
-                file.companyid,
-                Url = $"{baseUrl}{file.storedname}"
-            });
-
-            return Ok(fileDetailsWithUrls);
+            int newId = await _companydetailsRepositry.uploadfiles(filesDetails);
         }
+
+        return Ok(new { message = "Files uploaded successfully." });
+    }
+
+    [HttpGet("getFilesByCompanyId")]
+    public async Task<IActionResult> GetFilesByCompanyId([FromQuery] int companyId)
+    {
+        if (companyId <= 0)
+        {
+            return BadRequest("Invalid company ID.");
+        }
+
+        var files = await _companydetailsRepositry.GetFilesById(companyId);
+
+        if (files == null || !files.Any())
+        {
+            return NotFound("No files found for the given company ID.");
+        }
+
+        var baseUrl = $"{Request.Scheme}://{Request.Host}/uploads/";
+
+        var fileDetailsWithUrls = files.Select(file => new
+        {
+            file.fid,
+            file.originalname,
+            file.storedname,
+            file.filesize,
+            file.uploaddate,
+            file.companyid,
+            Url = $"{baseUrl}{file.storedname}"
+        });
+
+        return Ok(fileDetailsWithUrls);
+    }
+
+
 
 
 

@@ -1,6 +1,7 @@
 .body{
     width: 100%;
     height: calc(100vh - 110px);
+
     .tab-head{
         background-color: rgb(241, 241, 241);
         width: 100%;
