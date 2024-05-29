@@ -1,12 +1,4 @@
 .mainbody{
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-
-
-    
-
-    
         .bts{
             button{
                 padding: 6px 10px ;
@@ -29,22 +21,22 @@
  
 
         .rowss{
-            display: flex;
+            /* display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            height: 100%;
+            height: 100%; */
             /* margin-bottom: 15px; */
             
      
             div{
                
-                display: flex;
+                /* display: flex;
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: flex-start;
                 padding: 0 20px;
-                width: 100%;
+                width: 100%; */
                 /* height: 100px; */
               
                 label{
@@ -100,9 +92,7 @@ small{
     font-weight: 600;
 }
 
-.badge{
-    font-size: 1px;
-}
+
 
 .popup{
     width: 750px;

@@ -52,8 +52,6 @@ export class CompanydetailsComponent implements OnInit {
   expand:boolean = true;
 
 
-
-
   expandTable(){
   this.expand = !this.expand;
   }

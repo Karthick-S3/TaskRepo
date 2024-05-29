@@ -300,3 +300,12 @@ p-dropdown .p-dropdown-label.p-placeholder{
     .p-multiselect-panel .p-multiselect-header {
         padding:12px 2px;
     }
+
+    tbody, td, tfoot, th, thead, tr {
+        border: 1px solid rgba(0, 0, 0, 0.253);
+    }
+
+    ul{
+        padding: 0%;
+        margin: 0%;
+    }

@@ -1,12 +1,12 @@
-<div class="mainbody"  [class.hide]="Showadd">
+<div class="mainbody w-100 h-100 d-flex"  [class.hidecompany]="Showadd" >
   
-  <div class="sidebar" *ngIf="expand">
+  <div class="sidebar d-flex align-items-center justify-content-start flex-column bg-white py-2 h-auto" *ngIf="expand">
 
-    <h3>Filters</h3>
+    <h3 class="fs-5 fw-bold">Filters</h3>
 
-    <form #myForm="ngForm" (ngSubmit)="onSubmit()">
+    <form #myForm="ngForm" class="w-100 d-flex align-items-start justify-content-center flex-column py-4 px-2"  (ngSubmit)="onSubmit()">
       <label for="Country">Country</label>
-      <p-multiSelect [options]="countrys" [(ngModel)]="selectedCountry" optionLabel="country" name="country" (ngModelChange)="onCountryChange($event)">
+      <p-multiSelect [options]="countrys" [(ngModel)]="selectedCountry" optionLabel="country" name="country"   (ngModelChange)="onCountryChange($event)">
       </p-multiSelect>
   
       <label for="State">State</label>
@@ -15,10 +15,10 @@
       <label for="City">City</label>
       <p-multiSelect [options]="citys" [(ngModel)]="selectedCity" optionLabel="city" name="city" (ngModelChange)="onCityChange($event)"></p-multiSelect>
       <p-toast></p-toast>
-      <div>
+      <div class="w-100 d-flex justify-content-between h-auto">
           
-          <button type="submit" pButton pRipple class="p-button-success" style="background-color: #04246A;border: 1px solid #000000;">Submit</button>
-          <button type="button" pButton pRipple (click)="clearForm(myForm)" class="p-button-success" style="background-color: #04246A;border: 1px solid #000000;">Clear</button>
+          <button type="submit" pButton pRipple class="p-button-success rounded-3 fw-normal text-white d-flex align-items-center justify-content-center" >Submit</button>
+          <button type="button" pButton pRipple (click)="clearForm(myForm)" class="p-button-success rounded-3 fw-normal text-white">Clear</button>
       </div>
 
   </form>
@@ -37,15 +37,14 @@
 
   
 
-  <div class="body" style="max-height: calc(100vh -110px);"  >
+  <div class="body w-100 d-flex  align-items-center justify-content-center position-relative h-auto"   >
    
-    <div class="container-fluid" style="padding:5px 5px ;">
-      <div style="width: 100%;height: 50px;padding: 0%;margin: 0%;display: flex;
-      align-items: center;border: 1px solid rgb(231, 231, 231);background-color:#04246A;border-radius: 6px 6px 0px 0px ;">
-        <h1 style="color: white;font-size: 18px;padding-left: 10px;font-weight: 600;">Company Details</h1>
+    <div class="container-fluid px-1 py-1 position-absolute top-0 left-0">
+      <div class="sec-div w-100 p-0 m-0 d-flex align-items-center rounded-top">
+        <h1  class="text-white fs-5 fw-semibold mx-3 my-auto">Company Details</h1>
       </div>
-      <div  style="max-height: calc(100vh - 110px)">
-        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131);padding: 10px;">
+      <div >
+        <div class="p-2"  style="border: 1px solid rgba(0, 0, 0, 0.131);">
           <p-table id="demo" #demo styleClass="p-datatable-gridlines"
             [value]="companys" 
             [paginator]="true"
@@ -67,14 +66,14 @@
 
 
             <ng-template pTemplate="caption"  >
-              <div class="" style="width: 100%;display: flex;align-items:center;justify-content: space-between;height: 30px;">
+              <div class="w-100 d-flex align-items-center justify-content-between" style="height: 30px;">
               
                   
-                  <div class="cap">
-                    <div class="p-input-icon-left ginput">
+                  <div class="cap h-100 d-flex align-items-center justfy-content-start">
+                    <div class="p-input-icon-left ginput me-4">
                       <span class="p-input-icon-right ml-auto">
-                        <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
-                        <i class="pi pi-search"></i>
+                        <input #filterInput pInputText type="text" class="rounded-1 ps-2" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                        <i class="pi pi-search me-0 fw-normal"></i>
                     </span>
                   </div>
                   <i class="fa-solid fa-plus" (click)="shows()"   pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
@@ -85,12 +84,9 @@
                     <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
                     
                   </div>
-                  <div style="display: flex;align-items: center;justify-content: center;">
-                    <!-- <h4 style="margin-right: 20px;">
-                      Company Details
-                    </h4> -->
-                    <i class="fa-solid fa-up-right-and-down-left-from-center" *ngIf="expand"  style="color: #000000;font-size: 15px;cursor: pointer;" (click)="expandTable()"></i>
-                    <i class="fa-solid fa-down-left-and-up-right-to-center" *ngIf="!expand"  style="color: #000000;font-size: 15px;cursor: pointer;" (click)="expandTable()"></i>
+                  <div  class="d-flex align-items-center justfy-content-center">
+                    <i class="fa-solid fa-up-right-and-down-left-from-center text-black fs-6" *ngIf="expand"  style="cursor: pointer;" (click)="expandTable()"></i>
+                    <i class="fa-solid fa-down-left-and-up-right-to-center text-black fs-6" *ngIf="!expand"  style="cursor: pointer;" (click)="expandTable()"></i>
                   </div>
                  
               </div>
@@ -202,7 +198,7 @@
   
 </div>
 
-<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;">
   <img src="../assets/idepo container.svg" alt="">
 </div>
 

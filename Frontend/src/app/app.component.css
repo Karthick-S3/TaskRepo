@@ -1,39 +1,24 @@
 .whole{
-    width: 100%;
-    max-height: 100vh;
-    
-    .topbar{
-        width: 100%;
+    .topbardiv{
+        
         height: 50px;
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         border-bottom: 1px solid rgba(0, 0, 0, 0.363);
-        padding: 0px 20px;
         i{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            
+            cursor: pointer;
             img{
                 width: 150px;
             }
         }
         h4{
             color: rgb(39, 39, 39);
-            font-size: 15px;
             font-weight: 600
         }
     }
+
+
     .topbar2{
         background-color: #04246A;
-        width: 100%;
         height: 58px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 0px 20px;
        button{
         width: 70px;
         height: 60px;
@@ -58,16 +43,13 @@
        }
     }
     .mainbody{
-        width: 100%;
         height: calc(100vh - 110px);
     }
 
 }
 
 .user{
-
-    display: flex;
-    h4{
+    h3{
         cursor: pointer;
     }i{
         cursor: pointer;
@@ -78,10 +60,7 @@
 .timee{
     width: 220px;
     height: 50px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
+    
     h3{
         padding: 0%;
         margin: 0%;
@@ -91,20 +70,12 @@
 }
 
 .ginput{
-    margin-right: 20px;
     span{
-        i{
-            font-size: 15px;
-            font-weight: 400;
-            color: #000000;
-            margin-right: 0px;
-        }
         input{
             width: 200px;
             height: 32px;
             border-radius: 30px;
             border: 1px solid #ced4da;
-            padding: 5px 10px;
             outline: none;
             background-color: #ffef97;
             font-size: 13px;
@@ -115,21 +86,9 @@
 }
 
 .logoutbutton{
-    color: red;
     border: none;
     outline: none;
-    background-color: white;
-    font-weight:600 ;
-    font-size:16px ;
     cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    i{
-        margin: 0px 5px 0px 10px;
-    }
 }
 .logoutbutton:hover{
     background-color: rgb(228, 228, 228);

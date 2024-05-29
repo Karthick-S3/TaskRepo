@@ -184,14 +184,9 @@ alert("shows")
 
     
     if (budgetdetailid == 0 && this.detaillinerow == null) {
-
-
-   
-   
-  const isDuplicate = this.budgetdetail.some(item => {
-       
-    return ((item.containertype === newItem.containertype  && item.startamount == newItem.startamount) || (item.containertype === newItem.containertype && item.limitamount == newItem.limitamount) || item.containertype == newItem.containertype); 
-});
+      const isDuplicate = this.budgetdetail.some(item => {
+      return ((item.containertype === newItem.containertype  && item.startamount == newItem.startamount) || (item.containertype === newItem.containertype && item.limitamount == newItem.limitamount) || item.containertype == newItem.containertype); 
+    });
 
 
 
