@@ -13,45 +13,16 @@
                 font-size: 13px;
             }
         }
-
-        .body{
-            height: 100%;
-            
-        }
- 
-
-        .rowss{
-            /* display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: 100%; */
-            /* margin-bottom: 15px; */
-            
-     
+        .row{
             div{
-               
-                /* display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                padding: 0 20px;
-                width: 100%; */
-                /* height: 100px; */
-              
                 label{
-                    color: black;
-                    font-weight: 600;
                     font-size: 14px;
-                    margin-bottom: 5px;
                 }
                 input{
-                    width: 100%;
-                    height: 35px;
-                    border-radius: 5px;
+                    height: 37px;
                     border: 1px solid rgba(0, 0, 0, 0.199);
-                    padding: 0px 10px;
                     outline: none;
+                    font-size: 14px;
                     
                 }
                 input:focus{
@@ -59,12 +30,10 @@
                     border: 1px solid rgba(1, 53, 223, 0.795);
                 }
                 textarea{
-                    width: 100%;
                     height: 150px;
-                    border-radius: 5px;
                     border: 1px solid rgba(0, 0, 0, 0.199);
-                    padding: 10px;
                     outline: none;
+                    font-size: 14px;
                 }
                 textarea:focus{
                     outline:2px solid #C2DBFE ;
@@ -94,34 +63,13 @@ small{
 
 
 
-.popup{
-    width: 750px;
-    height: 140px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    z-index: 999;
-    background-color: #C79121;
-    border-radius: 10px;
-}
-
 .footerbtn{
     
-    padding: 6px 10px ;
-    border-radius: 5px;
     border: none;
     cursor: pointer;
     transition: 0.3s all;
-    font-weight: 500;
-    background-color:#ffffff;
     outline: none;
-    color: rgb(0, 0, 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 15px;
-    text-align: right;
     transition: 0.5s ease;
     
 }
@@ -134,17 +82,16 @@ small{
 }
 
 .btn {
-    background-color: #008000;
-    color: white;
-    padding: 5px 40px;
     outline: none;
     border: 1px solid black;
-    border-radius: 5px;
-    margin-bottom: 10px;
     cursor: pointer;
 }
 
-
+.form-control{
+    border:none;
+    padding: 0%;
+    flex: unset;
+}
 
   
   

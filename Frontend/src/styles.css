@@ -10,7 +10,7 @@
 
 .p-element .p-multiselect-label-container{
     width: 170px;
-    height: 36px;
+    height: 37px;
 
 }
 
@@ -137,18 +137,22 @@ background-color: #f8f9fa;
     background-color: none;
     .p-dropdown{
         width: 100%;
-        height: 36px;
+        height: 37px !important;
         border: 1px solid rgba(0, 0, 0, 0.199);
     }
 }
 p-dropdown .p-dropdown-label.p-placeholder{
     line-height: 10px;
     font-size: 14px;
+    height: 37px;
+    border: none;
 
 
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item{
-    padding:  1.25rem;
+    padding:  1rem;
+    border: none;
+
 }
 .p-dropdown .p-dropdown-label {
     line-height: 10px;
@@ -156,7 +160,9 @@ p-dropdown .p-dropdown-label.p-placeholder{
 
 
 }
-
+p-dropdown .p-inputwrapper  {
+    height: 37px !important;
+}
 
 .p-inputswitch .p-inputswitch-slider{
     background-color: red;
@@ -295,7 +301,10 @@ p-dropdown .p-dropdown-label.p-placeholder{
 
     
     .p-dialog .p-dialog-footer button{
-        padding: 5px 10px;
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: 1px solid black;  
+        margin-left:10px ;
     }
     .p-multiselect-panel .p-multiselect-header {
         padding:12px 2px;
@@ -305,7 +314,38 @@ p-dropdown .p-dropdown-label.p-placeholder{
         border: 1px solid rgba(0, 0, 0, 0.253);
     }
 
-    ul{
-        padding: 0%;
-        margin: 0%;
+ 
+    .p-tree {
+        ul.p-tree-container{
+            padding-left: 0%;
+        }
     }
+   
+
+    .p-multiselect{
+        padding: 0%;
+        width: 100%;
+        ul{
+            padding: 0%;
+            margin: 0%;
+        }
+    }
+    p-multiselect{
+        width: 100%;
+       
+    }
+
+    .p-dropdown{
+        ul{
+            padding: 0%;
+            margin: 0%;
+        }
+    }
+
+    div{
+        ul.p-dropdown-items{
+            padding-left: 0%;
+        }
+    }
+
+  

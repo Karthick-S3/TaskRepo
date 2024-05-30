@@ -199,7 +199,7 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     acceptIcon: "none",
     rejectIcon: "none",
     acceptButtonStyleClass: 'p-button-danger',
-    acceptLabel: 'Ok', 
+    acceptLabel: 'Close', 
     rejectVisible: false, 
     accept: () => {
     }
@@ -586,10 +586,10 @@ addBudget( event : any){
   }else{
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Please enter valid values in the fields to create a budget detail2.',
+      message: 'Please enter valid values in the fields to create a budget detail.',
       header: 'Invalid Input',
       icon: 'pi pi-exclamation-triangle',
-      acceptIcon: "none",
+      acceptIcon: "pi pi-check",
       rejectIcon: "none",
       acceptButtonStyleClass: 'p-button-danger',
       acceptLabel: 'Ok', 

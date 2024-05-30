@@ -1,13 +1,12 @@
 
-<div class="body" style="max-height: calc(100vh -110px);" *ngIf="!showAddBudget"  >
+<div class="body w-100" style="max-height: calc(100vh -110px);" *ngIf="!showAddBudget"  >
   <p-toast></p-toast>
-    <div class="container-fluid" style="padding: 5px 5px;">
-      <div style="width: 100%;height: 50px;padding: 0%;margin: 0%;display: flex;
-      align-items: center;border: 1px solid rgb(231, 231, 231);background-color:#04246A;border-radius: 6px 6px 0px 0px ;">
-        <h1 style="color: white;font-size: 18px;padding-left: 10px;font-weight: 600;">Budget Details</h1>
+    <div class="container-fluid w-100 p-1" >
+      <div class="w-100 p-0 m-0 d-flex align-items-center justify-content-start rounded-top border border-light" style="height: 50px;background-color:#04246A;">
+        <h1 class="text-white m-0 p-0 ps-2 fw-semibold fs-5" >Budget Details</h1>
       </div>
-      <div  style="max-height: calc(100vh - 110px);">
-        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
+      <div  >
+        <div class="py-2 px-4"  style="border: 1px solid rgba(0, 0, 0, 0.131);">
           <p-table id="demo" #demo styleClass="p-datatable-gridlines"
             [value]="budget" 
             [paginator]="true"
@@ -29,14 +28,14 @@
 
 
             <ng-template pTemplate="caption"  >
-              <div class="" style="width: 100%;display: flex;align-items:center;justify-content: space-between;height: 30px;">
+              <div class="w-100 d-flex align-items-center justify-content-between" style="height: 30px;">
               
                   
-                  <div class="cap">
-                    <div class="p-input-icon-left ginput">
-                      <span class="p-input-icon-right ml-auto">
-                        <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
-                        <i class="pi pi-search"></i>
+                  <div class="cap h-100 d-flex align-items-center justify-content-start">
+                    <div class="p-input-icon-left ginput me-4">
+                      <span class="p-input-icon-right ml-auto ">
+                        <input class="rounded ps-2" style="font-size: 14px;" #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                        <i class="pi pi-search me-0 fw-normal"></i>
                     </span>
                   </div>
                   <i class="fa-solid fa-plus" (click)="shows()"   pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
@@ -45,7 +44,7 @@
                     <i class="fa-solid fa-eraser" (click)="erase(demo)" *ngIf="showwwww"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
                     <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
                   </div>
-                  <h4>
+                  <h4 class="fw-bold fs-6">
                     Budget List
                   </h4>
                   
