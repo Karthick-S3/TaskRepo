@@ -1,0 +1,27 @@
+.sec-div {
+    height: 50px;
+    background-color: #04246A;
+    border: 1px solid rgb(231, 231, 231);
+  }
+
+  th{
+    width: 20%;
+  }
+  
+  td {
+    width: 20%;
+    height: 38px;
+    button i{
+        font-size: 18px !important;
+    }
+    button.disabled-button {
+      cursor: not-allowed;
+      color: gray;
+    }
+  
+    button.disabled-button i {
+      color: gray;
+      pointer-events: none; 
+    }
+  }
+  

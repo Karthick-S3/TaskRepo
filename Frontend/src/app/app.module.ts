@@ -29,6 +29,10 @@ import { DialogModule } from 'primeng/dialog';
 import { TreeModule } from 'primeng/tree';
 import { NgxUploaderModule } from 'ngx-uploader';
 import { CompanyserviceService } from './companyservice.service';
+import { StepperModule } from 'primeng/stepper';
+import { CompanystepsComponent } from './companysteps/companysteps.component';
+import { ServicecontrolComponent } from './servicecontrol/servicecontrol.component';
+
 
 
 
@@ -40,6 +44,8 @@ import { CompanyserviceService } from './companyservice.service';
     DashboardComponent,
     TariffGridComponent,
     AddbudgetComponent,
+    CompanystepsComponent,
+    ServicecontrolComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +71,8 @@ import { CompanyserviceService } from './companyservice.service';
     DialogModule,
     TreeModule,
     NgxUploaderModule,
+    StepperModule
+
 
    
   ],

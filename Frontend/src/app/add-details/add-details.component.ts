@@ -15,6 +15,7 @@ import { Filedetail } from '../Interfaces/filesdetail';
 
 
 
+
 @Component({
   selector: 'app-add-details',
   templateUrl: './add-details.component.html',
@@ -68,7 +69,7 @@ export class AddDetailsComponent implements OnInit {
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
@@ -93,7 +94,7 @@ export class AddDetailsComponent implements OnInit {
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
           // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
 
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
@@ -120,7 +121,7 @@ export class AddDetailsComponent implements OnInit {
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
@@ -147,18 +148,19 @@ export class AddDetailsComponent implements OnInit {
         this.myForm.get('email')?.setValue("Example@gmail.com");
         this.myForm.get('revenue')?.setValue(response.revenue.toString());
   
-        if (response.active == "Yes") {
+        if (response.active == "yes") {
           this.myForm.get('active')?.setValue(true);
         } else {
           this.myForm.get('active')?.setValue(false);
         }
       }
     });
-    this.loadAttachments(this.id);
+    this.loadAttachments(id);
   }
 
   noRecordFoundError(){
     this.animation = false; 
+    
     this.confirmationService.confirm({
       message: 'No Records Found',
       header: 'Confirmation',
@@ -298,7 +300,7 @@ BackToList(event: Event) {
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
           // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
           this.animation = false;
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
@@ -307,7 +309,10 @@ BackToList(event: Event) {
         
         
       });
-      this.loadAttachments(this.id);
+    
+        this.loadAttachments(this.id);
+  
+   
     }
 
   }
@@ -319,12 +324,6 @@ BackToList(event: Event) {
     this.companyService.getFilesByID(companyid).subscribe(value => {
       if (value && value.length > 0) {
         this.attlen = true;
-        // value.forEach(file => {
-        //   const fileType = this.getFileType(file.originalname);
-        //   if (fileType && this.typeoffile.includes(fileType)) {
-        //     file.url = this.getFileURL(fileType);
-        //   }
-        // });
         this.attachmentdata = value.map(file => ({
           name: file.originalname,
           size: file.filesize,
@@ -466,7 +465,10 @@ getFileURL(type: string): string {
          
           next : (company) => {
             console.log("updated succesfully");
-            this.uploadFiles(this.formData);
+            if(this.attachmentdata.length>0){
+              this.uploadFiles(this.formData);
+            }
+            
           },
           error: (response) => {
             console.log(response);
@@ -530,14 +532,18 @@ attachmentlength: number = 0;
 attlen: boolean = false;
 attachavailable: boolean = false;
 
-preview(product: any) {
-    const url = product.file ? URL.createObjectURL(product.file) : product.thumbnail;
+download(product: any) {
+  const url = product.url ? URL.createObjectURL(product.url) : product.thumbnail;
     const link = document.createElement('a');
     link.href = url;
     link.download = product.name;
     link.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url)
 }
+
+
+
+
 
 openimg(product: any) {
     const url = product.file ? URL.createObjectURL(product.file) : product.thumbnail;

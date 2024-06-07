@@ -154,3 +154,8 @@ D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnos
 D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
 D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
 D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+D:\Task\TaskRepo\backend\bin\Debug\net8.0\System.ServiceProcess.ServiceController.dll
+D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+D:\Task\TaskRepo\backend\bin\Debug\net8.0\System.CodeDom.dll
+D:\Task\TaskRepo\backend\bin\Debug\net8.0\System.Management.dll
+D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Management.dll

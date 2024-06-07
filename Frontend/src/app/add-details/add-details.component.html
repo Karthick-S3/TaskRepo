@@ -1,7 +1,14 @@
 <form class="mainbody w-100 h-100 p-2" [formGroup]="myForm" (ngSubmit)="insert()" novalidate>
+
+
+
+
+
+
+    
     <p-card class="test" >
         <ng-template pTemplate="header">
-            <h4 class="fw-semibold fs-5 m-0">
+            <h4 class="fw-semibold fs-6 m-0">
                 Add Company Detail
                 <p-badge class="badge"  [value]="badgeval" severity="success"></p-badge>
             </h4>
@@ -238,8 +245,8 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
-    <img src="../assets/idepo container.svg" alt="">
+<div *ngIf="animation" style="width: 100%;height:calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+    <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
 </div>
 
 
@@ -275,7 +282,7 @@
                             <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="{{product.name}}" style="max-width: 140px; max-height: 140px;">
                         </td>
                         <td>
-                            Name: <a (click)="preview(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;">{{ product.name }}</a><br>
+                            Name: <a (click)="download(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;">{{ product.name }}</a><br>
                             Size: {{ product.size }} bytes <br>
                             Uploaded By: User1
                         </td>

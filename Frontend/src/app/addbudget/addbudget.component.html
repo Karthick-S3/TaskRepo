@@ -202,18 +202,18 @@
                 </div>   
             </div>
 
-            <div class="container-fluid p-0 m-0 w-100">
+            <div class="container-fluid d-flex justify-content-between w-100 p-0 ">
                
-<div class="card" *ngIf="showentrrytable">
+<div class="card w-75 " *ngIf="showentrrytable">
     <p-table styleClass="p-datatable-gridlines" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 20%;">Start</th>
-                <th style="width: 20%;">Limit</th>
-                <th style="width: 20%;">ManHour</th>
-                <th style="width: 20%;">Container Type</th>
-                <th style="width: 20%;">Container Size</th>
-                <th (click)="deleteline(myForm)" class="align-items-center text-center" style="width: 20%;"><i class="fa-solid fa-trash-can"></i></th>
+                <th style="width: 10%;">Start</th>
+                <th style="width: 10%;">Limit</th>
+                <th style="width: 10%;">ManHour</th>
+                <th style="width: 10%;">Container Type</th>
+                <th style="width: 10%;">Container Size</th>
+                <th (click)="deleteline(myForm)" class="align-items-center text-center" style="width: 10%;"><i class="fa-solid fa-trash-can"></i></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
@@ -233,6 +233,13 @@
         </ng-template>
     </p-table>
 </div>
+<div class="w-75" style="height: 75px;" *ngIf="!showentrrytable">
+
+</div>
+<div class="d-flex w-25 align-items-end justify-content-end"  >
+    <button class=" rounded fw-semibold text-white d-flex align-items-center justify-content-center" (click)="Addintoentry($event)" type="button" >Add</button>
+    <button class="rounded fw-semibold text-white d-flex align-items-center justify-content-center ms-2" type="button"  (click)="resetdetailentry($event)">Reset</button>
+</div>
             </div>
             
                 </div>
@@ -242,15 +249,15 @@
 
 
 
-            <ng-template pTemplate="footer" class="flex w-100 align-items-center justify-content-end">
+            <!-- <ng-template pTemplate="footer" class="flex w-100 align-items-center justify-content-end">
                <button class=" rounded fw-semibold text-white d-flex align-items-center justify-content-center" (click)="Addintoentry($event)" type="button" >Add</button>
                <button class="rounded fw-semibold text-white d-flex align-items-center justify-content-center ms-2" type="button"  (click)="resetdetailentry($event)">Reset</button>
-            </ng-template>
+            </ng-template> -->
 
 
         </p-card>
 
-        <p-dialog  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+        <p-dialog class="detail-line-entry"  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
             <ng-template pTemplate="header" class="detailline">
                 <h4 class="my-2 p-0 fw-semibold fs-6">Detail line Entry</h4>
                 <div class="btss">
@@ -260,9 +267,9 @@
                 
               </ng-template>
 
-              <ng-template pTemplate="body" style="height: 30vh;">
-                <div class="entryrow d-flex align-items-center justify-content-between w-100 h-100 mb-3" >
-                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:90px">
+              <ng-template pTemplate="body">
+                <div class="entryrow d-flex align-items-center justify-content-between" >
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height:130px">
                         <label for="containertype " class="form-label text-black fw-semibold mb-1">Container Type<span style="color: rgb(255, 0, 0);"> * </span></label>
                         <p-dropdown appendTo="body" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="containertype" [options]="containertype"  placeholder="Container Type"  ></p-dropdown>
 
@@ -272,7 +279,7 @@
                         
                     </div>
             
-                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height: 90px;">
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height: 130px;">
                         <label for="startamount" class="form-label text-black fw-semibold mb-1">Start Amount <span style="color: red;">*</span></label>
                         <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
                         <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched" class="text-danger">
@@ -281,7 +288,7 @@
                        
                     </div>
                     
-                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height: 90px;">
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height: 130px;">
                         <label for="limitamount" class="form-label text-black fw-semibold mb-1">Limit Amount <span style="color: red;">*</span></label>
                         <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
                         <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched" class="text-danger">
@@ -292,9 +299,9 @@
                     
                     
     
-                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:90px;">
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:130px;">
                         <label for="containersize" class="form-label text-black fw-semibold mb-1">Container Size <span style="color: red;">*</span></label>
-                        <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
+                        <input uppercase pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
                         <small *ngIf="myForm.get('containersize')?.errors?.['min']">
                             *Value should be at least 1
                         </small>
@@ -307,7 +314,7 @@
                     </div>
     
                     
-                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:90px;">
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:130px;">
                         <label for="manhour" class="form-label text-black fw-semibold mb-1">Man Hour <span style="color: red;">*</span></label>
                         <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="manhour" formControlName="manhour" placeholder="Man Hour" autocomplete="off" />
                         <small *ngIf="myForm.get('manhour')?.errors?.['min'] && myForm.get('manhour')?.touched ">
@@ -438,7 +445,7 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
-    <img src="../assets/idepo container.svg" alt="">
+<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+    <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
 </div>
 

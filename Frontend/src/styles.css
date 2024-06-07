@@ -74,7 +74,7 @@ display: none;
 
     font-weight: 500;
     color: #4b5563;
-    font-size: 14px;
+    font-size: 13px;
     
 }
 
@@ -172,7 +172,8 @@ p-dropdown .p-inputwrapper  {
 }
 
 .p-datatable .p-datatable-tbody > tr > td{
-    padding: 8px 8px;
+    padding: 6px 6px;
+    height: 38px;
 }
 
 .p-overlaypanel .p-overlaypanel-content{
@@ -205,6 +206,7 @@ p-dropdown .p-inputwrapper  {
         height:200px !important;
         /* overflow-y: auto; */
         padding: 0%;
+
     }
 }
 
@@ -212,7 +214,7 @@ p-dropdown .p-inputwrapper  {
     .p-datatable .p-datatable-tbody > .tarif-tab > td{
         padding: 5px 15px;
         cursor: pointer;
-        background-color: #fff2aa79;
+        background-color: #FFEF97;
     }
 
 
@@ -259,6 +261,12 @@ p-dropdown .p-inputwrapper  {
             margin-left: 10px;
         }
 
+      }
+     .p-dialog .p-dialog-content{
+        .entryrow{
+            padding:0px !important;
+        }
+        
       }
 
       .p-dialog .p-dialog-content{
@@ -348,4 +356,11 @@ p-dropdown .p-inputwrapper  {
         }
     }
 
+.detail-line-entry{
+    .p-dialog .p-dialog-content{
+        padding: 10px 0px 0px 0px;
+        height: 140PX;
+      }
+
+}
   

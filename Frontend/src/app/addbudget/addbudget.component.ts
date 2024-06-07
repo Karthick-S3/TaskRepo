@@ -473,7 +473,8 @@ ngOnInit(): void {
 
 addBudget( event : any){
  
-  console.log(this.myForm);
+
+
 
   if(this.myForm.valid){
     let updatedetail:any = [];
@@ -508,7 +509,7 @@ addBudget( event : any){
         
         
         this.companyService.insertBudget(budget).subscribe( val => {
-          alert("WORKING")
+       
           this.myForm.get('budgetid')?.setValue(val)
           insertdetail = [];
           this.budgetdetail.forEach((data:any) => {
@@ -516,7 +517,21 @@ addBudget( event : any){
               insertdetail.push(data);
               if(insertdetail.length >0){
                 this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
-                  // console.log(value);
+                  
+                  this.confirmationService.confirm({
+                    target: event.target as EventTarget,
+                    message: 'Budget added Successfully',
+                    header: 'Confirmation',
+                    icon: 'pi pi-check-circle',
+                    acceptIcon: "none",
+                    rejectIcon: "none",
+                    acceptButtonStyleClass: 'p-button-success',
+                    acceptLabel: 'Ok', 
+                    rejectVisible: false, 
+                    accept: () => {
+                      
+                    }
+                });
                 })
               }
             
@@ -554,6 +569,28 @@ addBudget( event : any){
     }
   
     if(this.badgeval == 'EDIT'){
+      
+      const budgetActiveValue = this.myForm.get('budgetactive')?.value;
+      const budgetActive = budgetActiveValue === null ? false : budgetActiveValue;
+      const budget: Budget = {
+        description: this.myForm.get('description')?.value,
+        budgetcurrencyid: this.myForm.get('budgetcurrencyid')?.value,
+        budgetactive: budgetActive.toString(),
+        createdate: this.myForm.get('createdate')?.value,
+        companyid: this.myForm.get('companyid')?.value,
+        budgetid: this.myForm.get('budgetid')?.value,
+        total_records: 0,
+        currency: ''
+      };
+
+      if(this.myForm.get('description')?.touched || this.myForm.get('budgetcurrency')?.touched || this.myForm.get('budgetactive')?.touched){
+        this.companyService.updateBudget(budget).subscribe(value => {
+         
+          console.log(value);
+        })
+       
+        
+      }
   
  
       if(updatedetail.length>0){
@@ -827,33 +864,31 @@ showfil(){
   
 }
 hidefil(){
-  alert("Working")
   this.showwwww = false;
 
 }
 BackToList() {
-  if(this.myForm.touched){
+  
+console.log(this.myForm);
+  if (this.myForm.touched) {
     this.confirmationService.confirm({
-      
       message: 'You have unsaved changes in the screen. Do you want to continue?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-      acceptIcon:"none",
-      rejectIcon:"none",
-      rejectButtonStyleClass:"p-button-text",
-      acceptButtonStyleClass:"p-button-danger",
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectButtonStyleClass: "p-button-text",
+      acceptButtonStyleClass: "p-button-danger",
       accept: () => {
         this.Flag.emit(false);
       },
-      reject: () => {
-          
-      }
-  });
-  }else{
-    this.Flag.emit(false);
+      
+    });
+  } else {
+    this.Flag.emit(false); 
   }
-  
 }
+
 
 
 
@@ -868,7 +903,7 @@ initializeForm(): void {
       Validators.pattern('[a-zA-Z0-9\\- ]*')
     ]],
     currency: ['',Validators.required],
-    startamount: [0, [
+    startamount: [, [
       Validators.pattern('^[0-9]*$'),
   ]],
   limitamount: [0, [

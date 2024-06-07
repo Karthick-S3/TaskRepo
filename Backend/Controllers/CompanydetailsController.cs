@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using Backend.Contract;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Any;
+using System.ServiceProcess;
+using System.Diagnostics;
+using Backend.Repository;
+using System.ServiceProcess;
+using System.Management;
+
+
 
 namespace Backend.Controllers
 {
@@ -17,17 +18,97 @@ namespace Backend.Controllers
 
 
         private readonly ICompanydetailsRepository  _companydetailsRepositry;
-       private readonly string _uploadFolder;
+        private readonly string _uploadFolder;
+
+
+
 
         public CompanydetailsController (ICompanydetailsRepository companydetailsRepository,string uploadFolder){
             _companydetailsRepositry = companydetailsRepository;
              _uploadFolder = uploadFolder ?? throw new ArgumentNullException(nameof(uploadFolder));
+
+              
         }
 
- 
 
 
-       
+        //  [HttpGet("serviceName")]
+        // public IActionResult GetServiceStatus([FromQuery]string serviceName)
+        // {
+        //     try
+        //     {
+        //         using (var serviceController = new ServiceController(serviceName))
+        //         {
+        //             var status = serviceController.Status;
+        //             return Ok(new { ServiceName = serviceName, Status = status.ToString() });
+        //         }
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         return StatusCode(500, $"Error fetching status for service {serviceName}: {ex.Message}");
+        //     }
+        // }
+
+
+        [HttpGet("GetServiceStatus")]
+        public IActionResult GetServiceStatus([FromQuery] string serviceName)
+        {
+            try
+            {
+                using (var serviceController = new ServiceController(serviceName))
+                {
+                    var status = serviceController.Status;
+                    var serviceProcessId = GetServiceProcessId(serviceController);
+                    if (serviceProcessId == -1)
+                    {
+                        return StatusCode(500, $"Could not find process for service {serviceName}");
+                    }
+                    var process = Process.GetProcessById(serviceProcessId);
+                    Thread.Sleep(1000);
+                    process.Refresh();
+                    var workingSetMemory = process.WorkingSet64;
+                    var workingSetMemoryMB = BytesToMegabytes(workingSetMemory);
+                    return Ok(new
+                    {
+                        ServiceName = serviceName,
+                        DisplayName = serviceController.DisplayName,
+                        Status = status.ToString(),
+                        WorkingSetMemoryMB = workingSetMemoryMB.ToString("0.00") + " MB"
+                    });
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Error fetching status or memory usage for service {serviceName}: {ex.Message}");
+            }
+        }
+
+        private int GetServiceProcessId(ServiceController serviceController)
+        {
+            try
+            {
+                var wmiQuery = $"SELECT ProcessId FROM Win32_Service WHERE Name = '{serviceController.ServiceName}'";
+                using (var searcher = new System.Management.ManagementObjectSearcher(wmiQuery))
+                using (var results = searcher.Get())
+                {
+                    foreach (var result in results)
+                    {
+                        return Convert.ToInt32(result["ProcessId"]);
+                    }
+                }
+            }
+            catch
+            {
+                // Handle or log the exception as necessary
+            }
+
+            return -1; 
+        }
+
+        private static double BytesToMegabytes(long bytes)
+        {
+            return bytes / (1024f * 1024f);
+        }
 
 
 
@@ -304,6 +385,21 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
 }
 
 
+[HttpPost("updatebudget")]
+public async Task<IActionResult> UpdateBudgetDetail([FromBody] Budgetdetails budgetDetails)
+{
+    try
+    {
+        await _companydetailsRepositry.UpdateBudgetDetail(budgetDetails);
+        return Ok(new { message = "Budget details updated successfully." });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, ex.Message);
+    }
+}
+
+
 
 
 
@@ -392,7 +488,7 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
     }
 
 
-        [HttpPost("uploadfiles")]
+    [HttpPost("uploadfiles")]
     public async Task<IActionResult> UploadFiles([FromForm] List<IFormFile> files, [FromQuery] int companyId)
     {
         if (files == null || files.Count == 0)
@@ -437,7 +533,7 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
 
         if (files == null || !files.Any())
         {
-            return NotFound("No files found for the given company ID.");
+           return Ok();
         }
 
         var baseUrl = $"{Request.Scheme}://{Request.Host}/uploads/";
@@ -458,11 +554,38 @@ public async Task<IActionResult> InsertBudgetDetail([FromBody] Budgetdetails bud
 
 
 
+        [HttpPost("start")]
+        public async Task<IActionResult> StartService([FromQuery]string serviceName)
+        {
+            try
+            {
+                await _companydetailsRepositry.StartService(serviceName);
+               return Ok(new { message = "Service started successfully." });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error starting service: {ex.Message}");
+            }
+        }
+
+        [HttpPost("stop")]
+        public async Task<IActionResult> StopService([FromQuery] string serviceName)
+        {
+            try
+            {
+                await _companydetailsRepositry.StopService(serviceName);
+                return Ok(new { message = "Service stopped successfully." });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error stopping service: {ex.Message}");
+            }
+        }
 
 
 
-      
 
-        
-    }
+    }       
 }

@@ -1,29 +1,17 @@
-using System;
-using System.Collections.Generic;
+
 using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
+
 using Backend.Context;
 using Backend.Contract;
 using Backend.Models;
 using Dapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Oracle.ManagedDataAccess.Client;
-using System.Collections.Generic;
-using System;
-using System.Collections.Generic;
+
 using Dapper.Oracle;
 using System.Text;
-using System.DirectoryServices.Protocols;
-using Microsoft.OpenApi.Any;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using Oracle.ManagedDataAccess.Types;
+
+using System.Diagnostics;
+
+
 
 
 
@@ -34,12 +22,16 @@ namespace Backend.Repository
     {
 
         private readonly DapperContext _context;
+         
 
         public CompanydetailsRepository( DapperContext context)
         {
             // _context = context;
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+
+        
 
  
 
@@ -518,6 +510,29 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                     throw;
                 }
             }
+
+
+            public async Task UpdateBudgetDetail(Budgetdetails budgetDetails)
+            {
+                try
+                {
+                    using (var connection = _context.CreateConnection())
+                    {
+                        var oracleParams = new OracleDynamicParameters();
+                        oracleParams.Add("p_description", budgetDetails.description, OracleMappingType.Varchar2, ParameterDirection.Input);
+                        oracleParams.Add("p_budgetcurrencyid", budgetDetails.budgetcurrencyid, OracleMappingType.Int32, ParameterDirection.Input);
+                        oracleParams.Add("p_budgetactive", budgetDetails.budgetactive, OracleMappingType.Varchar2, ParameterDirection.Input);
+                        oracleParams.Add("p_budgetid", budgetDetails.Budgetid, OracleMappingType.Int32, ParameterDirection.Input);
+
+                        await connection.ExecuteAsync("budget_management.update_budgetdetail", oracleParams, commandType: CommandType.StoredProcedure);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
       
 
      public async Task DeleteBudgetDetailLine(int[] ids)
@@ -732,6 +747,49 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             }
         }
 
+         public async Task StartService(string serviceName)
+        {
+            await Task.Run(() =>
+            {
+                var processInfo = new ProcessStartInfo
+                {
+                    FileName = "net",
+                    Arguments = $"start \"{serviceName}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Verb = "runas" // Run as administrator
+                };
+
+                using (var process = Process.Start(processInfo))
+                {
+                    process.WaitForExit();
+                }
+            });
+        }
+
+        public async Task StopService(string serviceName)
+        {
+            await Task.Run(() =>
+            {
+                var processInfo = new ProcessStartInfo
+                {
+                    FileName = "net",
+                    Arguments = $"stop \"{serviceName}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Verb = "runas" // Run as administrator
+                };
+
+                using (var process = Process.Start(processInfo))
+                {
+                    process.WaitForExit();
+                }
+            });
+        }
+
+        
     }
 
 }

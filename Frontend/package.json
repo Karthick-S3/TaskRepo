@@ -25,7 +25,7 @@
     "ngx-uploader": "^17.0.1",
     "nodeservice": "^1.0.0",
     "primeicons": "^6.0.1",
-    "primeng": "^17.11.0",
+    "primeng": "^17.18.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",

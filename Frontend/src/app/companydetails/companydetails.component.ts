@@ -209,6 +209,7 @@ export class CompanydetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
 
     this.loadCompanies({
       first: 0,
@@ -222,7 +223,7 @@ export class CompanydetailsComponent implements OnInit {
     this.loadState();
     this.loadCity();
 
-   
+  
   }
 
 
@@ -275,10 +276,12 @@ export class CompanydetailsComponent implements OnInit {
 
 
   loadCountry(): void {
+    this.animation = true;
     this.companyService.getCountry().subscribe({
       next: (countrys) => {
         this.countrys = countrys;
         this.cdr.detectChanges(); 
+        this.animation = false;
       },
       error: (response) => {
         console.error(response);
@@ -287,9 +290,13 @@ export class CompanydetailsComponent implements OnInit {
   }
 
   loadState(): void {
+    this.animation = true;
+
     this.companyService.getState().subscribe({
       next: (states) => {
         this.states = states;
+        this.animation = false;
+
       },
       error: (response) => {
         console.error(response);
@@ -298,9 +305,13 @@ export class CompanydetailsComponent implements OnInit {
   }
 
   loadCity(): void {
+    this.animation = true;
+
     this.companyService.getCity().subscribe({
       next: (citys) => {
         this.citys = citys;
+        this.animation = false;
+
       },
       error: (response) => {
         console.error(response);

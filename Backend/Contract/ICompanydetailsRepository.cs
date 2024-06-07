@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Backend.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.OpenApi.Any;
+
 
 namespace Backend.Contract
 {
     public interface ICompanydetailsRepository
     {
 
+        public Task StartService(string servicename);
+        public Task StopService(string servicename);
 
         public IEnumerable<Countrydetails> GetCountry();
 
@@ -73,6 +68,8 @@ namespace Backend.Contract
         // public Task<IEnumerable<Budgetdetails>> AddBudget(Budgetdetails budgetdetails);
 
         public  Task<int> InsertBudgetDetail(Budgetdetails budgetDetails);
+
+        public Task UpdateBudgetDetail(Budgetdetails budgetDetails);
 
 
         public Task<int> uploadfiles(filesdetails filesDetails);

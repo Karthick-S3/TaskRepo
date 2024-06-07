@@ -808,6 +808,8 @@ select * from companydetail
 
 select * from budgetdetail
 
+update budgetdetail set description = 'test' ,budgetcurrencyid = 102,budgetactive='false' where budgetid = 7420
+
 select * from budgetdetailline
 
 drop table budgetdetailline
@@ -818,7 +820,7 @@ select * from currencydetail
 
 drop package budget_management
 
-CREATE OR REPLACE PACKAGE budget_management AS
+create or replace PACKAGE budget_management AS
     PROCEDURE insert_budgetdetail (
         p_description IN VARCHAR2,
         p_budgetcurrencyid IN NUMBER,
@@ -827,9 +829,17 @@ CREATE OR REPLACE PACKAGE budget_management AS
         p_companyid IN NUMBER,
         p_budgetid OUT NUMBER  -- Declare an OUT parameter to return the generated budget id
     );
+    
+     PROCEDURE update_budgetdetail (
+        p_description IN VARCHAR2,
+        p_budgetcurrencyid IN NUMBER,
+        p_budgetactive IN VARCHAR2,
+        p_budgetid IN NUMBER
+    );
+    
 END budget_management;
 
-CREATE OR REPLACE PACKAGE BODY budget_management AS
+create or replace PACKAGE BODY budget_management AS
     PROCEDURE insert_budgetdetail (
         p_description IN VARCHAR2,
         p_budgetcurrencyid IN NUMBER,
@@ -849,7 +859,22 @@ CREATE OR REPLACE PACKAGE BODY budget_management AS
         -- Set the generated budget id to the OUT parameter
         p_budgetid := v_budgetid;
     END insert_budgetdetail;
+    
+    PROCEDURE update_budgetdetail (
+        p_description IN VARCHAR2,
+        p_budgetcurrencyid IN NUMBER,
+        p_budgetactive IN VARCHAR2,
+        p_budgetid IN NUMBER
+    ) IS
+    BEGIN
+        UPDATE budgetdetail
+        SET description = p_description,
+            budgetcurrencyid = p_budgetcurrencyid,
+            budgetactive = p_budgetactive
+        WHERE budgetid = p_budgetid;
+    END update_budgetdetail;
 END budget_management;
+
 
 
 
@@ -876,4 +901,6 @@ truncate table filesdetail
 
 select * from filesdetail
 
-select * from companydetail
+select * from companydetail order by companyid
+
+update companydetail set active='yes' where active = 'Yes'
