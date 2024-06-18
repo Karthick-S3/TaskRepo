@@ -5,7 +5,9 @@
 
 
 *{
-    font-family: "Poppins";
+    font-family: poppins;
+
+  
 }
 
 .p-element .p-multiselect-label-container{
@@ -38,7 +40,7 @@ body{
 
   .p-datatable .p-datatable-thead > tr > th {
     text-align: left;
-    padding: 0.2rem 0.2rem !important;
+    padding:1px 5px !important;
     border: 1.2px solid #e5e7eb;
     border-width: 0 0 1px 0;
     font-weight: 600;
@@ -47,6 +49,7 @@ body{
     font-size: 13px;
     transition: box-shadow 0.2s;
    /* width: 100%; */
+   height: 30px;
 }
 
 
@@ -92,13 +95,14 @@ display: none;
 
 .p-datatable .p-datatable-header {
 background-color: #f8f9fa;
+padding: 10px 15px;
 }
 
 
 .test .p-card-header{
     height: 0px;
     width: 100%;
-    padding:25px 30px;
+    padding:25px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -173,7 +177,7 @@ p-dropdown .p-inputwrapper  {
 
 .p-datatable .p-datatable-tbody > tr > td{
     padding: 6px 6px;
-    height: 38px;
+    height: 35px;
 }
 
 .p-overlaypanel .p-overlaypanel-content{
@@ -230,6 +234,11 @@ p-dropdown .p-inputwrapper  {
         color: #808080 !important;
         cursor: not-allowed !important;
       }
+
+      .p-dropdown{
+        border: red;
+      }
+      
 
       .p-card .p-card-footer{
         display: flex;

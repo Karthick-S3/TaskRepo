@@ -8,13 +8,15 @@ import { City } from '../Interfaces/city';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
+import { CheckboxModule } from 'primeng/checkbox';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-companydetails',
   templateUrl: './companydetails.component.html',
   styleUrls: ['./companydetails.component.css'],
-  providers: [MessageService]
+  providers: [MessageService,CheckboxModule,CommonModule]
 })
 export class CompanydetailsComponent implements OnInit {
 
@@ -50,14 +52,35 @@ export class CompanydetailsComponent implements OnInit {
   globalFilter:string | undefined='';
   selectedRowIndex: number | null = null;
   expand:boolean = true;
+  checked: string[] = [];
+  selectedcompany!:Company;
 
+
+  TabValues = [
+    { field: 'companyname', header: 'CompanyName', width: '10%' },
+    { field: 'companyshortname', header: 'Shortname', width: '8%' },
+    { field: 'contact', header: 'Business Cont', width: '9%' },
+    { field: 'address', header: 'Address', width: '9%' },
+    { field: 'country', header: 'Country', width: '9%' },
+    { field: 'state', header: 'State', width: '9%' },
+    { field: 'city', header: 'City', width: '9%' },
+    { field: 'zipcode', header: 'Zip code', width: '9%' },
+    { field: 'active', header: 'Active', width: '9%' },
+    { field: 'currency', header: 'Currency', width: '9%' },
+    { field: 'revenue', header: 'Revenue', width: '9%' }
+  ];
+
+  
 
   expandTable(){
   this.expand = !this.expand;
   }
 
  
-
+  onCheckboxClick(event: Event) {
+    event.stopPropagation();
+    console.log(this.selectedcompany)
+  }
   routebyid(company:any,rowIndex:number){
     this.Companyid = company.companyid
 
@@ -186,7 +209,7 @@ export class CompanydetailsComponent implements OnInit {
     this.loadCompanies(event)
   }
 
-    reload(){
+    reload(){   
       this.messageService.add({ severity: 'success', summary: 'Reload', detail: 'Company Details Reloaded' });
     this.showwwww = false;
     this.selectedRowIndex =null;
@@ -230,6 +253,7 @@ export class CompanydetailsComponent implements OnInit {
   
   
   loadCompanies(event : TableLazyLoadEvent): void {
+    console.log(event);
       this.animation = true;
       const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
       const sortOrder: boolean = event.sortOrder === 1 ? true : false;
@@ -265,9 +289,11 @@ export class CompanydetailsComponent implements OnInit {
         .subscribe(companies => {
           this.animation = false;
           if (companies && companies.length > 0) {
+
             this.companys = companies;
             this.total_record = companies[0].total_records;
           } else {
+            
             console.error('No companies found.');
           }
         });

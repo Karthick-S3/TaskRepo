@@ -9,6 +9,7 @@ using System.Management;
 
 
 
+
 namespace Backend.Controllers
 {
     [ApiController]
@@ -18,6 +19,7 @@ namespace Backend.Controllers
 
 
         private readonly ICompanydetailsRepository  _companydetailsRepositry;
+        private readonly MyWorkerService _serviceProcess;
         private readonly string _uploadFolder;
 
 
@@ -29,6 +31,8 @@ namespace Backend.Controllers
 
               
         }
+
+         
 
 
 
@@ -51,64 +55,67 @@ namespace Backend.Controllers
 
 
         [HttpGet("GetServiceStatus")]
-        public IActionResult GetServiceStatus([FromQuery] string serviceName)
+public IActionResult GetServiceStatus([FromQuery] string serviceName)
+{
+    try
+    {
+        using (var serviceController = new ServiceController(serviceName))
         {
-            try
+            var status = serviceController.Status;
+            var (serviceProcessId, startupType) = GetServiceProcessIdAndStartupType(serviceController);
+            if (serviceProcessId == -1)
             {
-                using (var serviceController = new ServiceController(serviceName))
-                {
-                    var status = serviceController.Status;
-                    var serviceProcessId = GetServiceProcessId(serviceController);
-                    if (serviceProcessId == -1)
-                    {
-                        return StatusCode(500, $"Could not find process for service {serviceName}");
-                    }
-                    var process = Process.GetProcessById(serviceProcessId);
-                    Thread.Sleep(1000);
-                    process.Refresh();
-                    var workingSetMemory = process.WorkingSet64;
-                    var workingSetMemoryMB = BytesToMegabytes(workingSetMemory);
-                    return Ok(new
-                    {
-                        ServiceName = serviceName,
-                        DisplayName = serviceController.DisplayName,
-                        Status = status.ToString(),
-                        WorkingSetMemoryMB = workingSetMemoryMB.ToString("0.00") + " MB"
-                    });
-                }
+                return StatusCode(500, $"Could not find process for service {serviceName}");
             }
-            catch (System.Exception ex)
+            var process = Process.GetProcessById(serviceProcessId);
+            Thread.Sleep(1000);
+            process.Refresh();
+            var workingSetMemory = process.WorkingSet64;
+            var workingSetMemoryMB = BytesToMegabytes(workingSetMemory);
+            return Ok(new
             {
-                return StatusCode(500, $"Error fetching status or memory usage for service {serviceName}: {ex.Message}");
+                ServiceName = serviceName,
+                DisplayName = serviceController.DisplayName,
+                Status = status.ToString(),
+                StartupType = startupType,
+                WorkingSetMemoryMB = workingSetMemoryMB.ToString("0.00") + " MB"
+            });
+        }
+    }
+    catch (System.Exception ex)
+    {
+        return StatusCode(500, $"Error fetching status or memory usage for service {serviceName}: {ex.Message}");
+    }
+}
+
+private (int, string) GetServiceProcessIdAndStartupType(ServiceController serviceController)
+{
+    try
+    {
+        var wmiQuery = $"SELECT ProcessId, StartMode FROM Win32_Service WHERE Name = '{serviceController.ServiceName}'";
+        using (var searcher = new System.Management.ManagementObjectSearcher(wmiQuery))
+        using (var results = searcher.Get())
+        {
+            foreach (var result in results)
+            {
+                var processId = Convert.ToInt32(result["ProcessId"]);
+                var startupType = result["StartMode"].ToString();
+                return (processId, startupType);
             }
         }
+    }
+    catch
+    {
+        // Handle or log the exception as necessary
+    }
 
-        private int GetServiceProcessId(ServiceController serviceController)
-        {
-            try
-            {
-                var wmiQuery = $"SELECT ProcessId FROM Win32_Service WHERE Name = '{serviceController.ServiceName}'";
-                using (var searcher = new System.Management.ManagementObjectSearcher(wmiQuery))
-                using (var results = searcher.Get())
-                {
-                    foreach (var result in results)
-                    {
-                        return Convert.ToInt32(result["ProcessId"]);
-                    }
-                }
-            }
-            catch
-            {
-                // Handle or log the exception as necessary
-            }
+    return (-1, "Unknown");
+}
 
-            return -1; 
-        }
-
-        private static double BytesToMegabytes(long bytes)
-        {
-            return bytes / (1024f * 1024f);
-        }
+private static double BytesToMegabytes(long bytes)
+{
+    return bytes / (1024f * 1024f);
+}
 
 
 
@@ -559,8 +566,9 @@ public async Task<IActionResult> UpdateBudgetDetail([FromBody] Budgetdetails bud
         {
             try
             {
-                await _companydetailsRepositry.StartService(serviceName);
+                await _serviceProcess.StartService(serviceName);
                return Ok(new { message = "Service started successfully." });
+
 
             }
             catch (Exception ex)
@@ -574,7 +582,7 @@ public async Task<IActionResult> UpdateBudgetDetail([FromBody] Budgetdetails bud
         {
             try
             {
-                await _companydetailsRepositry.StopService(serviceName);
+                await _serviceProcess.StopService(serviceName);
                 return Ok(new { message = "Service stopped successfully." });
 
             }

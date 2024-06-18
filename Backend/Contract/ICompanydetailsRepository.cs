@@ -6,8 +6,6 @@ namespace Backend.Contract
     public interface ICompanydetailsRepository
     {
 
-        public Task StartService(string servicename);
-        public Task StopService(string servicename);
 
         public IEnumerable<Countrydetails> GetCountry();
 

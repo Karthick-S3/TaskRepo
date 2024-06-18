@@ -2,5 +2,6 @@ export interface SystemService {
     serviceName:string,
     displayName :string,
     status:string,
-    workingSetMemoryMB:string
+    workingSetMemoryMB:string,
+    startupType:string 
 }

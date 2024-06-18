@@ -66,16 +66,16 @@
 
 
 
-        <div class="body w-100 h-100 container-fluid" >
+        <div class="m-0 p-0 w-100 h-100 container-fluid d-flex align-items-center justify-content-center flex-column" >
             
-           <div class="row w-100 h-100 d-flex align-items-center justify-content-between frow">
+           <div class="row w-100 h-100 d-flex align-items-center justify-content-between frow ">
             
-                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height: 90px;">
+                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;">
                     <label for="companyname" class="form-label text-black mb-1 fw-semibold">Company Name <span  style="color: red;">*</span></label>
                     <input pInputText type="text" class="form-control rounded w-100 px-2" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
                     
                     <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
+                        *Companyname required.
                     </small>
 
                     <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
@@ -88,7 +88,7 @@
                 </div>
                 
 
-                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100" style="height: 90px;">
+                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100 px-1" style="height: 90px;">
                     <label for="companyshortname" class="form-label text-black mb-1 fw-semibold">Short Name </label>
                     <input pInputText type="text" class="form-control w-100 rounded px-2" id="companyshortname" formControlName="companyshortname" placeholder="Short Name" autocomplete="off" />
                     <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
@@ -99,11 +99,11 @@
                     </small>
                 </div>
 
-                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100" style="height: 90px;">
+                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100 px-1" style="height: 90px;">
                     <label for="contact" class="form-label text-black mb-1 fw-semibold">Business Contact <span style="color: red;">*</span></label>
                     <input pInputText class="form-control rounded w-100 px-2" id="contact" formControlName="contact"  placeholder="Phone Number" autocomplete="off"  />
                     <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
-                        *This field is required.
+                        *Business Contact required.
                     </small>
                     <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
                         *Enter Valid Number & it allow only Numeric Value
@@ -114,7 +114,7 @@
                     
                 </div>
 
-                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100" style="height: 90px;">
+                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100 px-1" style="height: 90px;">
                     <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
                     <p-inputSwitch class="form-control w-100 p-0 m-0" type="" formControlName="active" ></p-inputSwitch>
                     <small>
@@ -132,40 +132,40 @@
            <div class="row w-100 h-100 d-flex align-items-center justify-content-between">
 
             
-            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height: 90px;">
+            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;">
                 <label for="cid" class="form-label text-black mb-1 fw-semibold">Country <span style="color: red;"> * </span></label>
                 <p-dropdown  class="fullwidth form-control rounded w-100" formControlName="cid" [options]="countrys" optionLabel="country" optionValue="cid" placeholder="Select a Country" (onChange)="onCountryChange($event)"></p-dropdown>
                 
                 <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
-                    *This field is required.
+                    *Country required.
                 </small>
              
 
             </div>
             
             
-            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height: 90px;" >
+            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
                 <label for="username" class="form-label text-black mb-1 fw-semibold">State<span style="color: rgb(255, 0, 0);"> * </span></label>
                 <p-dropdown class="fullwidth form-control rounded w-100" formControlName="sid" [options]="states" optionLabel="state" optionValue="sid"  placeholder="Select a State" (onChange)="onStateChange($event)"></p-dropdown>
                 <small *ngIf="myForm.get('sid')?.errors?.['required'] && myForm.get('sid')?.touched " >
-                    *This field is required.
+                    *State required.
                 </small>
             </div>
 
-           <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height: 90px;" >
+           <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
                 <label for="username" class="form-label text-black mb-1 fw-semibold">City<span style="color: red;"> * </span></label>
                 <p-dropdown class="fullwidth form-control rounded w-100" formControlName="cityid" [options]="citys" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
                 <small *ngIf="myForm.get('cityid')?.errors?.['required'] && myForm.get('cityid')?.touched " >
-                    *This field is required.
+                    *City required.
                 </small>
             </div>
 
 
-            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height: 90px;" >
+            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
                 <label for="revenue" class="form-label text-black mb-1 fw-semibold">Revenue<span style="color: red;"> * </span></label>
                 <input class="form-control rounded w-100 px-2"  pInputText  id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" style="height: 37px;" />
                 <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched">
-                    * This field is required.
+                    * Revenue required.
                 </small>
                 <small *ngIf="myForm.get('revenue')?.errors?.['pattern']">
                     * Revenue allow numeric value with up to 2 decimal places.
@@ -181,17 +181,17 @@
 
 
        <div class="row w-100 h-100 d-flex align-items-center justify-content-between" >
-        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height:200px;">
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
             <label for="address" class="form-label text-black mb-1 fw-semibold">Address </label>
             <textarea rows="5" cols="30" id="address" class="form-control rounded p-2 w-100" pInputTextarea placeholder="Address" autocomplete="off" formControlName="address" ></textarea>
             
         </div>
 
-        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height:200px;">
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
             <label for="Email" class="form-label text-black mb-1 fw-semibold">Contact Email<span style="color: red;"> * </span></label>
             <textarea class="form-control rounded p-2 w-100" rows="5" cols="30" pInputTextarea placeholder="Contact Email Of The Company" formControlName="email" autocomplete="off"></textarea>
             <small *ngIf="myForm.get('email')?.errors?.['required'] && myForm.get('email')?.touched">
-                * This field is required.
+                * Contact Email required.
             </small>
             <small *ngIf="myForm.get('email')?.errors?.['email'] && myForm.get('email')?.touched">
                 * Enter a valid email address.
@@ -206,13 +206,13 @@
         
         
 
-        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height: 200px;">
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 200px;">
             <label for="zipcode" class="form-label text-black mb-1 fw-semibold">Zip Code<span style="color: red;"> * </span></label>
             <input pInputText  placeholder="Zipcode" id="zipcode" class="form-control rounded w-100 px-2" formControlName="zipcode"  autocomplete="off" />
            
 
             <small *ngIf="myForm.get('zipcode')?.errors?.['required'] && myForm.get('zipcode')?.touched">
-                *This field is required.
+                * Zipcode required.
             </small>
             <small *ngIf="myForm.get('zipcode')?.errors?.['pattern']">
                 *Zipcode allows only numeric values
@@ -222,16 +222,18 @@
             </small>
         </div>
         
-        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start" style="height:200px;">
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
             <label for="cid" class="form-label text-black mb-1 fw-semibold">Currency<span style="color: red;"> * </span></label>
-            <p-dropdown class="fullwidth form-control rounded w-100" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
+            <p-dropdown class="fullwidth form-control rounded w-100 p-0" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
             
             <small *ngIf="myForm.get('currencyid')?.errors?.['required'] && myForm.get('currencyid')?.touched " >
-                *This field is required.
+                *Currency required.
             </small>
          
 
         </div>
+
+        
        </div>
 
         </div>
@@ -245,7 +247,7 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height:calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+<div *ngIf="animation" style="width: 100%;height:calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;" class="preloader">
     <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
 </div>
 
@@ -288,7 +290,7 @@
                         </td>
                       
                         <td>
-                            <a class="d-block w-100 h-100 text-center " style=" line-height: 30px; cursor: pointer;" (click)="deleteattachment(i)">
+                            <a class="d-block w-100 h-100 text-center d-flex align-items-center justify-content-center" style=" line-height: 30px; cursor: pointer;" (click)="deleteattachment(i)">
                                 <i style="color: red;" class="fa-solid fa-trash-can"></i>
                             </a>
                         </td>

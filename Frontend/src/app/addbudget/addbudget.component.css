@@ -218,7 +218,8 @@
 
 small{
     color: red;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 13px;
 }
 
 .form-control{

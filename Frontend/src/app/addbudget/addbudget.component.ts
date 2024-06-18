@@ -128,22 +128,24 @@ alert("shows")
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       accept: () => {
-        let index = 0;
-        this.budgetdetail.forEach(element => {
-          if(element.budgetdetailid == event.controls.budgetdetailid.value){
-            this.deletedetail.push(element.budgetdetailid);
-            this.budgetdetail.splice(index, 1);
-            this.myForm.get('startamount')?.setValue(0);
-            this.myForm.get('limitamount')?.setValue(0);
-            this.myForm.get('manhour')?.setValue(1);
-            this.myForm.get('containersize')?.setValue(1);
-            this.myForm.get('containertype')?.setValue('');
-            
-          }
-          index ++;
-        });
-        this.messageService.add({ severity: 'warn', summary: 'Deleted', detail: 'Detailline Deleted Successfully' });
-        index = 0;
+        let index: number;
+          this.budgetdetail.forEach(element => {
+            if(element.budgetdetailid == event.controls.budgetdetailid.value){
+              this.deletedetail.push(element.budgetdetailid);
+              this.budgetdetail.splice(index, 1);
+              this.myForm.get('startamount')?.setValue(0);
+              this.myForm.get('limitamount')?.setValue(0);
+              this.myForm.get('manhour')?.setValue(1);
+              this.myForm.get('containersize')?.setValue(1);
+              this.myForm.get('containertype')?.setValue('');
+              
+            }
+            index ++;
+          });
+          this.messageService.add({ severity: 'warn', summary: 'Deleted', detail: 'Detailline Deleted Successfully' });
+         
+        
+        
       },
       reject : () =>{
 
@@ -920,7 +922,7 @@ initializeForm(): void {
     containersize: [1, [
       Validators.pattern('^[0-9]*$'),
       Validators.min(1),
-      Validators.max(40)
+      Validators.max(40),
   ]],
     companyid:['',Validators.required],
     companyname:['',Validators.required],

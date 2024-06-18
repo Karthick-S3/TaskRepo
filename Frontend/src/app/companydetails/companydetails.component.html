@@ -6,7 +6,7 @@
 
     <form #myForm="ngForm" class="w-100 d-flex align-items-start justify-content-center flex-column py-4 px-2"  (ngSubmit)="onSubmit()">
       <label for="Country">Country</label>
-      <p-multiSelect [options]="countrys" [(ngModel)]="selectedCountry" optionLabel="country" name="country"   (ngModelChange)="onCountryChange($event)">
+      <p-multiSelect [options]="countrys" [(ngModel)]="selectedCountry" optionLabel="country" name="country" place   (ngModelChange)="onCountryChange($event)">
       </p-multiSelect>
   
       <label for="State">State</label>
@@ -39,9 +39,9 @@
 
   <div class="body w-100 d-flex  align-items-center justify-content-center position-relative h-auto"   >
    
-    <div class="container-fluid px-1 py-1 position-absolute top-0 left-0">
+    <div class="container-fluid px-2 py-1 position-absolute top-0 left-0">
       <div class="sec-div w-100 p-0 m-0 d-flex align-items-center rounded-top">
-        <h1  class="text-white fs-6 fw-semibold mx-3 my-auto">Company Details</h1>
+        <h1  class="text-white fs-6 fw-semibold mx-2 my-auto">Company Details</h1>
       </div>
       <div >
         <div class="p-3"  style="border: 1px solid rgba(0, 0, 0, 0.131);">
@@ -60,6 +60,8 @@
             [scrollable]="true"
             scrollHeight="600px"
             [customSort]="true"
+            [(selection)]="selectedcompany" 
+            selectionMode="single"
             [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
             
             >
@@ -96,89 +98,28 @@
             
               
             <ng-template pTemplate="header">
-             
-              
-                <tr style="height: 40px;">
-                    <!-- <th style="width: 5%;" pSortableColumn="companyid">Cmp Id<p-sortIcon field="companyid"></p-sortIcon></th> -->
-                    <th style="width: 10%;" pSortableColumn="companyname">CompanyName <p-sortIcon field="companyname"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="companyshortname">Shortname<p-sortIcon field="companyshortname"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="contact">Business Cont <p-sortIcon field="contact"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="address">Address <p-sortIcon field="Address"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="country">Country<p-sortIcon field="country"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="state">State <p-sortIcon field="state"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="zipcode">Zip code <p-sortIcon field="zipcode"></p-sortIcon></th>
-                    <th style="width: 7%;" pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon></th>
-                    <th style="width: 7%;" pSortableColumn="currency">Currency<p-sortIcon field="currency"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="revenue">Revenue<p-sortIcon field="revenue"></p-sortIcon></th>
+                <tr style="height: 35px;">
+                    <th style="width: 1%"></th>
+                    <th *ngFor="let headings of TabValues" [style.width]="headings.width" pSortableColumn="{{ headings.field }}">{{headings.header}}   <p-sortIcon [field]="headings.field"></p-sortIcon></th>
                 </tr>
 
-                
-
-
-                <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
-  
-                <!-- <th style="width: 5%;">
-                    <p-columnFilter  type="text" field="companyid" ></p-columnFilter>
-                </th> -->
-                <th style="width: 10%;">
-                    <p-columnFilter type="text" field="companyname"></p-columnFilter>
-                </th>
-                <th style="width: 10%;">
-                    <p-columnFilter type="text" field="companyshortname"></p-columnFilter>
-                </th>
-  
-              <th style="width: 10%;">
-                  <p-columnFilter type="text" field="contact"></p-columnFilter>
-              </th>
-              <th style="width: 10%;">
-                  <p-columnFilter type="text" field="address"></p-columnFilter>
-              </th>
-              <th style="width: 10%;">
-                  <p-columnFilter type="text" field="country"></p-columnFilter>
-              </th>
-              <th style="width: 10%;">
-                <p-columnFilter type="text" field="state"></p-columnFilter>
-            </th>
-            <th style="width: 10%;">
-              <p-columnFilter type="text" field="city"></p-columnFilter>
-          </th>
-          <th style="width: 10%;">
-            <p-columnFilter type="text" field="zipcode"></p-columnFilter>
-        </th>
-        <th style="width: 7%;">
-          <p-columnFilter type="text" field="active"></p-columnFilter>
-      </th>
-      <th style="width: 7%;">
-        <p-columnFilter type="text" field="currency"></p-columnFilter>
-    </th>
-        
-
-      <th style="width: 10%;">
-        <p-columnFilter type="text" field="revenue"></p-columnFilter>
-    </th>
-
+                <tr  style="height: 35px;" class="try" *ngIf="showwwww">
+                  <th style="width: 1%;"></th>
+                  <th *ngFor="let headings of TabValues" [style.width]="headings.width" > <p-columnFilter type="text" [field]="headings.header"></p-columnFilter></th>
                 </tr>
+
             </ng-template>
+
             <ng-template pTemplate="body" let-company let-rowIndex="rowIndex">
-              <tr class="tr-body" (click)="routebyid(company, rowIndex)" [ngClass]="{'clicked': rowIndex === selectedRowIndex}">
-                <!-- <td>{{ company.companyid }}</td> -->
-                <td>{{ company.companyname }}</td>
-                <td>{{ company.companyshortname }}</td>
-                <td>{{ company.contact }}</td>
-                <td>{{ company.address }}</td>
-                <td>{{ company.country }}</td>
-                <td>{{ company.state }}</td>
-                <td>{{ company.city }}</td>
-                <td>{{ company.zipcode }}</td>
-                <td>{{ company.active }}</td>
-                <td>{{ company.currency }}</td>
-                <!-- <td>{{ company.establish_date | date : 'MMM/dd/yyyy'}}</td> -->
-                <td>{{ company.revenue }}</td>
+              <tr class="tr-body" style="height: 35px;" (click)="routebyid(company, rowIndex)" [ngClass]="{'clicked': rowIndex === selectedRowIndex}">
+                <td>
+                  <p-tableCheckbox type="button" [value]="company" (click)="onCheckboxClick($event)" />
+                </td>
+                <td *ngFor="let col of TabValues">{{ company[col.field] }}</td>
               </tr>
             </ng-template>
             
-            <ng-template pTemplate="emptymessage">
+            <ng-template pTemplate="emptymessage" >
               <tr>
                   <td colspan="11">No Company found.</td>
               </tr>
@@ -198,7 +139,7 @@
   
 </div>
 
-<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;">
+<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;">
   <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
 </div>
 

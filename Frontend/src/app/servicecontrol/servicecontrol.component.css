@@ -10,9 +10,9 @@
   
   td {
     width: 20%;
-    height: 38px;
+    height: 35px;
     button i{
-        font-size: 18px !important;
+        font-size: 16px !important;
     }
     button.disabled-button {
       cursor: not-allowed;

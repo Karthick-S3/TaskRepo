@@ -63,7 +63,7 @@
 
 
                     <small *ngIf="myForm.get('description')?.errors?.['required'] && myForm.get('description')?.touched " >
-                        *This field is required.
+                        *Description required.
                     </small>
                     <small *ngIf="myForm.get('description')?.errors?.['maxlength']" >
                         *Description should be lesser than 20
@@ -79,7 +79,7 @@
                     <p-dropdown  class="fullwidth fullform-control readonly-field rounded w-100 px-0" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
 
                     <small *ngIf="myForm.get('budgetcurrencyid')?.touched  && myForm.get('budgetcurrencyid')?.errors?.['required'] " >
-                        *This field is required.
+                        *Currency required.
                     </small>
                     
                 </div>
@@ -127,7 +127,7 @@
                     <label for="cid" class="form-label text-black fw-semibold mb-1">Country <span style="color: red;"> * </span></label>
                     <p-dropdown (onChange)="onCountryChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
                     <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
-                        *This field is required.
+                        *Country required.
                     </small>
                 </div>
                 
@@ -136,7 +136,7 @@
                     <label for="username" class="form-label text-black fw-semibold mb-1">State<span style="color: rgb(255, 0, 0);"> * </span></label>
                     <p-dropdown (onChange)="onStateChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
                     <small *ngIf="myForm.get('sid')?.errors?.['required'] && myForm.get('sid')?.touched " >
-                        *This field is required.
+                        *State required.
                     </small>
                 </div>
 
@@ -144,7 +144,7 @@
                     <label for="username" class="form-label text-black fw-semibold mb-1">City<span style="color: red;"> * </span></label>
                     <p-dropdown (onChange)="onCityChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
                     <small *ngIf="myForm.get('cityid')?.errors?.['required'] && myForm.get('cityid')?.touched " >
-                        *This field is required.
+                        *City required.
                     </small>
                 </div>
 
@@ -157,7 +157,7 @@
                     <p-dropdown  (onChange)="onShortnameChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
                     
                     <small *ngIf="myForm.get('companyid')?.errors?.['required'] && myForm.get('companyid')?.touched " >
-                        *This field is required.
+                        *Shortname equired.
                     </small>
 
                 </div>    
@@ -168,7 +168,7 @@
                     <label for="companyname" class="form-label text-black fw-semibold mb-1">Company Name<span style="color: red;"> * </span></label>
                     <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
                     <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
+                        *Companyname required.
                     </small>
                     
                 </div>
@@ -178,7 +178,7 @@
                     <label for="companyname" class="form-label text-black fw-semibold mb-1">Revenue<span style="color: red;"> * </span></label>
                     <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="companyname" formControlName="revenue" placeholder="Revenue" autocomplete="off" />
                     <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched " >
-                        *This field is required.
+                        *Revenue required.
                     </small>
                 </div>
 
@@ -186,7 +186,7 @@
                     <label for="currencyid" class="form-label text-black fw-semibold mb-1">Company Currency<span style="color: red;"> * </span></label>
                     <input pInputText class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="currencyid" formControlName="currency" placeholder="Currency" autocomplete="off"  />
                     <small *ngIf="myForm.get('currency')?.errors?.['required'] && myForm.get('currency')?.touched " >
-                        *This field is required.
+                        *Company Currency required.
                     </small>
                 </div>
 
@@ -197,7 +197,7 @@
                     <label for="companyname" class="form-label text-black fw-semibold mb-1">Zipcode<span style="color: red;"> * </span></label>
                     <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="zipcode" formControlName="zipcode" placeholder="Zipcode" autocomplete="off" />
                     <small *ngIf="myForm.get('zipcode')?.errors?.['required'] && myForm.get('zipcode')?.touched " >
-                        *This field is required.
+                        *Zipcode required.
                     </small>
                 </div>   
             </div>
@@ -282,8 +282,11 @@
                     <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height: 130px;">
                         <label for="startamount" class="form-label text-black fw-semibold mb-1">Start Amount <span style="color: red;">*</span></label>
                         <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
-                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched" class="text-danger">
+                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched && !myForm.get('startamount')?.errors?.['pattern']" class="text-danger">
                             Start amount must be less than limit amount
+                        </small>
+                        <small *ngIf="myForm.get('startamount')?.errors?.['pattern'] && myForm.get('startamount')?.touched">
+                            *Enter valid number
                         </small>
                        
                     </div>
@@ -291,10 +294,13 @@
                     <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height: 130px;">
                         <label for="limitamount" class="form-label text-black fw-semibold mb-1">Limit Amount <span style="color: red;">*</span></label>
                         <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
-                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched" class="text-danger">
+                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched && !myForm.get('limitamount')?.errors?.['pattern']" class="text-danger">
                             Limit amount must be higher than start amount
                         </small>
-                       
+                        <small *ngIf="myForm.get('limitamount')?.errors?.['pattern'] && myForm.get('limitamount')?.touched">
+                            *Enter valid number
+                        </small>
+                        
                     </div>
                     
                     
@@ -392,7 +398,7 @@
                         </ng-template>
 
                         <ng-template pTemplate="header">
-                            <tr style="height: 40px;">
+                            <tr style="height: 35px;">
                             <th style="width: 10%;" pSortableColumn="startamount">Start Amount<p-sortIcon field="startamount"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="limitamount">Limit Amount<p-sortIcon field="limitamount"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="manhour">Man Hour<p-sortIcon field="manhour"></p-sortIcon></th>
@@ -445,7 +451,7 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
+<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;" class="preloader">
     <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
 </div>
 

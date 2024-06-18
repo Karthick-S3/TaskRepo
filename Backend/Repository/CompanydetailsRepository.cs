@@ -1,15 +1,16 @@
 
 using System.Data;
-
 using Backend.Context;
 using Backend.Contract;
 using Backend.Models;
 using Dapper;
-
+using MailKit.Net.Smtp;
+using MimeKit;
 using Dapper.Oracle;
 using System.Text;
-
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using MailKit.Security;
 
 
 
@@ -22,17 +23,23 @@ namespace Backend.Repository
     {
 
         private readonly DapperContext _context;
+         private readonly EmailSettings _emailSettings;
+
+         private readonly ILogger<MyWorkerService> _logger;
          
 
-        public CompanydetailsRepository( DapperContext context)
+        public CompanydetailsRepository( DapperContext context,IOptions<EmailSettings> emailSettings,ILogger<MyWorkerService> logger)
         {
             // _context = context;
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _emailSettings = emailSettings.Value;
+             _logger = logger;
         }
 
 
         
 
+        
  
 
 
@@ -747,48 +754,7 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             }
         }
 
-         public async Task StartService(string serviceName)
-        {
-            await Task.Run(() =>
-            {
-                var processInfo = new ProcessStartInfo
-                {
-                    FileName = "net",
-                    Arguments = $"start \"{serviceName}\"",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    Verb = "runas" // Run as administrator
-                };
-
-                using (var process = Process.Start(processInfo))
-                {
-                    process.WaitForExit();
-                }
-            });
-        }
-
-        public async Task StopService(string serviceName)
-        {
-            await Task.Run(() =>
-            {
-                var processInfo = new ProcessStartInfo
-                {
-                    FileName = "net",
-                    Arguments = $"stop \"{serviceName}\"",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    Verb = "runas" // Run as administrator
-                };
-
-                using (var process = Process.Start(processInfo))
-                {
-                    process.WaitForExit();
-                }
-            });
-        }
-
+       
         
     }
 

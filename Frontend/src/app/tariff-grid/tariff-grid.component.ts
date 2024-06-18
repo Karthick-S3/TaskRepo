@@ -35,6 +35,14 @@ export class TariffGridComponent implements OnInit  {
   Companyid:any = 0;
   selectedRowIndex: number | null = null;
 
+  TableValues = [
+    { field: 'budgetid', header: 'Budget Code', width: '10%',format : '' },
+    { field: 'description', header: 'Description', width: '10%' ,format : ''},
+    { field: 'budgetcurrencyid', header: 'Currency', width: '10%' ,format : ''},
+    { field: 'budgetactive', header: 'Active', width: '10%',format : '' },
+    { field: 'createdate', header: 'Create Date', width: '10%', format : 'dd-MMM-yyyy' }
+  ];
+
 
   constructor( private companyService: CompanyserviceService,
     private messageService: MessageService,

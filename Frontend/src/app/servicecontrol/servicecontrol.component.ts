@@ -16,22 +16,31 @@ export class ServicecontrolComponent implements OnInit {
     private confirmationService: ConfirmationService,) {}
 
   refreshService() {
-    this.getServices('wuauserv');
+    this.getServices('iComp');
 
   }
 
+  SendEmail(){
+    alert("Email will send")
+  }
+
   ngOnInit(): void {
-    const serviceName = 'wuauserv';
+    const serviceName = 'iComp';
     this.getServices(serviceName);
   }
 
   getServices(serviceName: string) {
     this.animation = true;
+
     this.companyService.getServiceStatus(serviceName).subscribe(
       (data: any) => {
         this.products = [];
         this.products.push(data);
         this.animation = false;
+        if(this.products[0].startupType == 'Disabled'){
+          this.products[0].status = '';
+          this.products[0].workingSetMemoryMB = '';
+        }
       },
       error => {
         console.error('Error fetching service details:', error);

@@ -37,6 +37,7 @@ export class AddDetailsComponent implements OnInit {
 
 
 
+
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
   types: any;
@@ -244,12 +245,22 @@ export class AddDetailsComponent implements OnInit {
         rejectButtonStyleClass:"p-button-text",
         acceptButtonStyleClass:"p-button-danger",
         accept: () => {
+          alert("working")
             this.resetForm();
+            this.attlen = false;
+            this.attachmentdata = [];
+            this.attachavailable = false;
+            this.attachmentlength = 0;
         },
         
     });
     }else{
       this.resetForm();
+            this.attlen = false;
+            this.attachmentdata = [];
+            this.attachavailable = false;
+            this.attachmentlength = 0;
+      
     }
     
 }
@@ -393,7 +404,8 @@ getFileURL(type: string): string {
       containertype:[''],
       containersize:[''],
       description:[''],
-      budgetactive:['']
+      budgetactive:[''],
+      dateval:[]
     });
   }
 
@@ -698,7 +710,16 @@ onFileSelected(event: Event) {
     });
   }
   
-  
+ 
+  alertdate(event : any){
+    console.log(event)
+  }
+
+  newDate() {
+    // Set the date to 28 Mar 2023
+    const newDate = new Date(2023, 2, 28); // Month is 0-based, so 2 is March
+    this.myForm.get('dateval')?.setValue(newDate);
+  }
   
   
 

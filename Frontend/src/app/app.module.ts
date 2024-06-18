@@ -32,6 +32,8 @@ import { CompanyserviceService } from './companyservice.service';
 import { StepperModule } from 'primeng/stepper';
 import { CompanystepsComponent } from './companysteps/companysteps.component';
 import { ServicecontrolComponent } from './servicecontrol/servicecontrol.component';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 
@@ -71,8 +73,9 @@ import { ServicecontrolComponent } from './servicecontrol/servicecontrol.compone
     DialogModule,
     TreeModule,
     NgxUploaderModule,
-    StepperModule
-
+    StepperModule,
+    CalendarModule,
+    CheckboxModule
 
    
   ],
