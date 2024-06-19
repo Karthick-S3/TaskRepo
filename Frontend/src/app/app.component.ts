@@ -1,4 +1,5 @@
 import { Component, OnInit,NgZone, HostListener  } from '@angular/core';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 
 
@@ -6,9 +7,11 @@ import { Component, OnInit,NgZone, HostListener  } from '@angular/core';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  providers: [MessageService,ConfirmationService]  
 
 })
 export class AppComponent implements OnInit {
+  [x: string]: any;
 
   currentDate: Date | undefined;
   isFullScreen = false;
@@ -19,7 +22,7 @@ export class AppComponent implements OnInit {
   }
 
 
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone,private messageService: MessageService) {}
 
   FullScreen(){
     if (!this.isFullScreen) {
@@ -52,5 +55,7 @@ export class AppComponent implements OnInit {
   logout(){
     alert("Logout")
   }
+
+
 }
 

@@ -25,9 +25,10 @@ namespace Backend.Controllers
 
 
 
-        public CompanydetailsController (ICompanydetailsRepository companydetailsRepository,string uploadFolder){
+        public CompanydetailsController (ICompanydetailsRepository companydetailsRepository,string uploadFolder,MyWorkerService myWorkerService){
             _companydetailsRepositry = companydetailsRepository;
              _uploadFolder = uploadFolder ?? throw new ArgumentNullException(nameof(uploadFolder));
+              _serviceProcess = myWorkerService ?? throw new ArgumentNullException(nameof(myWorkerService));
 
               
         }

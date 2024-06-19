@@ -14,6 +14,7 @@ import { City } from '../Interfaces/city';
 import { BudgetDetail } from '../Interfaces/budgetdetail';
 import { first, skip } from 'rxjs';
 import { Budget } from '../Interfaces/budget';
+import { AppComponent } from '../app.component';
 
 
 
@@ -54,6 +55,7 @@ alert("shows")
   animation = false;
   showentrrytable:boolean = false;
   deletedetail:any = [];
+  
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
@@ -81,6 +83,7 @@ alert("shows")
 
 
   resetdetailentry(event : any){
+
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Are you sure to reset budgetdetailline',
@@ -88,8 +91,6 @@ alert("shows")
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      rejectButtonStyleClass: "p-button-danger",
-      acceptButtonStyleClass: 'p-button-success',
       acceptLabel: 'Yes' ,
       accept: () => {
         this.myForm.get('startamount')?.setValue(0);
@@ -116,6 +117,7 @@ alert("shows")
 
   deleteline(event : any){
     
+
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Are you sure to delete this detail line?',
@@ -123,8 +125,6 @@ alert("shows")
       icon: 'pi pi-trash',
       acceptIcon: 'none',
       rejectIcon: 'none',
-      acceptButtonStyleClass: 'p-button-success',
-      rejectButtonStyleClass: 'p-button-danger',
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       accept: () => {
@@ -155,6 +155,9 @@ alert("shows")
         
   });
   }
+
+
+
 
   Addintoentry(event : any){
     
@@ -195,14 +198,13 @@ alert("shows")
 if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamount == 0  || (newItem.startamount > newItem.limitamount)  || newItem.manhour == 0  || newItem.containersize == 0){
   this.confirmationService.confirm({
     target: event.target as EventTarget,
-    message: 'Please enter valid values in the fields to create a budget detailline.1',
+    message: 'Please enter valid values in the fields to create a budget detailline.',
       header: 'Invalid Input',
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
     rejectIcon: "none",
-    acceptButtonStyleClass: 'p-button-danger',
-    acceptLabel: 'Close', 
-    rejectVisible: false, 
+    rejectLabel: 'Close', 
+    acceptVisible: false, 
     accept: () => {
     }
     
@@ -221,7 +223,6 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
       icon: 'pi pi-check-circle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-success',
       acceptLabel: 'Ok', 
       rejectVisible: false, 
       accept: () => {
@@ -241,7 +242,6 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
         icon: 'pi pi-exclamation-triangle',
         acceptIcon: "none",
         rejectIcon: "none",
-        rejectButtonStyleClass: 'p-button-danger',
         acceptLabel: 'Ok', 
         rejectVisible: false, 
         accept: () => {
@@ -338,7 +338,8 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     private formBuilder: FormBuilder,
     private router: Router,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService){
+    private confirmationService: ConfirmationService,
+    private appComponent:AppComponent){
 
   }
   showDialog() {
@@ -527,7 +528,6 @@ addBudget( event : any){
                     icon: 'pi pi-check-circle',
                     acceptIcon: "none",
                     rejectIcon: "none",
-                    acceptButtonStyleClass: 'p-button-success',
                     acceptLabel: 'Ok', 
                     rejectVisible: false, 
                     accept: () => {
@@ -630,9 +630,8 @@ addBudget( event : any){
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "pi pi-check",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok', 
-      rejectVisible: false, 
+      rejectLabel: 'Ok', 
+      acceptVisible: false, 
       accept: () => {
       }
   });
@@ -727,9 +726,8 @@ if(val.node.children.length == 0){
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
     rejectIcon: "none",
-    acceptButtonStyleClass: 'p-button-warning',
-    acceptLabel: 'Ok', 
-    rejectVisible: false, 
+    rejectLabel: 'Ok', 
+    acceptVisible: false, 
     accept: () => {
     }
 });
@@ -879,8 +877,6 @@ console.log(this.myForm);
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      rejectButtonStyleClass: "p-button-text",
-      acceptButtonStyleClass: "p-button-danger",
       accept: () => {
         this.Flag.emit(false);
       },

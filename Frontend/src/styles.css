@@ -323,6 +323,12 @@ p-dropdown .p-inputwrapper  {
         border: 1px solid black;  
         margin-left:10px ;
     }
+    .p-dialog .p-dialog-footer button:nth-child(1){
+        background: #BE2A1A;
+    }
+    .p-dialog .p-dialog-footer button:nth-child(2){
+        background: #3A9E3C;
+    }
     .p-multiselect-panel .p-multiselect-header {
         padding:12px 2px;
     }

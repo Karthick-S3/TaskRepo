@@ -48,7 +48,7 @@ namespace Backend.Repository
         private static TimeSpan GetTimeUntilNextRun()
         {
             DateTime now = DateTime.Now;
-            DateTime nextRun = now.Date.AddDays(1).AddMinutes(1); // Tomorrow at 12:01 AM
+            DateTime nextRun = now.Date.AddDays(1).AddMinutes(1);
             return nextRun - now;
         }
 
@@ -138,7 +138,7 @@ namespace Backend.Repository
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    Verb = "runas" // Run as administrator
+                    Verb = "runas" 
                 };
 
                 using (var process = Process.Start(processInfo))
@@ -161,7 +161,7 @@ namespace Backend.Repository
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    Verb = "runas" // Run as administrator
+                    Verb = "runas" 
                 };
 
                 using (var process = Process.Start(processInfo))
