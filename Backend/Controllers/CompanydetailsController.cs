@@ -26,7 +26,7 @@ namespace Backend.Controllers
     public class CompanydetailsController : ControllerBase
     {
 
-        private readonly ICompServices _serviceProcess;
+        // private readonly ICompServices _serviceProcess;
         private readonly ICompanydetailsRepository  _companydetailsRepositry;
         private readonly MyWorkerService _serviceProcess;
         private readonly string _uploadFolder;
