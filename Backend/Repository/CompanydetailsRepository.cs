@@ -311,12 +311,12 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
         }
         else
         {
-            query.Append(" ORDER BY companyid ASC");
+            query.Append(" ORDER BY companyid DESC");
         }
 
         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
-
-                       
+        
+        
                         using (var connection = _context.CreateConnection())
                         {
                             var result = await connection.QueryAsync<Companydetails>(query.ToString()).ConfigureAwait(false);
@@ -602,9 +602,13 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             query.Append(")");
         }
 
-        if (!string.IsNullOrEmpty(orderby))
+         if (!string.IsNullOrEmpty(orderby))
         {
-            query.Append($" ORDER BY b.{orderby} {(isAsc ? "ASC" : "DESC")}");
+            query.Append($" ORDER BY {orderby} {(isAsc ? "ASC" : "DESC")}");
+        }
+        else
+        {
+            query.Append(" ORDER BY budgetid DESC");
         }
 
         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
@@ -687,12 +691,16 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             query.Append(")");
         }
 
-        if (!string.IsNullOrEmpty(orderby))
+         if (!string.IsNullOrEmpty(orderby))
         {
-            query.Append($" ORDER BY b.{orderby} {(isAsc ? "ASC" : "DESC")}");
+            query.Append($" ORDER BY {orderby} {(isAsc ? "ASC" : "DESC")}");
+        }
+        else
+        {
+            query.Append(" ORDER BY budgetdetailid DESC");
         }
 
-        query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
+        // query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
 
         using (var connection = _context.CreateConnection())
         {
@@ -754,7 +762,23 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             }
         }
 
-       
+       public async Task<User> UserLogin(string username, string password)
+        {
+            string sql = @"SELECT * FROM users WHERE username = :Username AND password = :Password";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var user = await connection.QuerySingleOrDefaultAsync<User>(sql, new { Username = username, Password = password });
+                return user;
+            }
+        }
+
+        
+
+
+   
+
+
         
     }
 

@@ -12,9 +12,12 @@ import { Currency } from '../Interfaces/currency';
 import { State } from '../Interfaces/state';
 import { City } from '../Interfaces/city';
 import { BudgetDetail } from '../Interfaces/budgetdetail';
-import { first, skip } from 'rxjs';
+import { Observable, first, skip } from 'rxjs';
 import { Budget } from '../Interfaces/budget';
 import { AppComponent } from '../app.component';
+import { formatDate } from '@angular/common';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 
 
 
@@ -23,13 +26,13 @@ import { AppComponent } from '../app.component';
   selector: 'app-addbudget',
   templateUrl: './addbudget.component.html',
   styleUrl: './addbudget.component.css',
-  providers: [MessageService,ConfirmationService]  
+  providers: [MessageService]  
 })
 export class AddbudgetComponent implements OnInit {
 
 single:any;
 shows() {
-alert("shows")
+
 }
   visible: boolean = false;
   badgeval:string = 'NEW';
@@ -43,8 +46,8 @@ alert("shows")
   shortname: any[] = [];
   showwwww: boolean = false;
   budgetdetail: BudgetDetail[] = [];
-  showval:number = 10;
-  total_records: number = 5;
+  showval:number = 5;
+  total_records: number = 0;
   sFiledValue: string[] | undefined;
   searchField: string[] | undefined;
   sortField:string | undefined='';
@@ -55,7 +58,11 @@ alert("shows")
   animation = false;
   showentrrytable:boolean = false;
   deletedetail:any = [];
-  
+  BudgetCreateDate!: string;
+  isSubmitted: boolean = false;
+ 
+  rowsperpageVal = this.appComponent.TableProp.rowsperpage;
+  scrollheightval = this.appComponent.TableProp.smallTabScroll;
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
@@ -83,7 +90,7 @@ alert("shows")
 
 
   resetdetailentry(event : any){
-
+    this.appComponent.msgStatus = 'confirm';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Are you sure to reset budgetdetailline',
@@ -108,7 +115,7 @@ alert("shows")
       
         
   });
-    
+ 
   }
 
   reloadbudget(){
@@ -117,8 +124,9 @@ alert("shows")
 
   deleteline(event : any){
     
-
+    this.appComponent.msgStatus = 'confirm';
     this.confirmationService.confirm({
+      
       target: event.target as EventTarget,
       message: 'Are you sure to delete this detail line?',
       header: 'Confirmation',
@@ -154,6 +162,7 @@ alert("shows")
       
         
   });
+
   }
 
 
@@ -184,7 +193,9 @@ alert("shows")
       containertype: containertype,
       budgetid: budgetid,
       total_records: this.budgetdetail.length
+  
     };
+
 
 
     
@@ -196,6 +207,7 @@ alert("shows")
 
 
 if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamount == 0  || (newItem.startamount > newItem.limitamount)  || newItem.manhour == 0  || newItem.containersize == 0){
+  this.appComponent.msgStatus = 'error';
   this.confirmationService.confirm({
     target: event.target as EventTarget,
     message: 'Please enter valid values in the fields to create a budget detailline.',
@@ -216,6 +228,7 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
 }else{
   if (!isDuplicate) {
     this.budgetdetail.push(newItem);
+    this.appComponent.msgStatus = 'success';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Detailline added Successfully',
@@ -235,6 +248,7 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     this.myForm.get('containersize')?.setValue(1);
     this.myForm.get('containertype')?.setValue('');
     } else {
+      this.appComponent.msgStatus = 'warning';
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'This combination already exists. Please enter a new combination.',
@@ -276,6 +290,8 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     this.detaillinerow = null;
     this.total_records = this.budgetdetail.length;
 
+
+
     
   }
   detaillinerow: any = null;
@@ -289,11 +305,12 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
   
 
   LazyDataBudget(event:any){
+    this.ngxService.start();
     if(this.budgetid==0){
-     
+     this.ngxService.stop();
 
     }else{
-    this.animation = true;
+      this.ngxService.start();
     const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
     const sortOrder: boolean = event.sortOrder === 1 ? true : false;
     const globalFilter : string | undefined = typeof event.globalFilter === 'string' ? event.globalFilter : undefined;
@@ -321,14 +338,21 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     this.globalFilter = globalFilter;
     
     this.showval = event.rows !== null ? event.rows : undefined;
+   
 
-    this.companyService.LazyDataBudgetDetail(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue,globalFilter,this.budgetid)
+    this.companyService.LazyDataBudgetDetail(event.first || 0, event.rows || 5, sortField, sortOrder, searchField, sFiledValue,globalFilter,this.budgetid)
     .subscribe((budget) => {
-      this.animation = false;
-      this.budgetdetail = budget;
-      this.total_records = budget[0].total_records;
-      // this.total_records = this.budgetdetail[0].total_records;
+      if(budget[0]){
+        console.log(budget[0].total_records);
+        this.budgetdetail = budget;
+        this.total_records = budget[0].total_records;
+        this.ngxService.stop();
+      }
+      
     })
+    
+
+    
   }
   }
   
@@ -339,7 +363,9 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     private router: Router,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private appComponent:AppComponent){
+    private appComponent:AppComponent,
+    private ngxService : NgxUiLoaderService  
+  ){
 
   }
   showDialog() {
@@ -352,7 +378,7 @@ tree : any;
 
 ngOnInit(): void {
 
-  this.animation = true;
+  this.ngxService.start();
 
 
   this.companyService.getCountry().subscribe(countries => {
@@ -423,12 +449,16 @@ ngOnInit(): void {
 
   if(this.id==0){
     this.showentrrytable = false;
-    this.badgeval = 'NEW';
+    this.badgeval = 'NEW';  
   }else{
     this.showentrrytable = true;
     this.badgeval = 'EDIT';
     this.companyService.getById(this.id).subscribe(value => {
+      console.log(value);
+      console.log(value.establish_date);
       this.myForm.patchValue(value);
+      
+      this.BudgetCreateDate = formatDate(value.createdate,'dd-MMM-yyy','en-US').toUpperCase();
       this.budgetid = this.myForm.get('budgetid')?.value;
       if(this.myForm.get('budgetactive')?.value == 'true'){
         this.myForm.get('budgetactive')?.setValue(true);
@@ -446,7 +476,7 @@ ngOnInit(): void {
       this.addReadOnlyStyles();
       const event = {
         first : 0,
-        rows: 10,
+        rows: 5,
       }
 
       this.LazyDataBudget(event);
@@ -469,9 +499,12 @@ ngOnInit(): void {
   }
 
 
-  this.animation = false;
+  this.ngxService.stop();
   
+ 
 }
+
+
 
 
 addBudget( event : any){
@@ -520,7 +553,7 @@ addBudget( event : any){
               insertdetail.push(data);
               if(insertdetail.length >0){
                 this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
-                  
+                  this.appComponent.msgStatus = 'success';
                   this.confirmationService.confirm({
                     target: event.target as EventTarget,
                     message: 'Budget added Successfully',
@@ -539,14 +572,15 @@ addBudget( event : any){
             
         })
   
-        
-
+        this.badgeval = 'EDIT'
+        insertdetail = [];
+        this.isSubmitted = true;
         });
         
         
         
       }else{
-      
+        this.appComponent.msgStatus = 'warning';
         this.confirmationService.confirm({
           target: event.target as EventTarget,
           message: 'The budget currency must match the company currency.',
@@ -597,6 +631,8 @@ addBudget( event : any){
  
       if(updatedetail.length>0){
         this.companyService.updatebudgetlines(updatedetail).subscribe(value => {
+          updatedetail = [];
+          
           // console.log(value);
         })
       }
@@ -604,6 +640,8 @@ addBudget( event : any){
         
         if(insertdetail.length >0){
           this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
+            insertdetail = [];
+            insertdetail = [];
             // console.log(value);
           })
         }
@@ -619,10 +657,12 @@ addBudget( event : any){
         
 
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Updated Successfully !' });
+        this.isSubmitted = true;
   
       
     }
   }else{
+    this.appComponent.msgStatus = 'error';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Please enter valid values in the fields to create a budget detail.',
@@ -656,7 +696,7 @@ files: Country[] = [];
 loadCurrency(){
   this.companyService.GetCurrency().subscribe(currency => {
       this.currency = currency;
-      // alert(currency);
+     
   })
 }
 loadCountry(){
@@ -685,7 +725,7 @@ onNodeSelect(val : any){
   
 if(val.node.children.length == 0){
   this.budgetid = this.myForm.get('budgetid')?.value;
-  this.animation = true;
+  this.ngxService.start();
     this.companyService.getById(val.node.key).subscribe(company => {
       
       this.myForm.patchValue(company);
@@ -701,14 +741,14 @@ if(val.node.children.length == 0){
       });
       const event = {
         first : 0,
-        rows: 10,
+        rows: 5,
       }
   
       this.LazyDataBudget(event);
       
       this.showentrrytable = true;
       this.addReadOnlyStyles();
-      this.animation = false;
+      this.ngxService.stop();
       if(this.myForm.get('budgetid')?.value != 0){
         this.badgeval = 'EDIT';
         this.myForm.get('budgetcurrencyid')?.disable();
@@ -719,6 +759,7 @@ if(val.node.children.length == 0){
       }
     })
 }else{
+  this.appComponent.msgStatus = 'warning';
   this.confirmationService.confirm({
     target: val.target as EventTarget,
     message: 'Choose Proper Company Short name in the Hierarchy',
@@ -794,14 +835,14 @@ onShortnameChange(event:any){
     });
     const event = {
       first : 0,
-      rows: 10,
+      rows: 5,
     }
 
     this.LazyDataBudget(event);
     
     this.showentrrytable = true;
     this.addReadOnlyStyles();
-    this.animation = false;
+    this.ngxService.stop();
     if(this.myForm.get('budgetid')?.value != 0){
       this.badgeval = 'EDIT';
       this.myForm.get('budgetcurrencyid')?.disable();
@@ -868,9 +909,10 @@ hidefil(){
 
 }
 BackToList() {
-  
+  this.appComponent.msgStatus = 'confirm';
 console.log(this.myForm);
-  if (this.myForm.touched) {
+  if (this.myForm.touched && !this.isSubmitted) {
+
     this.confirmationService.confirm({
       message: 'You have unsaved changes in the screen. Do you want to continue?',
       header: 'Confirmation',
@@ -944,7 +986,27 @@ initializeForm(): void {
 }
 
 
-
+DisableBudget(event : any){
+  if(this.badgeval=='EDIT'){
+    if(event.checked== false){
+      this.myForm.get('budgetactive')?.setValue(true);
+      this.appComponent.msgStatus = 'error';
+      this.confirmationService.confirm({
+        message: 'Deactivation is not possible Once created the Budget',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon: "none",
+        rejectIcon: "none",
+        acceptLabel:"ok",
+        rejectVisible:false,
+        accept: () => {
+          
+        },
+        
+      });
+    }
+  }
+}
 
   
 }

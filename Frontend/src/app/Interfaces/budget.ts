@@ -6,5 +6,5 @@ export interface Budget {
     createdate:Date,
     companyid:number,
     total_records : number,
-    currency : string
+    currency : string,
 }

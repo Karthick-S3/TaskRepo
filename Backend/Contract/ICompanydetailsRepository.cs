@@ -75,8 +75,7 @@ namespace Backend.Contract
         public Task<IEnumerable<filesdetails>> GetFilesById(int companyid);
 
 
-
-   
+        public Task<User> UserLogin(string username,string password);
        
     }
 

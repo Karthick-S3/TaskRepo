@@ -56,9 +56,9 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,15,20]"
+            [rowsPerPageOptions]="rowsperpageVal"
             [scrollable]="true"
-            scrollHeight="600px"
+            [scrollHeight]="scrollheightVal"
             [customSort]="true"
             [(selection)]="selectedcompany" 
             selectionMode="single"
@@ -105,19 +105,40 @@
 
                 <tr  style="height: 35px;" class="try" *ngIf="showwwww">
                   <th style="width: 1%;"></th>
-                  <th *ngFor="let headings of TabValues" [style.width]="headings.width" > <p-columnFilter type="text" [field]="headings.header"></p-columnFilter></th>
+                  <th *ngFor="let headings of TabValues" [style.width]="headings.width" > <p-columnFilter type="text" [field]="headings.field"></p-columnFilter></th>
                 </tr>
 
             </ng-template>
 
-            <ng-template pTemplate="body" let-company let-rowIndex="rowIndex">
+            <!-- <ng-template pTemplate="body" let-company let-rowIndex="rowIndex">
               <tr class="tr-body" style="height: 35px;" (click)="routebyid(company, rowIndex)" [ngClass]="{'clicked': rowIndex === selectedRowIndex}">
                 <td>
                   <p-tableCheckbox type="button" [value]="company" (click)="onCheckboxClick($event)" />
                 </td>
                 <td *ngFor="let col of TabValues">{{ company[col.field] }}</td>
               </tr>
+            </ng-template> -->
+            <ng-template pTemplate="body" let-company let-rowIndex="rowIndex">
+              <tr class="tr-body" style="height: 35px;" (click)="routebyid(company, rowIndex)" [ngClass]="{'clicked': rowIndex === selectedRowIndex}">
+                <td>
+                  <p-tableCheckbox type="button" [value]="company" (click)="onCheckboxClick($event)" />
+                </td>
+                <td *ngFor="let col of TabValues">
+                  <ng-container *ngIf="col.field === 'budgetid'">
+                    <ng-container *ngIf="company[col.field] !== 0; else emptyTemplate">
+                      <a  (click)="alertBudgetId($event, company[col.field])">{{ company[col.field] }}</a>
+                    </ng-container>
+                    <ng-template #emptyTemplate>
+                      
+                    </ng-template>
+                  </ng-container>
+                  <ng-container *ngIf="col.field !== 'budgetid'">
+                    {{ company[col.field] }}
+                  </ng-container>
+                </td>
+              </tr>
             </ng-template>
+            
             
             <ng-template pTemplate="emptymessage" >
               <tr>
@@ -135,13 +156,114 @@
     </div>
   </div>
 
-  
+  <p-dialog class="detail-line-entry" [(visible)]="visible" [modal]="true" [style]="{ 'width': '110rem', 'min-height': '50vh','z-index' : '1' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [blockScroll]="true">    <ng-template pTemplate="header" class="detailline">
+      <h4 class="my-2 p-0 fw-semibold fs-6">View Budget</h4>
+      <div class="btss">
+              
+          <button class="bg-white footerbtn rounded fw-semibold text-black d-flex align-items-center justify-content-center text-right py-1 px-2" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark me-1 text-danger"></i>Close</button>     
+      </div>
+      
+    </ng-template>
+    <ng-template pTemplate="body" >
+      <div class="container-fluid m-0 px-3 pt-1 pb-0 d-flex align-items-center justify-content-start w-100 "style="color: #04246a">
+        <h6 class="me-4 p-0 " >Budget ID : <strong class="text-black">{{budgetid}}</strong></h6>
+        <h6 class="me-4 p-0 ">Description : <strong class="text-black">Description for {{budgetid}}</strong></h6>
+        <h6 class="p-0 ">Created Date : <strong class="text-black">23/03/2024</strong></h6>
+      </div>
+    
+      <div class="container-fluid body2 w-100 py-2 px-3 d-flex align-items-center justify-content-between  m-0" >
+        
+        <div class="container-fluid w-100 p-0 w-0 m-0">
+            <div class="m-0 p-0">
+              <div class="m-0 p-0"  style="border: 1px solid rgba(0, 0, 0, 0.131);">
+                <p-table id="demo" #demo styleClass="p-datatable-gridlines"
+                [value]="budgetdetail" 
+                [paginator]="true"
+                [rows]="showval"
+                [loading]="animation"
+                [totalRecords]="detail_total_records"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'max-width': '100%', 'height': '100%', 'background-color': 'white' }" 
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="rowsperpageVal"
+                [scrollable]="true"
+                [scrollHeight]="deatilscrollheightVal"
+                [globalFilterFields]="['startamount', 'limitamount', 'manhour', 'containertype', 'containersize']"
+                [sortMode]="single"
+                
+                >
+
+                <ng-template pTemplate="caption">
+                    <div class="w-100 d-flex align-items-center justify-content-between" style="height: 30px;">
+                    <div class="cap h-100 d-flex align-items-center justify-content-start">
+                        <div class="p-input-icon-left ginput me-4">
+                        <span class="p-input-icon-right ml-auto">
+                            <input class="rounded ps-2" #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                            <i class="pi pi-search me-0 fw-normal"></i>
+                        </span>
+                        </div>
+                        <!-- <i class="fa-solid fa-rotate" (click)="reloadbudget()" style="color: #1e7d23;" pTooltip="Reload" tooltipPosition="bottom"></i>
+                        <i class="fa-solid fa-filter" (click)="showfil()" pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
+                        <i class="fa-solid fa-eraser" *ngIf="showwwww" (click)="hidefil()" style="color: #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i> -->
+                        <i class="fa-regular fa-file-excel" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
+                    </div>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr style="height: 35px;">
+                    <th style="width: 10%;" pSortableColumn="startamount">Start Amount<p-sortIcon field="startamount"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="limitamount">Limit Amount<p-sortIcon field="limitamount"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="manhour">Man Hour<p-sortIcon field="manhour"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="containertype">Container Type<p-sortIcon field="containertype"></p-sortIcon></th>
+                    <th style="width: 10%;" pSortableColumn="containersize">Container Size<p-sortIcon field="containersize"></p-sortIcon></th>
+                    </tr>
+                    <tr style="height: 5vh;" class="try" *ngIf="showwwww">
+                    <th style="width: 10%;"><p-columnFilter type="text" field="startamount"></p-columnFilter></th>
+                    <th style="width: 10%;"><p-columnFilter type="text" field="limitamount"></p-columnFilter></th>
+                    <th style="width: 10%;"><p-columnFilter type="text" field="manhour"></p-columnFilter></th>
+                    <th style="width: 10%;"><p-columnFilter type="text" field="containertype"></p-columnFilter></th>
+                    <th style="width: 10%;"><p-columnFilter type="text" field="containersize"></p-columnFilter></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-budgetdetail let-rowIndex="rowIndex">
+                    <tr class="tr-body">
+                    <td  class="d-none">{{budgetdetail.budgetdetailid}}</td>
+                    <td>{{budgetdetail.startamount}}</td>
+                    <td>{{budgetdetail.limitamount}}</td>
+                    <td>{{budgetdetail.manhour}}</td>
+                    <td>{{budgetdetail.containertype}}</td>
+                    <td>{{budgetdetail.containersize}}</td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                    <td colspan="11">No Budget Detail line found.</td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="paginatorleft">
+                  
+                </ng-template>
+                <ng-template  pTemplate="paginatorright"></ng-template>
+                </p-table>
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </ng-template>
+  </p-dialog>
   
 </div>
 
-<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;">
-  <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
-</div>
+
 
 <app-add-details *ngIf="Showadd" [id]="Companyid"  (Flag)="show($event)"></app-add-details>
 

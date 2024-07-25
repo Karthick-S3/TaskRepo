@@ -1,0 +1,97 @@
+.whole{
+    .topbardiv{
+        height: 50px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.363);
+        i{
+            cursor: pointer;
+            img{
+                width: 150px;
+            }
+        }
+        h4{
+            color: rgb(39, 39, 39);
+            font-weight: 600
+        }
+    }
+
+
+    .topbar2{
+        background-color: #04246A;
+        height: 58px;
+       button{
+        width: 70px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: transparent;
+        color: white;
+        font-size: 12px;
+        outline: none;
+        margin-right: 8px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        i{
+            color: white;
+            font-size: 22px;
+            font-weight: 900;
+        }
+     
+       }
+    }
+    .mainbody{
+        height: calc(100vh - 110px);
+    }
+
+}
+
+.user{
+    h3{
+        cursor: pointer;
+    }i{
+        cursor: pointer;
+
+    }
+}
+
+.timee{
+    width: 240px;
+    height: 50px;
+    
+    
+    h3{
+        font-size: 13px;
+        color: #233f7c;
+    }
+}
+
+.ginput{
+    span{
+        input{
+            width: 200px;
+            height: 32px;
+            border-radius: 30px;
+            border: 1px solid #ced4da;
+            outline: none;
+            background-color: #ffef97;
+            font-size: 13px;
+            font-weight: normal;
+            letter-spacing: normal;
+        }
+    }
+}
+
+.logoutbutton{
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.logoutbutton:hover{
+    background-color: rgb(228, 228, 228);
+}
+
+.show{
+    margin-top: 1000px;
+}

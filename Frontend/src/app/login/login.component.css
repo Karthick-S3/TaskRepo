@@ -1,0 +1,39 @@
+.whole{
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.839)) ,url("/../assets/Background/2.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.login-box{
+    width: 400px;
+    height: 500px;
+}
+
+.login-heading{
+background-color: #354a7f;
+height: 70px;
+}
+.logo-box{
+    height: 50%;
+}
+.content-box{
+    input{
+        outline: none;
+        height: 37px;
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.288);
+        margin-bottom: 10px;
+        border-radius: 4px 0px 0px 4px;
+        font-weight: 300;
+        padding: 0px 10px;
+        font-size: 14px;
+    }
+    input:focus{
+        border: 1px solid #0588d3;
+        box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+    }
+    label{
+        font-size: 14px;
+    }
+}

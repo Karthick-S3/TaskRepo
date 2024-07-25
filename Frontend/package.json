@@ -22,6 +22,8 @@
     "@angular/router": "^17.1.0",
     "@angular/ssr": "^17.1.2",
     "express": "^4.18.2",
+    "ngx-auth": "^6.0.0",
+    "ngx-ui-loader": "^13.0.0",
     "ngx-uploader": "^17.0.1",
     "nodeservice": "^1.0.0",
     "primeicons": "^6.0.1",

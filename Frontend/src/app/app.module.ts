@@ -4,7 +4,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompanydetailsComponent } from './companydetails/companydetails.component';
-import { HttpClientModule , HttpClient} from '@angular/common/http';
+import { HttpClientModule , HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { TableModule } from 'primeng/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormGroup, FormsModule } from '@angular/forms';
@@ -34,6 +34,16 @@ import { CompanystepsComponent } from './companysteps/companysteps.component';
 import { ServicecontrolComponent } from './servicecontrol/servicecontrol.component';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { SharedTableComponent } from './shared-table/shared-table.component';
+import { LoginComponent } from './login/login.component';
+import { LayoutComponent } from './layout/layout.component';
+import { CustomInterceptor } from './custom.interceptor';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+
+
+
+
+
 
 
 
@@ -48,6 +58,9 @@ import { CheckboxModule } from 'primeng/checkbox';
     AddbudgetComponent,
     CompanystepsComponent,
     ServicecontrolComponent,
+    SharedTableComponent,
+    LoginComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,11 +88,14 @@ import { CheckboxModule } from 'primeng/checkbox';
     NgxUploaderModule,
     StepperModule,
     CalendarModule,
-    CheckboxModule
-
+    CheckboxModule,
+    NgxUiLoaderModule
    
   ],
   providers: [
+    {
+        provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor,multi :true
+    },
     provideClientHydration(),
     CompanyserviceService
   ],

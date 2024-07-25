@@ -18,9 +18,9 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,15,20]"
+            [rowsPerPageOptions]="rowsperpageVal"
             [scrollable]="true"
-            scrollHeight="700px"
+            [scrollHeight]="scrollheightVal"
             [customSort]="true"
             [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
             
@@ -79,25 +79,28 @@
                 
               </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                  <td colspan="11">No Budget Detail found.</td>
-              </tr>
-          </ng-template>
+            
             
             <ng-template pTemplate="paginatorleft" class="print">
             </ng-template>
             <ng-template pTemplate="paginatorright" class="print">
             </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                  <td colspan="11">No Budget Detail found.</td>
+              </tr>
+          </ng-template>
+            <!-- <ng-template pTemplate="paginatorleft">
+              
+                <p class="rowperlist">Rows per page:</p>
+       
+            </ng-template> -->
           </p-table>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;" class="preloader">
-    <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
-  </div>
-
+ 
 
   <app-addbudget *ngIf="showAddBudget" [id]="Companyid"  (Flag)="show($event)"></app-addbudget>

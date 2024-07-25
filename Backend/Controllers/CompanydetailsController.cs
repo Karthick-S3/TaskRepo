@@ -6,34 +6,98 @@ using System.Diagnostics;
 using Backend.Repository;
 using System.ServiceProcess;
 using System.Management;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
+using Backend.Services;
 
 
 
 
 namespace Backend.Controllers
 {
+  
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class CompanydetailsController : ControllerBase
     {
 
-
+        private readonly ICompServices _serviceProcess;
         private readonly ICompanydetailsRepository  _companydetailsRepositry;
         private readonly MyWorkerService _serviceProcess;
         private readonly string _uploadFolder;
 
+        private readonly  IConfiguration _configuration;
 
 
 
-        public CompanydetailsController (ICompanydetailsRepository companydetailsRepository,string uploadFolder,MyWorkerService myWorkerService){
+        public static User user = new User();
+
+        
+
+
+
+        public CompanydetailsController (IConfiguration configuration,ICompanydetailsRepository companydetailsRepository,string uploadFolder,MyWorkerService myWorkerService){
             _companydetailsRepositry = companydetailsRepository;
              _uploadFolder = uploadFolder ?? throw new ArgumentNullException(nameof(uploadFolder));
               _serviceProcess = myWorkerService ?? throw new ArgumentNullException(nameof(myWorkerService));
+            _configuration = configuration;
 
-              
         }
 
-         
+
+
+              
+            [HttpGet("login")]
+            [AllowAnonymous]
+            public async Task<IActionResult> UserLogin([FromQuery] string username, [FromQuery] string password)
+            {
+                try
+                {
+                    var user = await _companydetailsRepositry.UserLogin(username, password);
+
+                    if (user == null)
+                    {
+                        return Unauthorized("Invalid credentials");
+                    }
+
+                    string token = CreateToken(user);
+                    return Ok(new { Token = token });
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Login Failed {ex.Message}");
+                }
+            }
+
+            private string CreateToken(User user)
+            {
+                List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username)
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    _configuration.GetSection("AppSettings:Token").Value!
+                ));
+
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+                var token = new JwtSecurityToken(
+                    claims: claims,
+                     expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: creds
+                );
+
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return jwt;
+            }
+
 
 
 
@@ -56,6 +120,7 @@ namespace Backend.Controllers
 
 
         [HttpGet("GetServiceStatus")]
+        
 public IActionResult GetServiceStatus([FromQuery] string serviceName)
 {
     try
@@ -169,6 +234,7 @@ private static double BytesToMegabytes(long bytes)
 
 
         [HttpGet("country")]
+        // [Authorize]
         public IActionResult GetCountry(){
             try{
                 var countrydetail = _companydetailsRepositry.GetCountry();
@@ -211,6 +277,7 @@ private static double BytesToMegabytes(long bytes)
 
 
          [HttpGet("Lazy")]
+        
         public async Task<IActionResult> LazyData(
             [FromQuery] int skip,
             [FromQuery] int take,
@@ -592,6 +659,16 @@ public async Task<IActionResult> UpdateBudgetDetail([FromBody] Budgetdetails bud
                 return StatusCode(500, $"Error stopping service: {ex.Message}");
             }
         }
+
+
+  
+        
+
+
+      
+
+
+        
 
 
 

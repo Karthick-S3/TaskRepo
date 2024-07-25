@@ -21,8 +21,7 @@
                     <i class="fa-solid fa-list-ul text-danger"  ></i>
                     Back To List
                 </button>
-                
-                <p-confirmDialog ></p-confirmDialog>
+
                 <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
                     <i class="fa-solid fa-plus text-primary"></i>
                     Add New
@@ -114,13 +113,16 @@
                     
                 </div>
 
-                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100 px-1" style="height: 90px;">
-                    <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
-                    <p-inputSwitch class="form-control w-100 p-0 m-0" type="" formControlName="active" ></p-inputSwitch>
-                    <small>
+               
 
-                    </small>
-                    
+                <div class="w-100 input-group col d-flex align-items-start justify-content-start px-1 " style="height:90px;">
+                    <div class="d-flex flex-column align-items-start justify-content-start me-3  h-100">
+                        <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
+                        <p-inputSwitch class="form-control" type="" formControlName="active" ></p-inputSwitch>
+                    </div>
+                    <div *ngIf="badgeval == 'EDIT'" class=" h-100 d-flex flex-column align-items-start justify-content-start mt-4">
+                        <p>({{CompanyCreateDate}})</p>
+                    </div>
                 </div>
                 
                 
@@ -134,7 +136,7 @@
             
             <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;">
                 <label for="cid" class="form-label text-black mb-1 fw-semibold">Country <span style="color: red;"> * </span></label>
-                <p-dropdown  class="fullwidth form-control rounded w-100" formControlName="cid" [options]="countrys" optionLabel="country" optionValue="cid" placeholder="Select a Country" (onChange)="onCountryChange($event)"></p-dropdown>
+                <p-dropdown   [editable]="true"  class="fullwidth form-control rounded w-100" formControlName="cid" [options]="countrys" optionLabel="country" optionValue="cid" placeholder="Select a Country" (onChange)="onCountryChange($event)"></p-dropdown>
                 
                 <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
                     *Country required.
@@ -146,7 +148,7 @@
             
             <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
                 <label for="username" class="form-label text-black mb-1 fw-semibold">State<span style="color: rgb(255, 0, 0);"> * </span></label>
-                <p-dropdown class="fullwidth form-control rounded w-100" formControlName="sid" [options]="states" optionLabel="state" optionValue="sid"  placeholder="Select a State" (onChange)="onStateChange($event)"></p-dropdown>
+                <p-dropdown [editable]="true" class="fullwidth form-control rounded w-100" formControlName="sid" [options]="states" optionLabel="state" optionValue="sid"  placeholder="Select a State" (onChange)="onStateChange($event)"></p-dropdown>
                 <small *ngIf="myForm.get('sid')?.errors?.['required'] && myForm.get('sid')?.touched " >
                     *State required.
                 </small>
@@ -154,7 +156,7 @@
 
            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
                 <label for="username" class="form-label text-black mb-1 fw-semibold">City<span style="color: red;"> * </span></label>
-                <p-dropdown class="fullwidth form-control rounded w-100" formControlName="cityid" [options]="citys" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
+                <p-dropdown [editable]="true" class="fullwidth form-control rounded w-100" formControlName="cityid" [options]="citys" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
                 <small *ngIf="myForm.get('cityid')?.errors?.['required'] && myForm.get('cityid')?.touched " >
                     *City required.
                 </small>
@@ -224,7 +226,7 @@
         
         <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
             <label for="cid" class="form-label text-black mb-1 fw-semibold">Currency<span style="color: red;"> * </span></label>
-            <p-dropdown class="fullwidth form-control rounded w-100 p-0" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
+            <p-dropdown [editable]="true" class="fullwidth form-control rounded w-100 p-0" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
             
             <small *ngIf="myForm.get('currencyid')?.errors?.['required'] && myForm.get('currencyid')?.touched " >
                 *Currency required.
@@ -247,9 +249,6 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height:calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;" class="preloader">
-    <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
-</div>
 
 
 <p-dialog  *ngIf="visible" [visible]="true" [modal]="true" [style]="{ width: '95rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
@@ -264,13 +263,13 @@
       <ng-template pTemplate="body" style="height:300px;">
         <div>
             <input type="file" multiple="multiple" id="fileInput" class="file-input" (change)="onFileSelected($event)">
-            <button type="button" (click)="triggerFileInput()" id="customButton" title="Add Files" class="btn bg-success text-white py-1 px-8 rounded mb-2">
-              <i class="fa fa-fw fa-plus"></i> Add Files
+            <button type="button" (click)="triggerFileInput()" id="customButton" title="Add Files" class="btn  text-white py-1 px-8 rounded mb-2" style="background-color: #3a9e3c;font-size: 13px;">
+              <i class="fa fa-fw fa-plus "></i> Add Files
             </button>
           </div>
 
           <div class="preview-attachment" >
-            <p-table *ngIf="attachavailable" [value]="attachmentdata" styleClass="p-datatable-gridlines attachgrid" scrollHeight="210px">
+            <p-table *ngIf="attachavailable" [value]="attachmentdata" styleClass="p-datatable-gridlines attachgrid" [scrollHeight]="scrollheightVal">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Thumbnail</th>
@@ -284,7 +283,7 @@
                             <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="{{product.name}}" style="max-width: 140px; max-height: 140px;">
                         </td>
                         <td>
-                            Name: <a (click)="download(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;">{{ product.name }}</a><br>
+                            Name: <a (click)="download(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;" download>{{ product.name }}</a><br>
                             Size: {{ product.size }} bytes <br>
                             Uploaded By: User1
                         </td>

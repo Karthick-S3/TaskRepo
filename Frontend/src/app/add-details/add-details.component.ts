@@ -10,6 +10,11 @@ import { Company } from '../Interfaces/company';
 import { CompanydetailsComponent } from '../companydetails/companydetails.component';
 import { Currency } from '../Interfaces/currency';
 import { Filedetail } from '../Interfaces/filesdetail';
+import { formatDate } from '@angular/common';
+import { AppComponent } from '../app.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
+
 
 
 
@@ -20,7 +25,7 @@ import { Filedetail } from '../Interfaces/filesdetail';
   selector: 'app-add-details',
   templateUrl: './add-details.component.html',
   styleUrls: ['./add-details.component.css'],
-  providers: [MessageService,ConfirmationService]  
+  providers: [MessageService]  
 })
 export class AddDetailsComponent implements OnInit {
   isActive: boolean = false;
@@ -34,8 +39,11 @@ export class AddDetailsComponent implements OnInit {
   newcompany : Company[] = [];
   badgeval : string = '';
   visible:boolean = false;
+  CompanyCreateDate!: string;
+  isSubmitted :boolean = false;
 
 
+  scrollheightVal = this.appcomponent.TableProp.smallTabScroll;
 
 
   @Input() id= 0;
@@ -53,10 +61,12 @@ export class AddDetailsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private companydetail:CompanydetailsComponent,
+    private appcomponent: AppComponent,
+    private ngxService : NgxUiLoaderService
     // private fileUploadService: FileUploadService
   ) {}
   GetFirst(event : any){
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnFirstCompId();
     if (val === undefined) {
       this.noRecordFoundError();
@@ -66,7 +76,7 @@ export class AddDetailsComponent implements OnInit {
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-          this.animation=false;
+          
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
@@ -75,12 +85,14 @@ export class AddDetailsComponent implements OnInit {
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+
+          this.ngxService.stop();
      }
      });
      this.loadAttachments(id);
   }
   GetLast(event : any){
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnLastCompId();
     if (val === undefined) {
       this.noRecordFoundError();
@@ -90,10 +102,10 @@ export class AddDetailsComponent implements OnInit {
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-          this.animation = false;
+          
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
-          // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
+          this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
 
           if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
@@ -101,13 +113,14 @@ export class AddDetailsComponent implements OnInit {
             this.myForm.get('active')?.setValue(false);
           }
           this.loadAttachments(id);
+          this.ngxService.stop();
      }
      });
      
   }
 
   GetPrevious(event : any){
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnPreviousCompId();
    
     if (val === undefined) {
@@ -118,7 +131,7 @@ export class AddDetailsComponent implements OnInit {
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-          this.animation = false;
+          
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
@@ -127,13 +140,14 @@ export class AddDetailsComponent implements OnInit {
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+          this.ngxService.stop();
      }
      });
      this.loadAttachments(id);
   }
 
   GetNext(event : any) {
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnNextCompId();
     if (val === undefined) {
       this.noRecordFoundError();
@@ -145,7 +159,6 @@ export class AddDetailsComponent implements OnInit {
     this.companyService.getById(Number(id)).subscribe({
       next: (response) => {
         this.myForm.patchValue(response);
-        this.animation = false;
         this.myForm.get('email')?.setValue("Example@gmail.com");
         this.myForm.get('revenue')?.setValue(response.revenue.toString());
   
@@ -154,23 +167,23 @@ export class AddDetailsComponent implements OnInit {
         } else {
           this.myForm.get('active')?.setValue(false);
         }
+        this.ngxService.stop();
       }
     });
     this.loadAttachments(id);
   }
 
   noRecordFoundError(){
-    this.animation = false; 
-    
+    this.ngxService.stop();
+    this.appcomponent.msgStatus = 'warning';
     this.confirmationService.confirm({
       message: 'No Records Found',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: "p-button-warning",
-      acceptLabel: 'Ok', 
-      rejectVisible: false, 
+      rejectLabel: 'Ok', 
+      acceptVisible: false, 
       accept: () => {
       }
   });
@@ -198,6 +211,7 @@ export class AddDetailsComponent implements OnInit {
     // });
   }
   SubmitAndReset(){
+    this.ngxService.start();
     if(this.myForm.valid){
       this.insert();
       this.myForm.reset();
@@ -211,30 +225,37 @@ export class AddDetailsComponent implements OnInit {
         detail: 'Please enter a valid value.' 
       });
     }
-    
+    this.ngxService.stop();
     
     
   }
   onCountryChange(event: any) {
+    this.ngxService.start();
+    
     const selectedCountryid: number[] = [];
     if (event) {
       selectedCountryid.push(event.value);
       this.getCitybyCountryIds(selectedCountryid);
       this.getStatesByIds(selectedCountryid);
     }
+    this.ngxService.stop();
   }
 
   onStateChange(event: any) {
+    this.ngxService.start();
     const selectedStateid: number[] = [];
     if (event) {
       selectedStateid.push(event.value);
       this.getCityBystateIds(selectedStateid);
     }
+    this.ngxService.stop();
   }
 
   Addnew(event: Event) {
+    this.ngxService.start();
     this.id = 0;
     if(this.myForm.touched || this.id>0){
+      this.appcomponent.msgStatus = 'confirm';
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'You have unsaved changes in the screen. Do you want to continue?',
@@ -242,8 +263,7 @@ export class AddDetailsComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         acceptIcon:"none",
         rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text",
-        acceptButtonStyleClass:"p-button-danger",
+
         accept: () => {
           alert("working")
             this.resetForm();
@@ -262,11 +282,13 @@ export class AddDetailsComponent implements OnInit {
             this.attachmentlength = 0;
       
     }
+    this.ngxService.stop();
     
 }
 
 BackToList(event: Event) {
-  if(this.myForm.touched){
+  if(this.myForm.touched && !this.isSubmitted){
+    this.appcomponent.msgStatus = 'confirm';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'You have unsaved changes in the screen. Do you want to continue?',
@@ -274,8 +296,7 @@ BackToList(event: Event) {
       icon: 'pi pi-exclamation-triangle',
       acceptIcon:"none",
       rejectIcon:"none",
-      acceptButtonStyleClass:"p-button-danger",
-      rejectButtonStyleClass:"p-button-text",
+  
       accept: () => {
         this.Flag.emit(false);
       },
@@ -297,33 +318,37 @@ BackToList(event: Event) {
     this.loadCurrency();
 
     if(this.id == 0){
+      this.ngxService.start();
       this.initializeForm();
       this.badgeval = 'NEW';
+      this.ngxService.stop();
       
     }else{
+      this.ngxService.start();
       this.badgeval = 'EDIT';
-      this.animation = true;
       this.initializeForm();
       this.companyService.getById(Number(this.id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
+          this.CompanyCreateDate =  formatDate(response.createdate,'dd-MMM-yyy','en-US').toUpperCase();
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
           // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
-          this.animation = false;
+          
           if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+
         }
         
         
       });
     
-        this.loadAttachments(this.id);
-  
-   
+      this.loadAttachments(this.id);
+      
+      this.ngxService.stop();
     }
 
   }
@@ -332,6 +357,7 @@ BackToList(event: Event) {
   // typeoffile = ['xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
 
   loadAttachments(companyid: number) {
+    this.ngxService.start();
     this.companyService.getFilesByID(companyid).subscribe(value => {
       if (value && value.length > 0) {
         this.attlen = true;
@@ -349,6 +375,7 @@ BackToList(event: Event) {
         this.attachmentlength = 0;
         console.log('No files found for the company.');
       }
+      this.ngxService.stop();
     });
   }
   
@@ -454,6 +481,7 @@ getFileURL(type: string): string {
   }
 
   insert(): void {
+    this.ngxService.start();
     if(this.myForm.invalid){
       for (const control of Object.keys(this.myForm.controls)){
         this.myForm.controls[control].markAsTouched();
@@ -463,8 +491,10 @@ getFileURL(type: string): string {
         summary: 'Error', 
         detail: 'Please enter a valid value.' 
       });
+      this.ngxService.stop();
     }
     else{
+      
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');
       
@@ -476,6 +506,19 @@ getFileURL(type: string): string {
         this.companyService.updateCompany(this.myForm.value).subscribe({
          
           next : (company) => {
+            this.appcomponent.msgStatus = 'success';
+            this.confirmationService.confirm({
+              message: 'Company Details Updated Successfully',
+              header: 'Confirmation',
+              icon: 'pi pi-check-circle',
+              acceptIcon: "none",
+              rejectIcon: "none",
+              acceptLabel: 'Ok', 
+              rejectVisible: false, 
+              accept: () => {
+                
+              }
+          });
             console.log("updated succesfully");
             if(this.attachmentdata.length>0){
               this.uploadFiles(this.formData);
@@ -486,12 +529,28 @@ getFileURL(type: string): string {
             console.log(response);
           }
         })
+        this.isSubmitted = true;
+        this.ngxService.stop();
       }else{
 
         this.myForm.get('contactid')?.setValue(0);
         console.log(this.myForm.value);
           this.companyService.insertCompany(this.myForm.value).subscribe({
             next: (company) => {
+              this.appcomponent.msgStatus = 'success';
+              this.confirmationService.confirm({
+                message: 'Company Created Successfully',
+                header: 'Confirmation',
+                icon: 'pi pi-check-circle',
+                acceptIcon: "none",
+                rejectIcon: "none",
+                acceptLabel: 'Ok', 
+                rejectVisible: false, 
+                accept: () => {
+                  
+                }
+            });
+            this.badgeval = 'EDIT'
               console.log("Inserted successfully");
             },
             error: (response) => {
@@ -500,7 +559,8 @@ getFileURL(type: string): string {
           });
           this.uploadFiles(this.formData);
         }
-
+        this.isSubmitted = true;
+        this.ngxService.stop();
     }
     
     
@@ -563,14 +623,14 @@ openimg(product: any) {
 }
 
 deleteattachment(index: number) {
+  this.appcomponent.msgStatus = 'confirm';
   this.confirmationService.confirm({
     message: 'Are you sure to delete the file? Click Yes to Confirm and No to ignore requested action.',
     header: 'Confirmation',
     icon: 'pi pi-exclamation-triangle',
     acceptIcon:"none",
     rejectIcon:"none",
-    acceptButtonStyleClass:"p-button-success",
-    rejectButtonStyleClass:"p-button-danger",
+ 
     accept: () => {
       if(this.attachmentdata.length==1){
         this.attachavailable = false;
@@ -644,6 +704,7 @@ onFileSelected(event: Event) {
 
   
   uploadFiles(formData: FormData) {
+    this.ngxService.start();
     this.companyService.uploadFiles(formData, this.id)
       .subscribe({
         next: (response: Filedetail ) => {
@@ -658,18 +719,19 @@ onFileSelected(event: Event) {
           console.error('Error uploading files:', error);
         }
       });
+      this.ngxService.stop();
   }
   
   showFileNameExceedsLimitWarning() {
+    this.appcomponent.msgStatus = 'error';
     this.confirmationService.confirm({
       message: 'File Name should be lesser than or equal to 50 characters.',
       header: 'Invalid File Name',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok',
-      rejectVisible: false,
+      rejectLabel: 'Ok',
+      acceptVisible: false,
       accept: () => {
         // Handle accept action if needed
       }
@@ -677,15 +739,15 @@ onFileSelected(event: Event) {
   }
 
   showFileSizeExceedsLimitWarning() {
+    this.appcomponent.msgStatus = 'error';
     this.confirmationService.confirm({
       message: 'File Size should be lesser than or equal to 15 MB.',
       header: 'Invalid File Size',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok',
-      rejectVisible: false,
+      rejectLabel: 'Ok',
+      acceptVisible: false,
       accept: () => {
         // Handle accept action if needed
       }
@@ -694,15 +756,15 @@ onFileSelected(event: Event) {
   
   showFileTypeExceedsLimitWarning() {
   
+    this.appcomponent.msgStatus = 'error';
     this.confirmationService.confirm({
       message: 'Incorrect File Format. Please upload the files with recommended formats.',
       header: 'Invalid File Format',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok',
-      rejectVisible: false,
+      rejectLabel: 'Ok',
+      acceptVisible: false,
 
       accept: () => {
       
@@ -721,7 +783,7 @@ onFileSelected(event: Event) {
     this.myForm.get('dateval')?.setValue(newDate);
   }
   
-  
+
 
 }
 

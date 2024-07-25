@@ -10,7 +10,6 @@
 
             <div class="bts">
                 <p-toast></p-toast>
-                <!-- <p-confirmDialog  ></p-confirmDialog> -->
                 <button type="button" (click)="BackToList()" pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-list-ul text-danger" ></i>
                     Back To List
@@ -88,11 +87,18 @@
             
 
 
-                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:90px;">
-                    <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
-                    <p-inputSwitch class="form-control" type="" formControlName="budgetactive" ></p-inputSwitch>
-                    
-                </div>    
+                
+
+                <div class="w-100 input-group col d-flex align-items-start justify-content-start px-1 " style="height:90px;">
+                    <div class="d-flex flex-column align-items-start justify-content-start me-3  h-100">
+                        <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
+                        <p-inputSwitch (onChange)="DisableBudget($event)" class="form-control" type="" formControlName="budgetactive" ></p-inputSwitch>
+                    </div>
+                    <div *ngIf="badgeval == 'EDIT'" class=" h-100 d-flex flex-column align-items-start justify-content-start mt-4">
+                        <p>({{BudgetCreateDate}})</p>
+                    </div>
+                </div>
+                  
             </div>
         </div>
 
@@ -217,13 +223,15 @@
                 <th (click)="deleteline(myForm)" class="align-items-center text-center" style="width: 10%;"><i class="fa-solid fa-trash-can"></i></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-val>
             <tr class="tarif-tab" (click)="showDialog()" >
                 <td > {{ myForm.get('startamount')?.value}}</td>
                 <td>{{ myForm.get('limitamount')?.value }}</td>
                 <td>{{ myForm.get('manhour')?.value }}</td>
                 <td>{{ myForm.get('containertype')?.value }}</td>
                 <td>{{ myForm.get('containersize')?.value }}</td>
+                
+                
                 <td>
                     <a class="d-block w-100 h-100 text-center " style="line-height: 30px;" (click)="deleteline(myForm); $event.stopPropagation()">
                       <i  style="color: red;" class="fa-solid fa-trash-can text-danger"></i>
@@ -258,7 +266,7 @@
 
         </p-card>
 
-        <p-dialog class="detail-line-entry"  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+        <p-dialog class="detail-line-entry"  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem'}" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
             <ng-template pTemplate="header" class="detailline">
                 <h4 class="my-2 p-0 fw-semibold fs-6">Detail line Entry</h4>
                 <div class="btss">
@@ -374,9 +382,9 @@
                         [showCurrentPageReport]="true"
                         [tableStyle]="{ 'max-width': '100%', 'height': '100%', 'background-color': 'white' }" 
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="[5, 10, 15]"
+                        [rowsPerPageOptions]="rowsperpageVal"
                         [scrollable]="true"
-                        scrollHeight="700px"
+                        [scrollHeight]="scrollheightval"
                         [globalFilterFields]="['startamount', 'limitamount', 'manhour', 'containertype', 'containersize']"
                         [sortMode]="single"
                         >
@@ -406,7 +414,7 @@
                             <th style="width: 10%;" pSortableColumn="containertype">Container Type<p-sortIcon field="containertype"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="containersize">Container Size<p-sortIcon field="containersize"></p-sortIcon></th>
                             </tr>
-                            <tr style="height: 5vh;" class="try" *ngIf="showwwww">
+                            <tr style="height: 35px;" class="try" *ngIf="showwwww">
                             <th style="width: 10%;"><p-columnFilter type="text" field="startamount"></p-columnFilter></th>
                             <th style="width: 10%;"><p-columnFilter type="text" field="limitamount"></p-columnFilter></th>
                             <th style="width: 10%;"><p-columnFilter type="text" field="manhour"></p-columnFilter></th>
@@ -452,7 +460,5 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height: calc(100vh - 50px);display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;bottom: 0;left: 0;z-index: 999;" class="preloader">
-    <img width="100px" height="100px" src="../assets/animation4.svg" alt="">
-</div>
+
 

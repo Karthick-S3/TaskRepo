@@ -181,12 +181,12 @@ p-dropdown .p-inputwrapper  {
 }
 
 .p-overlaypanel .p-overlaypanel-content{
-    
     padding: 5px;
 }
 
 .p-overlaypanel{
-    margin-top: -7px;
+    margin-top: 20px;
+    z-index: 999999999999 !important;
    
 }
 .p-dialog{
@@ -309,12 +309,40 @@ p-dropdown .p-inputwrapper  {
         line-height: 13px;
     }
 
-    .p-dialog .p-dialog-header{
-        background-color: #04246A;
+    .p-dialog .p-dialog-header {
         color: white;
         padding: 5px 10px;
-
     }
+   
+    
+    
+    .errorMsgColour .p-dialog .p-dialog-header {
+        background-color: #dc143c !important;
+    }
+    .warningMsgColour .p-dialog .p-dialog-header {
+        background-color: #c79121 !important;
+    }
+    .successMsgColour .p-dialog .p-dialog-header {
+        background-color: #006400 !important;
+    }
+    .confirmationMsgColour .p-dialog .p-dialog-header {
+        background-color: #04246a !important;
+    }
+    
+   
+    .errorMsgColour .p-dialog .p-dialog-content{
+        color: #dc143c !important;
+      }
+    .warningMsgColour .p-dialog .p-dialog-content{
+        color: #c79121 !important;
+      }
+    .successMsgColour .p-dialog .p-dialog-content{
+        color: #006400 !important;
+      }
+    .confirmationMsgColour .p-dialog .p-dialog-content{
+        color: #000000 !important;
+      }
+
 
     
     .p-dialog .p-dialog-footer button{
@@ -324,10 +352,12 @@ p-dropdown .p-inputwrapper  {
         margin-left:10px ;
     }
     .p-dialog .p-dialog-footer button:nth-child(1){
-        background: #BE2A1A;
+        background: white;
+        color: black;
     }
     .p-dialog .p-dialog-footer button:nth-child(2){
-        background: #3A9E3C;
+        background: white;
+        color: black;
     }
     .p-multiselect-panel .p-multiselect-header {
         padding:12px 2px;
@@ -378,4 +408,36 @@ p-dropdown .p-inputwrapper  {
       }
 
 }
+  
+
+
+::-webkit-scrollbar {
+    width: 10px;
+
+  }
+  
+
+  ::-webkit-scrollbar-track {
+    border-radius: 8px;
+  }
+  
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: rgb(168, 168, 168);
+  }
+  
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: gray; 
+  }
+  
+  .ngx-overlay{
+    height: calcl(100vh -50px) !important;
+    margin-top: 50px;
+  }
+  .ngx-overlay{
+    margin-top: 50px !important;
+  }
+
   

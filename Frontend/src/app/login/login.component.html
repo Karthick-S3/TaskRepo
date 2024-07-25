@@ -1,0 +1,72 @@
+<div class="w-100 whole d-flex align-items-center justify-content-center">
+    <img style="position: absolute;right: 10px;top: 10px;width: 150px;" src="../assets/io-iinterchange-logo.svg" alt="">
+    <div class="login-box bg-white p-1">
+        <div class="w-100 login-heading d-flex align-items-center m-0 px-3 py-0 text-white justify-content-between">
+            <h3 class="m-0 fs-6">Login</h3>
+            <h4 class="m-0 fs-6">Version : 1.0</h4>
+        </div>
+        <div class="h-75">
+            <div class="logo-box w-100 d-flex align-items-center justify-content-center flex-column  h-50 m-1">
+                <img style="width: 170px;" src="../assets/cmacgm.png" alt="">
+                <img style="width: 170px;" src="../assets/IComp Logo.svg" alt="">
+            </div>
+            <div class="w-100 content-box  h-50 p-3">
+                <form [formGroup]="myForm" (ngSubmit)="SubmitForm()">
+                    
+                    <div class="d-flex flex-column gap-2">
+                        <label for="username">Username</label>
+                        <div  class="d-flex align-items-center ">
+                            <input 
+                            uppercase
+                            class="fw-6 m-0"
+                            maxlength="20"
+                            pInputText 
+                            type="text"
+                            id="username" 
+                            placeholder="Enter Username"
+                            formControlName="username"
+                            autocomplete="off"/>
+                            <div class=" m-0 p-0 d-flex align-items-center justify-content-center" style="width: 40px;height: 37px;border: 1px solid rgba(0, 0, 0, 0.288);border-radius: 0px 4px 4px 0px;">
+                                <i class="fa-solid fa-user "></i>
+                            </div>
+                            
+                        </div>
+                       
+                        
+                    </div>
+                   
+                    <div class="d-flex flex-column gap-2">
+                        <label for="username">Password</label>
+                        <div class="d-flex align-items-center ">
+                            <input 
+                            uppercase
+                            #password
+                            class="fw-6 m-0"
+                            maxlength="20"
+                            type="password"
+                            pInputText 
+                            id="password" 
+                            placeholder="Enter Password"
+                            formControlName="password" />
+                            <div class="rounded-right m-0 p-0 d-flex align-items-center justify-content-center" (click)="eyeChange()" style="width: 40px;height: 37px;border: 1px solid rgba(0, 0, 0, 0.288);border-radius: 0px 4px 4px 0px;cursor: pointer;">
+                                <i *ngIf="eye" class="fa-solid fa-eye"></i>
+                                <i *ngIf="!eye" class="fa-solid fa-eye-slash"></i>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <small class="" style="color: red;font-size: small;" *ngIf="incorrect">Incorrect username or password</small>
+
+                    
+
+                    <div class="sign w-100 d-flex align-items-cente justify-content-end mt-3">
+                        <button type="submit" class="border border-dark btn btn-primary" style="font-size: small">SIGN IN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

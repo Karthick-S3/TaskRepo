@@ -1,0 +1,101 @@
+<div class="whole w-100 mh-100">
+  
+  
+      <div  class="topbardiv w-100 d-flex flex-row justify-content-between align-items-center px-4 bg-white">
+        <div class="tbar d-flex flex-row justify-content-between align-items-center w-auto">
+          <i class="d-flex justify-content-center align-items-center px-1" ><img src="../assets/IComp Logo.svg" alt=""></i>
+          <div class="timee d-flex flex-column align-items-start justify-content-center px-1 ">
+            <h3 class="fw-semibold p-0 my-1">Date : {{ currentDate | date: 'medium' }}</h3>
+            <h3 class="fw-semibold my-1">Version : 1.0</h3>
+          </div>
+          <div class="p-input-icon-left ginput px-1">
+            <span class="p-input-icon-right ml-auto fs-6">
+              <input pInputText type="text"  placeholder="Company ID" class="mr-4 px-1 py-2 b-0" />
+              <i class="pi pi-search text-black" ></i>
+          </span>
+        </div>
+          
+        </div>
+        
+        <div class="d-flex flex-row justify-content-between align-items-center w-auto">
+          <i  class="fa-solid fa-house px-1 mx-3"></i>
+          <i (click)="FullScreen()" class="fa-solid fa-maximize px-1 "></i>
+          <p-overlayPanel #op >
+            <button class="logoutbutton text-danger bg-white px-2 py-1 d-flex align-items-center justify-content-center border-rounded fs-6"(click)="logout()" >Sign Out<i class="fa-solid fa-right-from-bracket mx-2 fs-6 text fw-semibold"></i></button>
+         </p-overlayPanel>
+          <div (click)="op.toggle($event)"  class="user d-flex flex-row justify-content-between align-items-center mx-2">
+            <h3 class="fs-6 d-flex align-items-center justify-content-center m-0 fw-semibold px-1">WELCOME USER1</h3>
+            <i  class="fa-solid fa-caret-down" ></i>
+          </div>
+          
+        </div>
+        
+      </div>
+  
+  
+  
+  
+  
+      <div  class="topbar2 w-100 d-flex align-items-center justify-content-start px-4" >
+        <button routerLink="dashboard">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+          Dashboard
+          <span>
+  
+          </span>
+        </button>
+        <button routerLink="tariffGrid">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          Budget
+          <span>
+            
+          </span>
+        </button>
+        <button routerLink="companylist">
+          <i class="fa-solid fa-user-group"></i>
+          Company
+          <span>
+            
+          </span>
+        </button>
+        <button routerLink="serviceControl">
+          <i class="fa-solid fa-gears"></i>
+          Service
+          <span>
+  
+          </span>
+        </button>
+        <button >
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          Repair
+          <span>
+            
+          </span>
+        </button>
+        <button>
+          <i class="fa-solid fa-chart-simple"></i>
+          Status
+          <span>
+  
+          </span>
+        </button>
+        <button>
+          <i class="fa-solid fa-ellipsis"></i>
+          Others
+          <span>
+  
+          </span>
+        </button>
+      </div>
+      <div  class="mainbody w-100">
+        <ngx-ui-loader></ngx-ui-loader>
+          <router-outlet></router-outlet>
+      </div>
+   
+      
+    </div>
+  
+  
+    
+   
+  

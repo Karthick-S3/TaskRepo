@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Task\\TaskRepo\\backend\\Backend.csproj": {}
+    "D:\\Task\\TaskRepo\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "D:\\Task\\TaskRepo\\backend\\Backend.csproj": {
+    "D:\\Task\\TaskRepo\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Task\\TaskRepo\\backend\\Backend.csproj",
+        "projectUniqueName": "D:\\Task\\TaskRepo\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "D:\\Task\\TaskRepo\\backend\\Backend.csproj",
+        "projectPath": "D:\\Task\\TaskRepo\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\Karthick.S\\.nuget\\packages\\",
-        "outputPath": "D:\\Task\\TaskRepo\\backend\\obj\\",
+        "outputPath": "D:\\Task\\TaskRepo\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Karthick.S\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,6 +45,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "Dapper": {
               "target": "Package",
               "version": "[2.1.35, )"
@@ -60,6 +64,10 @@
             "Microsoft.ApplicationInsights.WorkerService": {
               "target": "Package",
               "version": "[2.22.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.6, )"
             },
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
@@ -77,6 +85,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[7.6.2, )"
+            },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
               "version": "[23.4.0, )"
@@ -92,6 +104,14 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.6.2, )"
             },
             "System.Management": {
               "target": "Package",

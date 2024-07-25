@@ -1,6 +1,6 @@
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable,map } from 'rxjs';
 import { Company } from './Interfaces/company';
 import { Country } from './Interfaces/country';
 import { State } from './Interfaces/state';
@@ -9,7 +9,7 @@ import { Budget } from './Interfaces/budget';
 import { Currency } from './Interfaces/currency';
 import { BudgetDetail } from './Interfaces/budgetdetail';
 import { Filedetail } from './Interfaces/filesdetail';
-import { SystemService } from './Interfaces/systemservice';
+import { response } from 'express';
 
 
 
@@ -108,7 +108,7 @@ export class CompanyserviceService {
     cities: number[] | undefined,
     globalFilter: string  | undefined
   ): Observable<Company[]> {
-    // Construct the query string
+
     let queryString = `skip=${skip}&take=${take}`;
     if (orderby) {
       queryString += `&orderby=${orderby}&isAsc=${isAsc}`;
@@ -309,6 +309,13 @@ startService(serviceName: string): Observable<any> {
 stopService(serviceName: string): Observable<any> {
   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   return this.http.post(`${this.baseApiUrl}/api/Companydetails/stop?serviceName=${serviceName}`, null, { headers });
+}
+
+UserLogin(username: string, password: string): Observable<any> {
+  const url = `${this.baseApiUrl}/api/Companydetails/login?username=${username}&password=${password}`;
+  return this.http.get(url).pipe(map(response => {
+    return response;
+  }));
 }
 
 }

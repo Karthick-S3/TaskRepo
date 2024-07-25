@@ -4,6 +4,8 @@ import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { CompanyserviceService } from '../companyservice.service';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
+import { AppComponent } from '../app.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 
@@ -35,6 +37,9 @@ export class TariffGridComponent implements OnInit  {
   Companyid:any = 0;
   selectedRowIndex: number | null = null;
 
+  rowsperpageVal = this.appcomponent.TableProp.rowsperpage;
+  scrollheightVal = this.appcomponent.TableProp.largeTabScroll;
+
   TableValues = [
     { field: 'budgetid', header: 'Budget Code', width: '10%',format : '' },
     { field: 'description', header: 'Description', width: '10%' ,format : ''},
@@ -46,6 +51,8 @@ export class TariffGridComponent implements OnInit  {
 
   constructor( private companyService: CompanyserviceService,
     private messageService: MessageService,
+    private appcomponent : AppComponent,
+    private ngxService : NgxUiLoaderService
    ){
 
   }
@@ -78,7 +85,8 @@ ngOnInit(): void {
 
 
   LazyDataBudget(event : TableLazyLoadEvent): void {
-    this.animation = true;
+    this.ngxService.start();
+    
     const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
     const sortOrder: boolean = event.sortOrder === 1 ? true : false;
     const globalFilter : string | undefined = typeof event.globalFilter === 'string' ? event.globalFilter : undefined;
@@ -107,11 +115,11 @@ ngOnInit(): void {
     
     this.showval = event.rows !== null ? event.rows : undefined;
 
-    this.companyService.LazyDataBudget(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue,globalFilter)
+    this.companyService.LazyDataBudget(event.first || 0, event.rows || 5, sortField, sortOrder, searchField, sFiledValue,globalFilter)
     .subscribe((budget) => {
-      this.animation = false;
       this.budget = budget;
       this.total_records = budget[0].total_records;
+      this.ngxService.stop();
     })
 
 }
