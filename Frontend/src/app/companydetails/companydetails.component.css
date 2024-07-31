@@ -1,53 +1,22 @@
 
     .mainbody{
-        
-        width: 100%;
-        height: 100%;
-        display: flex;
         .sidebar{
             width: 280px;
-            height: calc(100vh - 110px);
-            background-color: rgb(255, 255, 255);
-            border-right: 1px solid rgba(0, 0, 0, 0.263);
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            flex-direction: column;
-            
-            
+            border-right: 1px solid rgba(0, 0, 0, 0.131);;
             h3{
                 color:#1E3D7D;
             }
-
-            form{
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: space-around;
-                padding: 0px 20px;
-                
-                
+            form{   
                 div{
-                    width: 100%;
-                    height: 100px;
-                    display: flex;
-                    justify-content: space-between;
                     
                     button{
                         width: 40%;
                         height: 40px;
-                        border-radius: 10px;
-                        border: none;
+                        border: 1px solid #000000;
                         cursor: pointer;
                         transition: 0.3s all;
-                        font-weight: 500;
-                        background-color: white;
+                        background-color: #04246A;
                         outline: none;
-                        color: white;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
                         font-size: 15px;
                     }
                     button:hover{
@@ -59,8 +28,8 @@
                 } 
                 
                 label{
-                    font-size: 15px;
-                    font-weight: 600;
+                    font-size: 14px;
+                    font-weight: 500;
                 }
 
                 p-multiSelect{
@@ -71,39 +40,6 @@
             }
         }
 
-        .body{
-            position: relative;
-            width: 100%;
-            max-height: calc(100vh - 110px) !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            .tab-head{
-                background-color: rgb(241, 241, 241);
-                width: 100%;
-                height: 50px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0px 5px;
-                border: 1px solid rgb(211, 211, 211);
-
-                h3{
-                    color: rgb(70, 70, 70);
-                }
-
-                
-            }
-
-            .container-fluid{
-                position: absolute;
-                top: 0%;
-                left: 0%;
-                padding: 3px;
-            }
-            
-        }
     }
 
 
@@ -111,37 +47,34 @@ th{
     
     font-size: small;
 }
+
+tr{
+    th{
+        border: 1px solid white;
+    }
+}
   
-  .container-fluid{
-    max-height: calc(100vh - 110px) !important;
-    
-    width: 100%;
-    
-  }
+.sec-div{
+    height: 50px;
+    background-color:#04246A;
+    border: 1px solid rgb(231, 231, 231);
+}
+
 
   .cap{
-    width: 550px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-   
+    width: 550px;   
     .ginput{
-        margin-right: 20px;
         span{
             i{
                 font-size: 15px;
-                font-weight: 400;
                 color: #1c537a;
-                margin-right: 0px;
             }
             input{
                 width: 250px;
-                height: 38px;
-                border-radius: 5px;
+                height: 36px;
                 border: 1px solid rgba(0, 0, 0, 0.199);
-                padding: 0px 0px 0px 10px;
                 outline: none;
+                font-size: 14px;
             }
         }
     }
@@ -166,21 +99,7 @@ th{
     
 }
 
-.try{
-    th{
-        input{
-            width: 100px;
-            height: 20px;
-            margin: 0%;
-            border: 1px solid rgb(255, 255, 255);
-            width: 100%;height: 100%;border-radius: 5px;margin: 0%;
-            outline: none;
-        }
-        input:focus{
-            border: 1px solid rgb(0, 255, 221);
-        }
-    }
-}
+
 
 h4{
     font-weight: 600;
@@ -209,6 +128,22 @@ h4{
     cursor: pointer;
 }
 
-.hide {
-    display: none;
+.hidecompany {
+    display: none !important;
+    
+
   }
+
+  .footerbtn{
+    
+    border: none;
+    cursor: pointer;
+    transition: 0.3s all;
+    outline: none;
+    font-size: 15px;
+    transition: 0.5s ease;
+    
+}
+.footerbtn:hover{
+outline: 1px solid white;
+}

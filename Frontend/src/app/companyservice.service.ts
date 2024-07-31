@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable,map } from 'rxjs';
 import { Company } from './Interfaces/company';
 import { Country } from './Interfaces/country';
 import { State } from './Interfaces/state';
@@ -9,6 +9,7 @@ import { Budget } from './Interfaces/budget';
 import { Currency } from './Interfaces/currency';
 import { BudgetDetail } from './Interfaces/budgetdetail';
 import { Filedetail } from './Interfaces/filesdetail';
+import { response } from 'express';
 
 
 
@@ -107,7 +108,7 @@ export class CompanyserviceService {
     cities: number[] | undefined,
     globalFilter: string  | undefined
   ): Observable<Company[]> {
-    // Construct the query string
+
     let queryString = `skip=${skip}&take=${take}`;
     if (orderby) {
       queryString += `&orderby=${orderby}&isAsc=${isAsc}`;
@@ -173,7 +174,6 @@ insertBudgetLines(budgetdetail: BudgetDetail): Observable<any> {
   return this.http.post(`${this.baseApiUrl}/api/Companydetails/insertbudgetlines`, budgetdetail);
 }
 
-// Usage in your component
 
 
 
@@ -188,6 +188,9 @@ insertBudget(budget: Budget): Observable<Budget> {
   return this.http.post<Budget>(`${this.baseApiUrl}/api/Companydetails/insertbudget`, budget);
 }
 
+updateBudget(budget: Budget): Observable<Budget> {
+  return this.http.post<Budget>(`${this.baseApiUrl}/api/Companydetails/updatebudget`, budget);
+}
 
 
 
@@ -289,6 +292,30 @@ uploadFiles(formData: FormData, companyId: number): Observable<Filedetail> {
   return this.http.post<Filedetail>(`${this.baseApiUrl}/api/Companydetails/uploadfiles?companyId=${companyId}`, formData);
 }
 
+getFilesByID(companyId: number): Observable<Filedetail[]> {
+  return this.http.get<Filedetail[]>(`${this.baseApiUrl}/api/Companydetails/getFilesByCompanyId?companyId=${companyId}`);
+}
 
+getServiceStatus(serviceName: string): Observable<any> {
+  return this.http.get(`${this.baseApiUrl}/api/Companydetails/GetServiceStatus?serviceName=${serviceName}`);
+}
+
+startService(serviceName: string): Observable<any> {
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  return this.http.post(`${this.baseApiUrl}/api/Companydetails/start?serviceName=${serviceName}`, null, { headers });
+}
+
+
+stopService(serviceName: string): Observable<any> {
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  return this.http.post(`${this.baseApiUrl}/api/Companydetails/stop?serviceName=${serviceName}`, null, { headers });
+}
+
+UserLogin(username: string, password: string): Observable<any> {
+  const url = `${this.baseApiUrl}/api/Companydetails/login?username=${username}&password=${password}`;
+  return this.http.get(url).pipe(map(response => {
+    return response;
+  }));
+}
 
 }

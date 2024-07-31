@@ -6,11 +6,18 @@ import { State } from '../Interfaces/state';
 import { Country } from '../Interfaces/country';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
-import { response } from 'express';
 import { Company } from '../Interfaces/company';
 import { CompanydetailsComponent } from '../companydetails/companydetails.component';
 import { Currency } from '../Interfaces/currency';
 import { Filedetail } from '../Interfaces/filesdetail';
+import { formatDate } from '@angular/common';
+import { AppComponent } from '../app.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
+
+
+
+
 
 
 
@@ -18,7 +25,7 @@ import { Filedetail } from '../Interfaces/filesdetail';
   selector: 'app-add-details',
   templateUrl: './add-details.component.html',
   styleUrls: ['./add-details.component.css'],
-  providers: [MessageService,ConfirmationService]  
+  providers: [MessageService]  
 })
 export class AddDetailsComponent implements OnInit {
   isActive: boolean = false;
@@ -32,10 +39,17 @@ export class AddDetailsComponent implements OnInit {
   newcompany : Company[] = [];
   badgeval : string = '';
   visible:boolean = false;
+  CompanyCreateDate!: string;
+  isSubmitted :boolean = false;
+
+
+  scrollheightVal = this.appcomponent.TableProp.smallTabScroll;
 
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
+  types: any;
+
   
   
   
@@ -47,137 +61,96 @@ export class AddDetailsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private companydetail:CompanydetailsComponent,
+    private appcomponent: AppComponent,
+    private ngxService : NgxUiLoaderService
     // private fileUploadService: FileUploadService
   ) {}
   GetFirst(event : any){
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnFirstCompId();
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-          this.animation=false;
+          
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+
+          this.ngxService.stop();
      }
      });
+     this.loadAttachments(id);
   }
   GetLast(event : any){
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnLastCompId();
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-          this.animation = false;
+          
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
-          // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
+          this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
 
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+          this.loadAttachments(id);
+          this.ngxService.stop();
      }
      });
+     
   }
 
   GetPrevious(event : any){
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnPreviousCompId();
+   
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     const id:number =val;
      this.companyService.getById(Number(id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
-          this.animation = false;
+          
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
 
-          if(response.active == "Yes"){
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+          this.ngxService.stop();
      }
      });
+     this.loadAttachments(id);
   }
 
   GetNext(event : any) {
-    this.animation = true;
+    this.ngxService.start();
     const val = this.companydetail.returnNextCompId();
     if (val === undefined) {
-      this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'No Records Found',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
-        acceptLabel: 'Ok', 
-        rejectVisible: false, 
-        accept: () => {
-        }
-    });
-      this.animation = false; 
+      this.noRecordFoundError();
       return;
     }
     
@@ -186,17 +159,34 @@ export class AddDetailsComponent implements OnInit {
     this.companyService.getById(Number(id)).subscribe({
       next: (response) => {
         this.myForm.patchValue(response);
-        this.animation = false;
         this.myForm.get('email')?.setValue("Example@gmail.com");
         this.myForm.get('revenue')?.setValue(response.revenue.toString());
   
-        if (response.active == "Yes") {
+        if (response.active == "yes") {
           this.myForm.get('active')?.setValue(true);
         } else {
           this.myForm.get('active')?.setValue(false);
         }
+        this.ngxService.stop();
       }
     });
+    this.loadAttachments(id);
+  }
+
+  noRecordFoundError(){
+    this.ngxService.stop();
+    this.appcomponent.msgStatus = 'warning';
+    this.confirmationService.confirm({
+      message: 'No Records Found',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectLabel: 'Ok', 
+      acceptVisible: false, 
+      accept: () => {
+      }
+  });
   }
   
 
@@ -221,6 +211,7 @@ export class AddDetailsComponent implements OnInit {
     // });
   }
   SubmitAndReset(){
+    this.ngxService.start();
     if(this.myForm.valid){
       this.insert();
       this.myForm.reset();
@@ -234,30 +225,37 @@ export class AddDetailsComponent implements OnInit {
         detail: 'Please enter a valid value.' 
       });
     }
-    
+    this.ngxService.stop();
     
     
   }
   onCountryChange(event: any) {
+    this.ngxService.start();
+    
     const selectedCountryid: number[] = [];
     if (event) {
       selectedCountryid.push(event.value);
       this.getCitybyCountryIds(selectedCountryid);
       this.getStatesByIds(selectedCountryid);
     }
+    this.ngxService.stop();
   }
 
   onStateChange(event: any) {
+    this.ngxService.start();
     const selectedStateid: number[] = [];
     if (event) {
       selectedStateid.push(event.value);
       this.getCityBystateIds(selectedStateid);
     }
+    this.ngxService.stop();
   }
 
   Addnew(event: Event) {
+    this.ngxService.start();
     this.id = 0;
     if(this.myForm.touched || this.id>0){
+      this.appcomponent.msgStatus = 'confirm';
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'You have unsaved changes in the screen. Do you want to continue?',
@@ -265,27 +263,50 @@ export class AddDetailsComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         acceptIcon:"none",
         rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text",
+
         accept: () => {
+          alert("working")
             this.resetForm();
+            this.attlen = false;
+            this.attachmentdata = [];
+            this.attachavailable = false;
+            this.attachmentlength = 0;
         },
         
     });
     }else{
       this.resetForm();
+            this.attlen = false;
+            this.attachmentdata = [];
+            this.attachavailable = false;
+            this.attachmentlength = 0;
+      
     }
+    this.ngxService.stop();
     
 }
+
 BackToList(event: Event) {
+<<<<<<< HEAD
   if (this.myForm && this.myForm.touched) { // Check if myForm exists and if it's touched
+=======
+  if(this.myForm.touched && !this.isSubmitted){
+    this.appcomponent.msgStatus = 'confirm';
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'You have unsaved changes on the screen. Do you want to continue?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
+<<<<<<< HEAD
       acceptIcon: 'none',
       rejectIcon: 'none',
       rejectButtonStyleClass: 'p-button-text',
+=======
+      acceptIcon:"none",
+      rejectIcon:"none",
+  
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
       accept: () => {
         this.Flag.emit(false);
       },
@@ -307,31 +328,96 @@ BackToList(event: Event) {
     this.loadCurrency();
 
     if(this.id == 0){
+      this.ngxService.start();
       this.initializeForm();
       this.badgeval = 'NEW';
+      this.ngxService.stop();
       
     }else{
+      this.ngxService.start();
       this.badgeval = 'EDIT';
-      this.animation = true;
       this.initializeForm();
       this.companyService.getById(Number(this.id)).subscribe({
         next: (response) => {
           this.myForm.patchValue(response);
+          this.CompanyCreateDate =  formatDate(response.createdate,'dd-MMM-yyy','en-US').toUpperCase();
           this.myForm.get('email')?.setValue("Example@gmail.com");
           this.myForm.get('revenue')?.setValue(response.revenue.toString());
           // this.myForm.get('zipcode')?.setValue(response.zipcode.toString());
-          this.animation = false;
-          if(response.active == "Yes"){
+          
+          if(response.active == "yes"){
             this.myForm.get('active')?.setValue(true);
           }else{
             this.myForm.get('active')?.setValue(false);
           }
+
         }
+        
+        
       });
+    
+      this.loadAttachments(this.id);
       
+      this.ngxService.stop();
     }
 
   }
+
+  // filetype: string = '';
+  // typeoffile = ['xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
+
+  loadAttachments(companyid: number) {
+    this.ngxService.start();
+    this.companyService.getFilesByID(companyid).subscribe(value => {
+      if (value && value.length > 0) {
+        this.attlen = true;
+        this.attachmentdata = value.map(file => ({
+          name: file.originalname,
+          size: file.filesize,
+          thumbnail: file.url
+        }));
+        this.attachavailable = true;
+        this.attachmentlength = value.length;
+      } else {
+        this.attlen = false;
+        this.attachmentdata = [];
+        this.attachavailable = false;
+        this.attachmentlength = 0;
+        console.log('No files found for the company.');
+      }
+      this.ngxService.stop();
+    });
+  }
+  
+  // getFileType(originalname: string): string | undefined {
+  //   const parts = originalname.split('.');
+  //   if (parts.length > 1) {
+  //     return parts.pop()?.toLowerCase(); 
+  //   }
+  //   return undefined;
+  // }
+  
+
+getFileURL(type: string): string {
+  switch (type) {
+    case 'gif':
+      return '../assets/filetype/gif.jpg';
+    case 'txt':
+      return '../assets/filetype/txt.jpg';
+    case 'doc':
+      return '../assets/filetype/doc.jpg';
+    case 'pdf':
+      return '../assets/filetype/pdf.jpg';
+    case 'xls':
+      return '../assets/filetype/xls.jpg';
+    case 'zip':
+      return '../assets/filetype/zip.jpg';
+    default:
+      return '../assets/default.jpg'; // Default URL for unknown file types
+  }
+}
+
+  
 
   initializeForm(): void {
     this.myForm = this.formBuilder.group({
@@ -355,7 +441,8 @@ BackToList(event: Event) {
       containertype:[''],
       containersize:[''],
       description:[''],
-      budgetactive:['']
+      budgetactive:[''],
+      dateval:[]
     });
   }
 
@@ -404,6 +491,7 @@ BackToList(event: Event) {
   }
 
   insert(): void {
+    this.ngxService.start();
     if(this.myForm.invalid){
       for (const control of Object.keys(this.myForm.controls)){
         this.myForm.controls[control].markAsTouched();
@@ -413,13 +501,13 @@ BackToList(event: Event) {
         summary: 'Error', 
         detail: 'Please enter a valid value.' 
       });
+      this.ngxService.stop();
     }
     else{
+      
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Company details submitted successfully!' });
       this.myForm.get('active')?.setValue(this.myForm.value.active ? 'yes' : 'no');
-      // this.myForm.get('country')?.setValue('');
-      // this.myForm.get('state')?.setValue('');
-      // this.myForm.get('city')?.setValue('');
+      
       if(this.id > 0){
         this.myForm.get('description')?.setValue('');
         this.myForm.get('containertype')?.setValue('');
@@ -428,30 +516,68 @@ BackToList(event: Event) {
         this.companyService.updateCompany(this.myForm.value).subscribe({
          
           next : (company) => {
+            this.appcomponent.msgStatus = 'success';
+            this.confirmationService.confirm({
+              message: 'Company Details Updated Successfully',
+              header: 'Confirmation',
+              icon: 'pi pi-check-circle',
+              acceptIcon: "none",
+              rejectIcon: "none",
+              acceptLabel: 'Ok', 
+              rejectVisible: false, 
+              accept: () => {
+                
+              }
+          });
             console.log("updated succesfully");
+            if(this.attachmentdata.length>0){
+              this.uploadFiles(this.formData);
+            }
+            
           },
           error: (response) => {
             console.log(response);
           }
         })
+<<<<<<< HEAD
         if(this.attachmentdata.length > 0){
           this.uploadFiles(this.formData);
         }
         
+=======
+        this.isSubmitted = true;
+        this.ngxService.stop();
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
       }else{
 
         this.myForm.get('contactid')?.setValue(0);
         console.log(this.myForm.value);
           this.companyService.insertCompany(this.myForm.value).subscribe({
             next: (company) => {
+              this.appcomponent.msgStatus = 'success';
+              this.confirmationService.confirm({
+                message: 'Company Created Successfully',
+                header: 'Confirmation',
+                icon: 'pi pi-check-circle',
+                acceptIcon: "none",
+                rejectIcon: "none",
+                acceptLabel: 'Ok', 
+                rejectVisible: false, 
+                accept: () => {
+                  
+                }
+            });
+            this.badgeval = 'EDIT'
               console.log("Inserted successfully");
             },
             error: (response) => {
               console.log(response);
             },
           });
+          this.uploadFiles(this.formData);
         }
-
+        this.isSubmitted = true;
+        this.ngxService.stop();
     }
     
     
@@ -495,14 +621,18 @@ attachmentlength: number = this.attachmentdata.length;
 attlen: boolean = false;
 attachavailable: boolean = false;
 
-preview(product: any) {
-    const url = product.file ? URL.createObjectURL(product.file) : product.thumbnail;
+download(product: any) {
+  const url = product.url ? URL.createObjectURL(product.url) : product.thumbnail;
     const link = document.createElement('a');
     link.href = url;
     link.download = product.name;
     link.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url)
 }
+
+
+
+
 
 openimg(product: any) {
     const url = product.file ? URL.createObjectURL(product.file) : product.thumbnail;
@@ -510,14 +640,14 @@ openimg(product: any) {
 }
 
 deleteattachment(index: number) {
+  this.appcomponent.msgStatus = 'confirm';
   this.confirmationService.confirm({
     message: 'Are you sure to delete the file? Click Yes to Confirm and No to ignore requested action.',
     header: 'Confirmation',
     icon: 'pi pi-exclamation-triangle',
     acceptIcon:"none",
     rejectIcon:"none",
-    acceptButtonStyleClass:"p-button-success",
-    rejectButtonStyleClass:"p-button-danger",
+ 
     accept: () => {
       if(this.attachmentdata.length==1){
         this.attachavailable = false;
@@ -534,11 +664,16 @@ deleteattachment(index: number) {
 }
 formData: FormData = new FormData();
 
+formData: FormData = new FormData();
+
 onFileSelected(event: Event) {
   const input = event.target as HTMLInputElement;
 
   if (input.files && input.files.length > 0) {
+<<<<<<< HEAD
       // const formData = new FormData();
+=======
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
       const acceptedformat = ['jpg', 'png', 'jpeg', 'xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
       let Flag = true;
 
@@ -581,7 +716,11 @@ onFileSelected(event: Event) {
       }
 
       if (Flag) {
+<<<<<<< HEAD
           
+=======
+         
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
           this.attlen = true;
           this.attachavailable = true;
           console.log(this.formData);
@@ -592,6 +731,7 @@ onFileSelected(event: Event) {
 
   
   uploadFiles(formData: FormData) {
+    this.ngxService.start();
     this.companyService.uploadFiles(formData, this.id)
       .subscribe({
         next: (response: Filedetail ) => {
@@ -606,18 +746,19 @@ onFileSelected(event: Event) {
           console.error('Error uploading files:', error);
         }
       });
+      this.ngxService.stop();
   }
   
   showFileNameExceedsLimitWarning() {
+    this.appcomponent.msgStatus = 'error';
     this.confirmationService.confirm({
       message: 'File Name should be lesser than or equal to 50 characters.',
       header: 'Invalid File Name',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok',
-      rejectVisible: false,
+      rejectLabel: 'Ok',
+      acceptVisible: false,
       accept: () => {
         // Handle accept action if needed
       }
@@ -625,15 +766,15 @@ onFileSelected(event: Event) {
   }
 
   showFileSizeExceedsLimitWarning() {
+    this.appcomponent.msgStatus = 'error';
     this.confirmationService.confirm({
       message: 'File Size should be lesser than or equal to 15 MB.',
       header: 'Invalid File Size',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok',
-      rejectVisible: false,
+      rejectLabel: 'Ok',
+      acceptVisible: false,
       accept: () => {
         // Handle accept action if needed
       }
@@ -642,15 +783,15 @@ onFileSelected(event: Event) {
   
   showFileTypeExceedsLimitWarning() {
   
+    this.appcomponent.msgStatus = 'error';
     this.confirmationService.confirm({
       message: 'Incorrect File Format. Please upload the files with recommended formats.',
       header: 'Invalid File Format',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok',
-      rejectVisible: false,
+      rejectLabel: 'Ok',
+      acceptVisible: false,
 
       accept: () => {
       
@@ -658,8 +799,18 @@ onFileSelected(event: Event) {
     });
   }
   
+ 
+  alertdate(event : any){
+    console.log(event)
+  }
+
+  newDate() {
+    // Set the date to 28 Mar 2023
+    const newDate = new Date(2023, 2, 28); // Month is 0-based, so 2 is March
+    this.myForm.get('dateval')?.setValue(newDate);
+  }
   
-  
+
 
 }
 

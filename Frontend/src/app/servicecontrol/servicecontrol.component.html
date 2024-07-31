@@ -1,0 +1,71 @@
+<div class="container-fluid w-100 h-100 d-flex flex-column">
+    
+    <p-toast></p-toast>
+    <div class="container-fluid w-100 px-0 py-2 ">
+        <h4 class="m-0 fs-4">Service Monitoring</h4>
+    </div>
+    <div class="container-fluid w-100  p-0 m-0 d-flex" >
+        <div class="card h-100 w-50">
+            <div class="sec-div w-100 p-0 m-0 d-flex align-items-center rounded-top">
+                <h1  class="text-white fs-6 fw-semibold mx-2 my-auto">Service Status</h1>
+              </div>
+            <p-table 
+                [value]="products" 
+                styleClass="p-datatable-gridlines" 
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="caption" class="refresh p-0 m-0"  >
+               
+                    <button (click)="refreshService()" class="b-0 border border-dark rounded py-1 px-2 bg-white text-black me-2" style="font-size: 14px;">Refresh Service Status</button>
+                    <button (click)="SendEmail()" class="b-0 border border-dark  py-1 px-2 bg-secondary text-white m-0" style="font-size: 14px; border-radius: 2px;">Send Email Action</button>
+
+                </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr style="height: 35px;">
+                            <th>Service Name</th>
+                            <th>Status</th>
+                            <th>Memory</th>
+                            <th>Start</th>
+                            <th>Stop</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr style="height: 35px;">
+                            <td>{{ product.displayName }}</td>
+                            <td>{{ product.status }}</td>
+                            <td class="text-center">
+                                
+                                <ng-container *ngIf="product.status === 'Running'; else emptyMemory">
+                                    {{ product.workingSetMemoryMB }}
+                                </ng-container>
+                                <ng-template #emptyMemory></ng-template>
+                            </td>
+                            <td class="text-center" >
+                                <button class="border-0 bg-transparent"
+                                        [disabled]="product.status === 'Running' || product.startupType === 'Disabled' "
+                                        [ngClass]="{'disabled-button': product.status === 'Running'  || product.startupType === 'Disabled'}"
+                                        (click)="startService(product)" style="color: green;">
+                                    <i pTooltip="Start" class="fa-solid fa-play"></i>
+                                </button>
+                            </td>
+                            <td class="text-center" >
+                                <button class="border-0 bg-transparent"
+                                        [disabled]="product.status === 'Stopped' || product.startupType === 'Disabled'"
+                                        [ngClass]="{'disabled-button': product.status === 'Stopped' || product.startupType === 'Disabled'}"
+                                        (click)="stopService(product)" style="color: red;">
+                                    <i pTooltip="Stop" class="fa-solid fa-ban"></i>
+                                </button>
+                            </td>
+                            
+                        </tr>
+                    </ng-template>
+                    
+                      
+                      
+            </p-table>
+        </div>
+        <div class="card h-50 w-50 border-0">
+
+        </div>
+    </div>
+</div>
+

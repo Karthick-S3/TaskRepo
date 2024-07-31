@@ -1,56 +1,53 @@
-import { Component, OnInit,NgZone, HostListener  } from '@angular/core';
-
-
+import { Component, OnInit, NgZone } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-
+  styleUrls: ['./app.component.css'],
+  providers: [MessageService, ConfirmationService]
 })
 export class AppComponent implements OnInit {
+  msgStatus: string = '';
+  isLogin!: boolean;
+  isInitialized: boolean = false; 
 
-  currentDate: Date | undefined;
-  isFullScreen = false;
+  TableProp = {
+    'rowsperpage': [5, 10, 25, 50],
+    'smallTabScroll': '220px',
+    'mediumTabScroll': '440px',
+    'largeTabScroll': '640px'
+  };
 
-  @HostListener('document:fullscreenchange', ['$event'])
-  onFullscreenChange(event: Event) {
-    this.isFullScreen = document.fullscreenElement !== null;
+  constructor(private ngZone: NgZone, private messageService: MessageService, private router: Router, private ngxService : NgxUiLoaderService ) {}
+
+  ngOnInit(): void {
+    this.ngxService.start();
+    this.checkToken();
   }
 
-
-  constructor(private ngZone: NgZone) {}
-
-  FullScreen(){
-    if (!this.isFullScreen) {
-      const element = document.documentElement;
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      }
+  checkToken(): void {
+    const token = localStorage.getItem('token');
+    this.isLogin = !token;
+    this.isInitialized = true;  
+    if (token) {
+      this.router.navigateByUrl('/companylist');
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } 
+      this.router.navigateByUrl('/login');
     }
-  }
-  
 
-  ngOnInit() {
-    this.updateDate();
+    this.ngxService.stop();
   }
 
-  updateDate() {
-    this.ngZone.runOutsideAngular(() => {
-      setInterval(() => {
-        this.ngZone.run(() => {
-          this.currentDate = new Date();
-        });
-      }, 1000);
-    });
+  hide(val: boolean): void {
+    this.isLogin = val;
+    this.router.navigateByUrl('/companylist');
   }
 
-  logout(){
-    alert("Logout")
+  show(val: boolean): void {
+    this.router.navigate(['/login']);
+    this.isLogin = val;
   }
 }
-

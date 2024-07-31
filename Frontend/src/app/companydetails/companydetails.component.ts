@@ -8,15 +8,34 @@ import { City } from '../Interfaces/city';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import * as XLSX from 'xlsx';
+import { CheckboxModule } from 'primeng/checkbox';
+import { CommonModule } from '@angular/common';
+import { AppComponent } from '../app.component';
+import { BudgetDetail } from '../Interfaces/budgetdetail';
+import { ConfirmationService } from 'primeng/api';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
+
+
+
 
 
 @Component({
   selector: 'app-companydetails',
   templateUrl: './companydetails.component.html',
   styleUrls: ['./companydetails.component.css'],
-  providers: [MessageService]
+  providers: [MessageService,CheckboxModule,CommonModule]
 })
 export class CompanydetailsComponent implements OnInit {
+
+
+  constructor(
+    private companyService: CompanyserviceService,
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef,
+    private appcomponent : AppComponent,
+    private confirmationService: ConfirmationService,
+    private ngxService : NgxUiLoaderService  ) {}
 
   
   @ViewChild('demo') demoTable!: Table;
@@ -48,17 +67,64 @@ export class CompanydetailsComponent implements OnInit {
   sortField:string | undefined='';
   sortOrder:boolean =false;
   globalFilter:string | undefined='';
+  selectedRowIndex: number | null = null;
+  expand:boolean = true;
+  checked: string[] = [];
+  selectedcompany!:Company;
+  visible:boolean = false;
+
+  detail_total_records!:number;
+  single:any;
+  budgetid!:number;
+  budgetdetail: BudgetDetail[] = [];
+
+  rowsperpageVal = this.appcomponent.TableProp.rowsperpage;
+  scrollheightVal = this.appcomponent.TableProp.largeTabScroll;
+  deatilscrollheightVal = this.appcomponent.TableProp.smallTabScroll;
+  TabValues = [
+    { field: 'companyname', header: 'CompanyName', width: '10%' },
+    { field: 'companyshortname', header: 'Shortname', width: '9%' },
+    { field: 'contact', header: 'Business Cont', width: '9%' },
+    { field: 'address', header: 'Address', width: '9%' },
+    { field: 'country', header: 'Country', width: '9%' },
+    { field: 'state', header: 'State', width: '9%' },
+    { field: 'city', header: 'City', width: '9%' },
+    { field: 'zipcode', header: 'Zip code', width: '9%' },
+    // { field: 'active', header: 'Active', width: '9%' },
+    // { field: 'currency', header: 'Currency', width: '9%' },
+    { field: 'budgetid', header: 'BudgetId', width: '9%' },
+    { field: 'revenue', header: 'Revenue', width: '9%' }
+  ];
+
+  alertBudgetId(event: Event, budgetId: number): void {
+    event.stopPropagation();
+    this.visible = true;
+    this.budgetid = budgetId;
+    
+    
+    this.companyService.LazyDataBudgetDetail(0,  5, '', true, [], [],'',this.budgetid).subscribe(responce => {
+      this.budgetdetail = responce;
+     
+    })
+   
+  }
+
   
 
-
-
-  
+  expandTable(){
+  this.expand = !this.expand;
+  }
 
  
-
+  onCheckboxClick(event: Event) {
+    event.stopPropagation();
+    
+  }
   routebyid(company:any,rowIndex:number){
     this.Companyid = company.companyid
+
     this.rowIndex = rowIndex;
+    this.selectedRowIndex = rowIndex;
     this.Showadd = true;
 
     this.companyService.lazyData2(0 || 0, this.total_record || 10, this.sortField, this.sortOrder, this.searchField, this.sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds, this.globalFilter)
@@ -71,6 +137,7 @@ export class CompanydetailsComponent implements OnInit {
     if(this.rowIndex==0){
       return undefined;
     }else{
+     this.selectedRowIndex=this.rowIndex-1;
       return this.Tempcompany[--this.rowIndex].companyid;
     }
     
@@ -80,7 +147,9 @@ export class CompanydetailsComponent implements OnInit {
     if(this.rowIndex==this.Tempcompany.length-1){
       return undefined;
     }else{
+      this.selectedRowIndex=this.rowIndex+1;
       return this.Tempcompany[++this.rowIndex]?.companyid;
+
     }
   }
   
@@ -90,6 +159,7 @@ export class CompanydetailsComponent implements OnInit {
       return undefined;
     }else{
       this.rowIndex = this.Tempcompany.length-1;
+      this.selectedRowIndex = this.rowIndex;
       return this.Tempcompany[this.rowIndex].companyid;
     }
     
@@ -99,6 +169,7 @@ export class CompanydetailsComponent implements OnInit {
       return undefined;
     }else{
       this.rowIndex = 0;
+      this.selectedRowIndex = 0;
       return this.Tempcompany[0].companyid;
     }
     
@@ -177,9 +248,10 @@ export class CompanydetailsComponent implements OnInit {
     this.loadCompanies(event)
   }
 
-    reload(){
+    reload(){   
       this.messageService.add({ severity: 'success', summary: 'Reload', detail: 'Company Details Reloaded' });
     this.showwwww = false;
+    this.selectedRowIndex =null;
     this.demoTable.reset();
     if (this.filterInput) {
       this.filterInput.nativeElement.value = ''; 
@@ -192,13 +264,11 @@ export class CompanydetailsComponent implements OnInit {
     window.print();
   }
 
-  constructor(
-    private companyService: CompanyserviceService,
-    private messageService: MessageService,
-    private cdr: ChangeDetectorRef
-  ) {}
+ 
 
   ngOnInit(): void {
+    
+    
 
     this.loadCompanies({
       first: 0,
@@ -212,14 +282,19 @@ export class CompanydetailsComponent implements OnInit {
     this.loadState();
     this.loadCity();
 
+    this.ngxService.start();
+
+    
    
+  
   }
 
 
   
   
   loadCompanies(event : TableLazyLoadEvent): void {
-      this.animation = true;
+   
+      this.ngxService.start();
       const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
       const sortOrder: boolean = event.sortOrder === 1 ? true : false;
       const globalFilter : string | undefined = typeof event.globalFilter === 'string' ? event.globalFilter : undefined;
@@ -252,13 +327,9 @@ export class CompanydetailsComponent implements OnInit {
  
       this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds,globalFilter)
         .subscribe(companies => {
-          this.animation = false;
-          if (companies && companies.length > 0) {
-            this.companys = companies;
-            this.total_record = companies[0].total_records;
-          } else {
-            console.error('No companies found.');
-          }
+          this.companys = companies;
+          this.total_record = companies[0].total_records;
+          this.ngxService.stop();
         });
   }
 
@@ -277,9 +348,11 @@ export class CompanydetailsComponent implements OnInit {
   }
 
   loadState(): void {
+
     this.companyService.getState().subscribe({
       next: (states) => {
         this.states = states;
+
       },
       error: (response) => {
         console.error(response);
@@ -288,9 +361,11 @@ export class CompanydetailsComponent implements OnInit {
   }
 
   loadCity(): void {
+
     this.companyService.getCity().subscribe({
       next: (citys) => {
         this.citys = citys;
+
       },
       error: (response) => {
         console.error(response);
@@ -365,6 +440,7 @@ export class CompanydetailsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.ngxService.start();
     this.selectedCity.map(city => this.selectedCityIds.push(city.cityid));
     this.selectedState.map(state => this.selectedStateIds.push(state.sid));
     this.selectedCountry.map(country => this.selectedCountryIds.push(country.cid));
@@ -381,12 +457,11 @@ export class CompanydetailsComponent implements OnInit {
         globalFilter:this.globalFilter
       };
 
-      this.animation = true;
-      setTimeout(() => {
-        console.log(event);
-        this.loadCompanies(event);
-        this.animation = false;
-      }, 500);
+      
+      console.log(event);
+      this.loadCompanies(event);
+      this.ngxService.stop();
+      
 
     }
     else{
@@ -413,6 +488,7 @@ export class CompanydetailsComponent implements OnInit {
     if (this.filterInput) {
       this.filterInput.nativeElement.value = ''; 
     }
+    this.selectedRowIndex = null;
     this.loadCountry();
     this.loadState();
     this.loadCity();
@@ -420,5 +496,33 @@ export class CompanydetailsComponent implements OnInit {
     this.showwwww = false;
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Filters cleared successfully.' });
   }
+
+
+  UnsavedChange(): Promise<boolean> {
+    if (!this.Showadd) {
+      return Promise.resolve(true);
+    }
+
+    this.appcomponent.msgStatus = 'confirm';
+
+    return new Promise<boolean>((resolve, reject) => {
+      this.confirmationService.confirm({
+        message: 'You have unsaved changes in the screen, Do you want to continue?',
+        header: 'Confirmation',
+        icon: 'pi pi-check-circle',
+        acceptIcon: "none",
+        rejectIcon: "none",
+        acceptLabel: 'Yes',
+        rejectLabel: 'No',
+        accept: () => {
+          resolve(true);
+        },
+        reject: () => {
+          resolve(false);
+        }
+      });
+    });
+  }
+  
 
 }

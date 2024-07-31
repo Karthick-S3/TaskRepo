@@ -1,60 +1,40 @@
-.body{
-    width: 100%;
-    height: calc(100vh - 110px);
-    .tab-head{
-        background-color: rgb(241, 241, 241);
-        width: 100%;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0px 5px;
-        border: 1px solid rgb(211, 211, 211);
 
-        h3{
-            color: rgb(70, 70, 70);
-        }
 
-        
-    }
-}
+/* .clicked{
+    background-color: #CBDDC3;
+  } */
 
 
 th{
     
     font-size: small;
 }
+tr{
+    th{
+        border: 1px solid white;
+    }
+}
   
   .container-fluid{
     max-height: calc(100vh - 110px) !important;
-    
-    width: 100%;
     
   }
 
   .cap{
     width: 550px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
    
     .ginput{
-        margin-right: 20px;
         span{
             i{
                 font-size: 15px;
-                font-weight: 400;
                 color: #1c537a;
-                margin-right: 0px;
             }
             input{
                 width: 250px;
-                height: 38px;
-                border-radius: 5px;
+                height: 36px;
                 border: 1px solid rgba(0, 0, 0, 0.199);
-                padding: 0px 0px 0px 10px;
                 outline: none;
+                font-size: 14px;
             }
         }
     }
@@ -77,27 +57,6 @@ th{
     
 
     
-}
-
-.try{
-    th{
-        input{
-            width: 100px;
-            height: 20px;
-            margin: 0%;
-            border: 1px solid rgb(255, 255, 255);
-            width: 100%;height: 100%;border-radius: 5px;margin: 0%;
-            outline: none;
-        }
-        input:focus{
-            border: 1px solid rgb(0, 255, 221);
-        }
-    }
-}
-
-h4{
-    font-weight: 600;
-    font-size: 17px
 }
 
 

@@ -1,10 +1,12 @@
 
-<div class="body" style="max-height: calc(100vh -110px);" *ngIf="!showAddBudget"  >
+<div class="body w-100" style="max-height: calc(100vh -110px);" *ngIf="!showAddBudget"  >
   <p-toast></p-toast>
-    <div class="container-fluid">
-     
-      <div  style="max-height: calc(100vh - 110px)">
-        <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131); padding: 10px 20px;">
+    <div class="container-fluid w-100 px-2 py-1 " >
+      <div class="w-100 p-0 m-0 d-flex align-items-center justify-content-start rounded-top border border-light" style="height: 50px;background-color:#04246A;">
+        <h1 class="text-white m-0 p-0 ps-2 fw-semibold fs-6" >Budget Details</h1>
+      </div>
+      <div >
+        <div class="py-4 px-4"  style="border: 1px solid rgba(0, 0, 0, 0.131);">
           <p-table id="demo" #demo styleClass="p-datatable-gridlines"
             [value]="budget" 
             [paginator]="true"
@@ -16,9 +18,9 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'max-width': '100%','height':'100%','background-color':'white'}" 
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,15,20]"
+            [rowsPerPageOptions]="rowsperpageVal"
             [scrollable]="true"
-            scrollHeight="700px"
+            [scrollHeight]="scrollheightVal"
             [customSort]="true"
             [globalFilterFields]="['companyid', 'companyname', 'companyshortname', 'contact','address','country','state','city','zipcode','active','revenue']"
             
@@ -26,14 +28,14 @@
 
 
             <ng-template pTemplate="caption"  >
-              <div class="" style="width: 100%;display: flex;align-items:center;justify-content: space-between;height: 30px;">
+              <div class="w-100 d-flex align-items-center justify-content-between" style="height: 30px;">
               
                   
-                  <div class="cap">
-                    <div class="p-input-icon-left ginput">
-                      <span class="p-input-icon-right ml-auto">
-                        <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
-                        <i class="pi pi-search"></i>
+                  <div class="cap h-100 d-flex align-items-center justify-content-start">
+                    <div class="p-input-icon-left ginput me-4">
+                      <span class="p-input-icon-right ml-auto ">
+                        <input class="rounded ps-2" style="font-size: 14px;" #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                        <i class="pi pi-search me-0 fw-normal"></i>
                     </span>
                   </div>
                   <i class="fa-solid fa-plus" (click)="shows()"   pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
@@ -42,7 +44,7 @@
                     <i class="fa-solid fa-eraser" (click)="erase(demo)" *ngIf="showwwww"  style="color : #0C0C8D;" pTooltip="Reset" tooltipPosition="bottom"></i>
                     <i class="fa-regular fa-file-excel" (click)="ExportData()" pTooltip="Excel" tooltipPosition="bottom" style="color: #1e7d23;"></i>
                   </div>
-                  <h4>
+                  <h4 class="fw-bold fs-6 m-0 p-0">
                     Budget List
                   </h4>
                   
@@ -54,67 +56,51 @@
               
             <ng-template pTemplate="header">
              
-              
-                <tr style="height: 40px;">
-                    <th style="width: 10%;" pSortableColumn="budgetid">Budget Code<p-sortIcon field="budgetid"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="budgetcurrencyid">Currency<p-sortIcon field="budgetcurrencyid"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="budgetactive">Active<p-sortIcon field="budgetactive"></p-sortIcon></th>
-                    <th style="width: 10%;" pSortableColumn="createdate">Create Date<p-sortIcon field="createdate"></p-sortIcon></th>
-                    
+                <tr style="height: 35px;">
+                  <th *ngFor="let values of TableValues" [style.width]="values.width" [pSortableColumn]="values.field">{{values.header}}<p-sortIcon [field]="values.field"></p-sortIcon></th>  
                 </tr>
 
-                
-
-
-                <tr  style="height: 5vh;" class="try" *ngIf="showwwww">
-  
-                <th style="width: 10%;">
-                    <p-columnFilter  type="text" field="budgetid" ></p-columnFilter>
-                </th>
-                <th style="width: 10%;">
-                    <p-columnFilter type="text" field="description"></p-columnFilter>
-                </th>
-                <th style="width: 10%;">
-                    <p-columnFilter type="text" field="budgetcurrencyid"></p-columnFilter>
-                </th>
-  
-              <th style="width: 10%;">
-                  <p-columnFilter type="text" field="budgetactive"></p-columnFilter>
-              </th>
-              <th style="width: 10%;">
-                <p-columnFilter type="text" field="createdate"></p-columnFilter>
-            </th>
-            
-      
-
+                <tr  style="height: 35px;" class="try" *ngIf="showwwww">
+                  <th *ngFor="let values of TableValues" [style.width]="values.width" ><p-columnFilter type="text" [field]="values.field"></p-columnFilter></th>
                 </tr>
             </ng-template>
+
+
             <ng-template  pTemplate="body" let-budget let-rowIndex="rowIndex">
-              <tr class="tr-body" (click)="routebyid(budget,rowIndex)" >
-                <td >{{budget.budgetid }}</td>
-                <td >{{budget.description }}</td>
-                <td >{{budget.currency}}</td>
-                <td >{{budget.budgetactive}}</td>
-                <td >{{ budget.createdate | date : 'dd-MMM-yyyy'}}</td>
+              <tr style="height: 35px;" class="tr-body" (click)="routebyid(budget,rowIndex)" [ngClass]="{'clicked': rowIndex === selectedRowIndex}">
+                <td *ngFor="let values of TableValues">
+                  <ng-container *ngIf="values.format; else normal">
+                    {{ budget[values.field] | date:values.format }}
+                  </ng-container>
+                  <ng-template #normal>
+                    {{ budget[values.field] }}
+                  </ng-template>
+                </td>
+                
               </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                  <td colspan="11">No Company found.</td>
-              </tr>
-          </ng-template>
+            
             
             <ng-template pTemplate="paginatorleft" class="print">
             </ng-template>
             <ng-template pTemplate="paginatorright" class="print">
             </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                  <td colspan="11">No Budget Detail found.</td>
+              </tr>
+          </ng-template>
+            <!-- <ng-template pTemplate="paginatorleft">
+              
+                <p class="rowperlist">Rows per page:</p>
+       
+            </ng-template> -->
           </p-table>
         </div>
       </div>
     </div>
   </div>
 
-
+ 
 
   <app-addbudget *ngIf="showAddBudget" [id]="Companyid"  (Flag)="show($event)"></app-addbudget>

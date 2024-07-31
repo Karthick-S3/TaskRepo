@@ -1,30 +1,24 @@
+<<<<<<< HEAD
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+=======
+
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
 using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using Backend.Context;
 using Backend.Contract;
 using Backend.Models;
 using Dapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Oracle.ManagedDataAccess.Client;
-using System.Collections.Generic;
-using System;
-using System.Collections.Generic;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Dapper.Oracle;
 using System.Text;
-using System.DirectoryServices.Protocols;
-using Microsoft.OpenApi.Any;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using Oracle.ManagedDataAccess.Types;
+using Microsoft.Extensions.Options;
+using System.Diagnostics;
+using MailKit.Security;
+
+
 
 
 
@@ -35,15 +29,27 @@ namespace Backend.Repository
     {
 
         private readonly DapperContext _context;
+<<<<<<< HEAD
         private readonly string _serviceName;
 
         public CompanydetailsRepository( DapperContext context,string serviceName)
+=======
+         private readonly EmailSettings _emailSettings;
+
+         private readonly ILogger<MyWorkerService> _logger;
+         
+
+        public CompanydetailsRepository( DapperContext context,IOptions<EmailSettings> emailSettings,ILogger<MyWorkerService> logger)
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
         {
             // _context = context;
              _serviceName = serviceName;
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _emailSettings = emailSettings.Value;
+             _logger = logger;
         }
 
+<<<<<<< HEAD
         
         public async Task StartService(string serviceName)
         {
@@ -94,6 +100,13 @@ namespace Backend.Repository
             }
 
 
+=======
+
+        
+
+        
+ 
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
 
 
 
@@ -364,12 +377,12 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
         }
         else
         {
-            query.Append(" ORDER BY companyid ASC");
+            query.Append(" ORDER BY companyid DESC");
         }
 
         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
-
-                       
+        
+        
                         using (var connection = _context.CreateConnection())
                         {
                             var result = await connection.QueryAsync<Companydetails>(query.ToString()).ConfigureAwait(false);
@@ -570,6 +583,29 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                     throw;
                 }
             }
+
+
+            public async Task UpdateBudgetDetail(Budgetdetails budgetDetails)
+            {
+                try
+                {
+                    using (var connection = _context.CreateConnection())
+                    {
+                        var oracleParams = new OracleDynamicParameters();
+                        oracleParams.Add("p_description", budgetDetails.description, OracleMappingType.Varchar2, ParameterDirection.Input);
+                        oracleParams.Add("p_budgetcurrencyid", budgetDetails.budgetcurrencyid, OracleMappingType.Int32, ParameterDirection.Input);
+                        oracleParams.Add("p_budgetactive", budgetDetails.budgetactive, OracleMappingType.Varchar2, ParameterDirection.Input);
+                        oracleParams.Add("p_budgetid", budgetDetails.Budgetid, OracleMappingType.Int32, ParameterDirection.Input);
+
+                        await connection.ExecuteAsync("budget_management.update_budgetdetail", oracleParams, commandType: CommandType.StoredProcedure);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
       
 
      public async Task DeleteBudgetDetailLine(int[] ids)
@@ -632,9 +668,13 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             query.Append(")");
         }
 
-        if (!string.IsNullOrEmpty(orderby))
+         if (!string.IsNullOrEmpty(orderby))
         {
-            query.Append($" ORDER BY b.{orderby} {(isAsc ? "ASC" : "DESC")}");
+            query.Append($" ORDER BY {orderby} {(isAsc ? "ASC" : "DESC")}");
+        }
+        else
+        {
+            query.Append(" ORDER BY budgetid DESC");
         }
 
         query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
@@ -717,12 +757,16 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             query.Append(")");
         }
 
-        if (!string.IsNullOrEmpty(orderby))
+         if (!string.IsNullOrEmpty(orderby))
         {
-            query.Append($" ORDER BY b.{orderby} {(isAsc ? "ASC" : "DESC")}");
+            query.Append($" ORDER BY {orderby} {(isAsc ? "ASC" : "DESC")}");
+        }
+        else
+        {
+            query.Append(" ORDER BY budgetdetailid DESC");
         }
 
-        query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
+        // query.Append($" OFFSET {skip} ROWS FETCH NEXT {take} ROWS ONLY");
 
         using (var connection = _context.CreateConnection())
         {
@@ -770,6 +814,41 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                 }
             }
 
+<<<<<<< HEAD
+=======
+        public async Task<IEnumerable<filesdetails>> GetFilesById(int companyId)
+        {
+            string sql = "SELECT * FROM filesdetail WHERE companyid = :companyId";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add(":companyId", companyId, DbType.Int32, ParameterDirection.Input);
+
+                var files = await connection.QueryAsync<filesdetails>(sql, parameters);
+                return files;
+            }
+        }
+
+       public async Task<User> UserLogin(string username, string password)
+        {
+            string sql = @"SELECT * FROM users WHERE username = :Username AND password = :Password";
+
+            using (var connection = _context.CreateConnection())
+            {
+                var user = await connection.QuerySingleOrDefaultAsync<User>(sql, new { Username = username, Password = password });
+                return user;
+            }
+        }
+
+        
+
+
+   
+
+
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
         
     }
+
 }

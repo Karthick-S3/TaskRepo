@@ -22,11 +22,16 @@
     "@angular/router": "^17.1.0",
     "@angular/ssr": "^17.1.2",
     "express": "^4.18.2",
+<<<<<<< HEAD
     "ngx-file-drop": "^16.0.0",
+=======
+    "ngx-auth": "^6.0.0",
+    "ngx-ui-loader": "^13.0.0",
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
     "ngx-uploader": "^17.0.1",
     "nodeservice": "^1.0.0",
     "primeicons": "^6.0.1",
-    "primeng": "^17.11.0",
+    "primeng": "^17.18.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",

@@ -1,92 +1,16 @@
-<div class="whole">
-    <div class="topbar">
-      <div style="width: 40%;height: 50px;display: flex;align-items: center;justify-content: space-between;">
-        <i><img src="../assets/IComp Logo.svg" alt=""></i>
-        <div class="timee" >
-          <h3>Date : {{ currentDate | date: 'medium' }}</h3>
-          <h3>Version : 1.0</h3>
-        </div>
-        <div class="p-input-icon-left ginput">
-          <span class="p-input-icon-right ml-auto">
-            <input pInputText type="text"  placeholder="Company ID" />
-            <i class="pi pi-search"></i>
-        </span>
-      </div>
-        
-      </div>
-      
-      <div style="display: flex;align-items:center;justify-content: space-between;width: 210px;">
-        <i style="cursor: pointer;" class="fa-solid fa-house"></i>
-        <i (click)="FullScreen()" style ="cursor: pointer;" class="fa-solid fa-maximize"></i>
-        <p-overlayPanel #op>
-          <button class="logoutbutton"(click)="logout()" >Sign Out<i class="fa-solid fa-right-from-bracket"></i></button>
-       </p-overlayPanel>
-        <div (click)="op.toggle($event)"  class="user">
-          <h4 style="margin-right: 10px;">WELCOME USER1</h4>
-          <i style="margin-top: -3px;color: gray;" class="fa-solid fa-caret-down"></i>
-        </div>
-        
-      </div>
-      
-    </div>
-    <div class="topbar2" >
-      <button>
-        <i class="fa-solid fa-square-poll-vertical"></i>
-        Dashboard
-        <span>
+<ng-container *ngIf="isInitialized">
+    <app-login *ngIf="isLogin" (Flag)="hide($event)"></app-login>
+    <app-layout *ngIf="!isLogin" (Flag)="show($event)"></app-layout>
+  </ng-container>
 
-        </span>
-      </button>
-      <button routerLink="tariffGrid">
-        <i class="fa-solid fa-file-invoice-dollar"></i>
-        Budget
-        <span>
-          
-        </span>
-      </button>
-      <button routerLink="companylist">
-        <i class="fa-solid fa-user-group"></i>
-        Company
-        <span>
-          
-        </span>
-      </button>
-      <button>
-        <i class="fa-solid fa-file-signature"></i>
-        Estimate
-        <span>
-
-        </span>
-      </button>
-      <button>
-        <i class="fa-solid fa-screwdriver-wrench"></i>
-        Repair
-        <span>
-          
-        </span>
-      </button>
-      <button>
-        <i class="fa-solid fa-chart-simple"></i>
-        Status
-        <span>
-
-        </span>
-      </button>
-      <button>
-        <i class="fa-solid fa-ellipsis"></i>
-        Others
-        <span>
-
-        </span>
-      </button>
-    </div>
-    <div class="mainbody">
-        <router-outlet></router-outlet>
-    </div>
-
-    
-  </div>
-
- 
   
+  <p-confirmDialog
+    [ngClass]="{
+      'errorMsgColour': msgStatus === 'error', 
+      'warningMsgColour': msgStatus === 'warning',
+      'successMsgColour': msgStatus === 'success',
+      'deleteMsgColour': msgStatus === 'delete',
+      'confirmationMsgColour': msgStatus === 'confirm'
+    }"
+  ></p-confirmDialog>
   

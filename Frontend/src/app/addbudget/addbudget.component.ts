@@ -12,8 +12,12 @@ import { Currency } from '../Interfaces/currency';
 import { State } from '../Interfaces/state';
 import { City } from '../Interfaces/city';
 import { BudgetDetail } from '../Interfaces/budgetdetail';
-import { first, skip } from 'rxjs';
+import { Observable, first, skip } from 'rxjs';
 import { Budget } from '../Interfaces/budget';
+import { AppComponent } from '../app.component';
+import { formatDate } from '@angular/common';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 
 
 
@@ -22,13 +26,13 @@ import { Budget } from '../Interfaces/budget';
   selector: 'app-addbudget',
   templateUrl: './addbudget.component.html',
   styleUrl: './addbudget.component.css',
-  providers: [MessageService,ConfirmationService]  
+  providers: [MessageService]  
 })
 export class AddbudgetComponent implements OnInit {
 
 single:any;
 shows() {
-alert("shows")
+
 }
   visible: boolean = false;
   badgeval:string = 'NEW';
@@ -42,8 +46,8 @@ alert("shows")
   shortname: any[] = [];
   showwwww: boolean = false;
   budgetdetail: BudgetDetail[] = [];
-  showval:number = 10;
-  total_records: number = 5;
+  showval:number = 5;
+  total_records: number = 0;
   sFiledValue: string[] | undefined;
   searchField: string[] | undefined;
   sortField:string | undefined='';
@@ -54,6 +58,11 @@ alert("shows")
   animation = false;
   showentrrytable:boolean = false;
   deletedetail:any = [];
+  BudgetCreateDate!: string;
+  isSubmitted: boolean = false;
+ 
+  rowsperpageVal = this.appComponent.TableProp.rowsperpage;
+  scrollheightval = this.appComponent.TableProp.smallTabScroll;
 
   @Input() id= 0;
   @Output() Flag = new EventEmitter<boolean>();
@@ -70,7 +79,7 @@ alert("shows")
   ];
 
   containertype : any =[
-    { label: 'General Purpose', value: 'General Purpose' },
+  { label: 'General Purpose', value: 'General Purpose' },
   { label: 'Refrigerated', value: 'Refrigerated' },
   { label: 'OpenTop Container', value: 'OpenTop Container' },
   { label: 'Flatrack Container', value: 'Flatrack Container' },
@@ -81,6 +90,7 @@ alert("shows")
 
 
   resetdetailentry(event : any){
+    this.appComponent.msgStatus = 'confirm';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Are you sure to reset budgetdetailline',
@@ -88,8 +98,6 @@ alert("shows")
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: "none",
       rejectIcon: "none",
-      rejectButtonStyleClass: "p-button-danger",
-      acceptButtonStyleClass: 'p-button-success',
       acceptLabel: 'Yes' ,
       accept: () => {
         this.myForm.get('startamount')?.setValue(0);
@@ -107,7 +115,7 @@ alert("shows")
       
         
   });
-    
+ 
   }
 
   reloadbudget(){
@@ -116,34 +124,36 @@ alert("shows")
 
   deleteline(event : any){
     
+    this.appComponent.msgStatus = 'confirm';
     this.confirmationService.confirm({
+      
       target: event.target as EventTarget,
       message: 'Are you sure to delete this detail line?',
       header: 'Confirmation',
       icon: 'pi pi-trash',
       acceptIcon: 'none',
       rejectIcon: 'none',
-      acceptButtonStyleClass: 'p-button-success',
-      rejectButtonStyleClass: 'p-button-danger',
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       accept: () => {
-        let index = 0;
-        this.budgetdetail.forEach(element => {
-          if(element.budgetdetailid == event.controls.budgetdetailid.value){
-            this.deletedetail.push(element.budgetdetailid);
-            this.budgetdetail.splice(index, 1);
-            this.myForm.get('startamount')?.setValue(0);
-            this.myForm.get('limitamount')?.setValue(0);
-            this.myForm.get('manhour')?.setValue(1);
-            this.myForm.get('containersize')?.setValue(1);
-            this.myForm.get('containertype')?.setValue('');
-            
-          }
-          index ++;
-        });
-        this.messageService.add({ severity: 'warn', summary: 'Deleted', detail: 'Detailline Deleted Successfully' });
-        index = 0;
+        let index: number;
+          this.budgetdetail.forEach(element => {
+            if(element.budgetdetailid == event.controls.budgetdetailid.value){
+              this.deletedetail.push(element.budgetdetailid);
+              this.budgetdetail.splice(index, 1);
+              this.myForm.get('startamount')?.setValue(0);
+              this.myForm.get('limitamount')?.setValue(0);
+              this.myForm.get('manhour')?.setValue(1);
+              this.myForm.get('containersize')?.setValue(1);
+              this.myForm.get('containertype')?.setValue('');
+              
+            }
+            index ++;
+          });
+          this.messageService.add({ severity: 'warn', summary: 'Deleted', detail: 'Detailline Deleted Successfully' });
+         
+        
+        
       },
       reject : () =>{
 
@@ -152,7 +162,11 @@ alert("shows")
       
         
   });
+
   }
+
+
+
 
   Addintoentry(event : any){
     
@@ -179,33 +193,30 @@ alert("shows")
       containertype: containertype,
       budgetid: budgetid,
       total_records: this.budgetdetail.length
+  
     };
+
 
 
     
     if (budgetdetailid == 0 && this.detaillinerow == null) {
-
-
-   
-   
-  const isDuplicate = this.budgetdetail.some(item => {
-       
-    return ((item.containertype === newItem.containertype  && item.startamount == newItem.startamount) || (item.containertype === newItem.containertype && item.limitamount == newItem.limitamount) || item.containertype == newItem.containertype); 
-});
+      const isDuplicate = this.budgetdetail.some(item => {
+      return ((item.containertype === newItem.containertype  && item.startamount == newItem.startamount) || (item.containertype === newItem.containertype && item.limitamount == newItem.limitamount) || item.containertype == newItem.containertype); 
+    });
 
 
 
 if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamount == 0  || (newItem.startamount > newItem.limitamount)  || newItem.manhour == 0  || newItem.containersize == 0){
+  this.appComponent.msgStatus = 'error';
   this.confirmationService.confirm({
     target: event.target as EventTarget,
-    message: 'Please enter valid values in the fields to create a budget detailline.1',
+    message: 'Please enter valid values in the fields to create a budget detailline.',
       header: 'Invalid Input',
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
     rejectIcon: "none",
-    acceptButtonStyleClass: 'p-button-danger',
-    acceptLabel: 'Ok', 
-    rejectVisible: false, 
+    rejectLabel: 'Close', 
+    acceptVisible: false, 
     accept: () => {
     }
     
@@ -217,6 +228,7 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
 }else{
   if (!isDuplicate) {
     this.budgetdetail.push(newItem);
+    this.appComponent.msgStatus = 'success';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Detailline added Successfully',
@@ -224,7 +236,6 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
       icon: 'pi pi-check-circle',
       acceptIcon: "none",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-success',
       acceptLabel: 'Ok', 
       rejectVisible: false, 
       accept: () => {
@@ -237,6 +248,7 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     this.myForm.get('containersize')?.setValue(1);
     this.myForm.get('containertype')?.setValue('');
     } else {
+      this.appComponent.msgStatus = 'warning';
       this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'This combination already exists. Please enter a new combination.',
@@ -244,7 +256,6 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
         icon: 'pi pi-exclamation-triangle',
         acceptIcon: "none",
         rejectIcon: "none",
-        rejectButtonStyleClass: 'p-button-danger',
         acceptLabel: 'Ok', 
         rejectVisible: false, 
         accept: () => {
@@ -279,6 +290,8 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     this.detaillinerow = null;
     this.total_records = this.budgetdetail.length;
 
+
+
     
   }
   detaillinerow: any = null;
@@ -292,11 +305,12 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
   
 
   LazyDataBudget(event:any){
+    this.ngxService.start();
     if(this.budgetid==0){
-     
+     this.ngxService.stop();
 
     }else{
-    this.animation = true;
+      this.ngxService.start();
     const sortField: string | undefined = typeof event.sortField === 'string' ? event.sortField : undefined;
     const sortOrder: boolean = event.sortOrder === 1 ? true : false;
     const globalFilter : string | undefined = typeof event.globalFilter === 'string' ? event.globalFilter : undefined;
@@ -324,14 +338,21 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     this.globalFilter = globalFilter;
     
     this.showval = event.rows !== null ? event.rows : undefined;
+   
 
-    this.companyService.LazyDataBudgetDetail(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue,globalFilter,this.budgetid)
+    this.companyService.LazyDataBudgetDetail(event.first || 0, event.rows || 5, sortField, sortOrder, searchField, sFiledValue,globalFilter,this.budgetid)
     .subscribe((budget) => {
-      this.animation = false;
-      this.budgetdetail = budget;
-      this.total_records = budget[0].total_records;
-      // this.total_records = this.budgetdetail[0].total_records;
+      if(budget[0]){
+        console.log(budget[0].total_records);
+        this.budgetdetail = budget;
+        this.total_records = budget[0].total_records;
+        this.ngxService.stop();
+      }
+      
     })
+    
+
+    
   }
   }
   
@@ -341,7 +362,10 @@ if(newItem.containertype == null || newItem.startamount == 0 || newItem.limitamo
     private formBuilder: FormBuilder,
     private router: Router,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService){
+    private confirmationService: ConfirmationService,
+    private appComponent:AppComponent,
+    private ngxService : NgxUiLoaderService  
+  ){
 
   }
   showDialog() {
@@ -354,6 +378,7 @@ tree : any;
 
 ngOnInit(): void {
 
+  this.ngxService.start();
 
 
   this.companyService.getCountry().subscribe(countries => {
@@ -424,12 +449,16 @@ ngOnInit(): void {
 
   if(this.id==0){
     this.showentrrytable = false;
-    this.badgeval = 'NEW';
+    this.badgeval = 'NEW';  
   }else{
     this.showentrrytable = true;
     this.badgeval = 'EDIT';
     this.companyService.getById(this.id).subscribe(value => {
+      console.log(value);
+      console.log(value.establish_date);
       this.myForm.patchValue(value);
+      
+      this.BudgetCreateDate = formatDate(value.createdate,'dd-MMM-yyy','en-US').toUpperCase();
       this.budgetid = this.myForm.get('budgetid')?.value;
       if(this.myForm.get('budgetactive')?.value == 'true'){
         this.myForm.get('budgetactive')?.setValue(true);
@@ -445,10 +474,9 @@ ngOnInit(): void {
         }
       });
       this.addReadOnlyStyles();
-      // console.log(this.budgetid);
       const event = {
         first : 0,
-        rows: 10,
+        rows: 5,
       }
 
       this.LazyDataBudget(event);
@@ -471,17 +499,18 @@ ngOnInit(): void {
   }
 
 
-  // console.log(this.myForm);
-
-  this.myForm.get('startamount')?.setValue(100);
-
-  setTimeout
+  this.ngxService.stop();
+  
+ 
 }
+
+
 
 
 addBudget( event : any){
  
-  console.log(this.myForm);
+
+
 
   if(this.myForm.valid){
     let updatedetail:any = [];
@@ -516,23 +545,42 @@ addBudget( event : any){
         
         
         this.companyService.insertBudget(budget).subscribe( val => {
+       
           this.myForm.get('budgetid')?.setValue(val)
           insertdetail = [];
           this.budgetdetail.forEach((data:any) => {
               data.budgetid = val;
               insertdetail.push(data);
+              if(insertdetail.length >0){
+                this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
+                  this.appComponent.msgStatus = 'success';
+                  this.confirmationService.confirm({
+                    target: event.target as EventTarget,
+                    message: 'Budget added Successfully',
+                    header: 'Confirmation',
+                    icon: 'pi pi-check-circle',
+                    acceptIcon: "none",
+                    rejectIcon: "none",
+                    acceptLabel: 'Ok', 
+                    rejectVisible: false, 
+                    accept: () => {
+                      
+                    }
+                });
+                })
+              }
             
         })
   
-        
-
+        this.badgeval = 'EDIT'
+        insertdetail = [];
+        this.isSubmitted = true;
         });
         
         
-        this.badgeval = 'EDIT';
         
       }else{
-      
+        this.appComponent.msgStatus = 'warning';
         this.confirmationService.confirm({
           target: event.target as EventTarget,
           message: 'The budget currency must match the company currency.',
@@ -557,10 +605,34 @@ addBudget( event : any){
     }
   
     if(this.badgeval == 'EDIT'){
+      
+      const budgetActiveValue = this.myForm.get('budgetactive')?.value;
+      const budgetActive = budgetActiveValue === null ? false : budgetActiveValue;
+      const budget: Budget = {
+        description: this.myForm.get('description')?.value,
+        budgetcurrencyid: this.myForm.get('budgetcurrencyid')?.value,
+        budgetactive: budgetActive.toString(),
+        createdate: this.myForm.get('createdate')?.value,
+        companyid: this.myForm.get('companyid')?.value,
+        budgetid: this.myForm.get('budgetid')?.value,
+        total_records: 0,
+        currency: ''
+      };
+
+      if(this.myForm.get('description')?.touched || this.myForm.get('budgetcurrency')?.touched || this.myForm.get('budgetactive')?.touched){
+        this.companyService.updateBudget(budget).subscribe(value => {
+         
+          console.log(value);
+        })
+       
+        
+      }
   
  
       if(updatedetail.length>0){
         this.companyService.updatebudgetlines(updatedetail).subscribe(value => {
+          updatedetail = [];
+          
           // console.log(value);
         })
       }
@@ -568,6 +640,8 @@ addBudget( event : any){
         
         if(insertdetail.length >0){
           this.companyService.insertBudgetLines(insertdetail).subscribe(value => {
+            insertdetail = [];
+            insertdetail = [];
             // console.log(value);
           })
         }
@@ -583,20 +657,21 @@ addBudget( event : any){
         
 
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Budget Detail Updated Successfully !' });
+        this.isSubmitted = true;
   
       
     }
   }else{
+    this.appComponent.msgStatus = 'error';
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Please enter valid values in the fields to create a budget detail2.',
+      message: 'Please enter valid values in the fields to create a budget detail.',
       header: 'Invalid Input',
       icon: 'pi pi-exclamation-triangle',
-      acceptIcon: "none",
+      acceptIcon: "pi pi-check",
       rejectIcon: "none",
-      acceptButtonStyleClass: 'p-button-danger',
-      acceptLabel: 'Ok', 
-      rejectVisible: false, 
+      rejectLabel: 'Ok', 
+      acceptVisible: false, 
       accept: () => {
       }
   });
@@ -610,13 +685,18 @@ addBudget( event : any){
   
 }
 
+transformToUppercase(event:any){
+  const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+    this.myForm.get('description')?.setValue(input.value);
+}
 
 files: Country[] = [];
 
 loadCurrency(){
   this.companyService.GetCurrency().subscribe(currency => {
       this.currency = currency;
-      // alert(currency);
+     
   })
 }
 loadCountry(){
@@ -645,7 +725,7 @@ onNodeSelect(val : any){
   
 if(val.node.children.length == 0){
   this.budgetid = this.myForm.get('budgetid')?.value;
-  this.animation = true;
+  this.ngxService.start();
     this.companyService.getById(val.node.key).subscribe(company => {
       
       this.myForm.patchValue(company);
@@ -661,14 +741,14 @@ if(val.node.children.length == 0){
       });
       const event = {
         first : 0,
-        rows: 10,
+        rows: 5,
       }
   
       this.LazyDataBudget(event);
       
       this.showentrrytable = true;
       this.addReadOnlyStyles();
-      this.animation = false;
+      this.ngxService.stop();
       if(this.myForm.get('budgetid')?.value != 0){
         this.badgeval = 'EDIT';
         this.myForm.get('budgetcurrencyid')?.disable();
@@ -679,6 +759,7 @@ if(val.node.children.length == 0){
       }
     })
 }else{
+  this.appComponent.msgStatus = 'warning';
   this.confirmationService.confirm({
     target: val.target as EventTarget,
     message: 'Choose Proper Company Short name in the Hierarchy',
@@ -686,9 +767,8 @@ if(val.node.children.length == 0){
     icon: 'pi pi-exclamation-triangle',
     acceptIcon: "none",
     rejectIcon: "none",
-    acceptButtonStyleClass: 'p-button-warning',
-    acceptLabel: 'Ok', 
-    rejectVisible: false, 
+    rejectLabel: 'Ok', 
+    acceptVisible: false, 
     accept: () => {
     }
 });
@@ -755,14 +835,14 @@ onShortnameChange(event:any){
     });
     const event = {
       first : 0,
-      rows: 10,
+      rows: 5,
     }
 
     this.LazyDataBudget(event);
     
     this.showentrrytable = true;
     this.addReadOnlyStyles();
-    this.animation = false;
+    this.ngxService.stop();
     if(this.myForm.get('budgetid')?.value != 0){
       this.badgeval = 'EDIT';
       this.myForm.get('budgetcurrencyid')?.disable();
@@ -844,11 +924,11 @@ showfil(){
   
 }
 hidefil(){
-  alert("Working")
   this.showwwww = false;
 
 }
 BackToList() {
+<<<<<<< HEAD
   if (this.myForm && this.myForm.touched) { // Check if myForm exists and if it's touched
     this.confirmationService.confirm({
       message: 'You have unsaved changes on the screen. Do you want to continue?',
@@ -866,8 +946,28 @@ BackToList() {
     });
   } else {
     this.Flag.emit(false);
+=======
+  this.appComponent.msgStatus = 'confirm';
+console.log(this.myForm);
+  if (this.myForm.touched && !this.isSubmitted) {
+
+    this.confirmationService.confirm({
+      message: 'You have unsaved changes in the screen. Do you want to continue?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      accept: () => {
+        this.Flag.emit(false);
+      },
+      
+    });
+  } else {
+    this.Flag.emit(false); 
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
   }
 }
+
 
 
 
@@ -882,7 +982,7 @@ initializeForm(): void {
       Validators.pattern('[a-zA-Z0-9\\- ]*')
     ]],
     currency: ['',Validators.required],
-    startamount: [0, [
+    startamount: [, [
       Validators.pattern('^[0-9]*$'),
   ]],
   limitamount: [0, [
@@ -899,7 +999,7 @@ initializeForm(): void {
     containersize: [1, [
       Validators.pattern('^[0-9]*$'),
       Validators.min(1),
-      Validators.max(40)
+      Validators.max(40),
   ]],
     companyid:['',Validators.required],
     companyname:['',Validators.required],
@@ -910,9 +1010,9 @@ initializeForm(): void {
     state : [''],
     city:[''],
     revenue:['',Validators.required],
-    cid:[''],
-    sid:[''],
-    cityid:[''],
+    cid:['',[Validators.required]],
+    sid:['',[Validators.required]],
+    cityid:['',[Validators.required]],
     currencyid:['',Validators.required],
     budgetcurrencyid:['',Validators.required],
     budgetactive:['False'],
@@ -925,7 +1025,27 @@ initializeForm(): void {
 }
 
 
-
+DisableBudget(event : any){
+  if(this.badgeval=='EDIT'){
+    if(event.checked== false){
+      this.myForm.get('budgetactive')?.setValue(true);
+      this.appComponent.msgStatus = 'error';
+      this.confirmationService.confirm({
+        message: 'Deactivation is not possible Once created the Budget',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon: "none",
+        rejectIcon: "none",
+        acceptLabel:"ok",
+        rejectVisible:false,
+        accept: () => {
+          
+        },
+        
+      });
+    }
+  }
+}
 
   
 }

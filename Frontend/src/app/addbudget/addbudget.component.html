@@ -1,7 +1,8 @@
-<form class="mainbody" [formGroup]="myForm" (ngSubmit)="addBudget($event)" novalidate>
+<form class="mainbody w-100 px-2 py-1" [formGroup]="myForm" (ngSubmit)="addBudget($event)" novalidate>
+  
     <p-card class="test" >
         <ng-template pTemplate="header">
-            <h4 style="font-weight: 600;">
+            <h4 class="m-0 p-0 fw-semibold fs-6" >
                 Budget
                 <p-badge class="badge"  [value]="badgeval" severity="success"></p-badge>
             </h4>
@@ -9,6 +10,7 @@
 
             <div class="bts">
                 <p-toast></p-toast>
+<<<<<<< HEAD
                 <p-confirmDialog ></p-confirmDialog>
                 <button type="button" (click)="BackToList()" pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
@@ -17,31 +19,40 @@
                
                 <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew()">
                     <i class="fa-solid fa-plus" style="color: #1E1EC4;"></i>
+=======
+                <button type="button" (click)="BackToList()" pTooltip="Back to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-list-ul text-danger" ></i>
+                    Back To List
+                </button>
+               
+                <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
+                    <i class="fa-solid fa-plus text-primary"></i>
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
                     Add Budget
                 </button>
                 <button type="button" (click)="routeToList()" pTooltip="Go to List" tooltipPosition="bottom">
-                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    <i class="fa-solid fa-floppy-disk text-success"></i>
                     Submit & Go To List
                 </button>
                 <button type="submit" pTooltip="Submit" tooltipPosition="bottom">
-                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
                     Submit
                 </button>
                
     
                 <button type="button" (click)="GetFirst($event)">
-                    <i class="fa-solid fa-angles-left" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angles-left text-primary" ></i>
                 </button>
                 
                 <button type="button" (click)="GetPrevious($event)">
-                    <i class="fa-solid fa-angle-left" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angle-left text-primary" ></i>
                 </button>
                 <button type="button" (click)="GetNext($event)">
-                    <i class="fa-solid fa-angle-right" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angle-right text-primary" ></i>
                 </button>
     
                 <button type="button" (click)="GetLast($event)">
-                    <i class="fa-solid fa-angles-right" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angles-right text-primary" ></i>
                 </button>
                 
             </div>
@@ -49,21 +60,21 @@
 
         </ng-template>
 
-        <div class="body">
-            <div class="rowss">
-                <div class="input-group" style="height: 80px;">
-                    <label for="companyname" class="form-label">Budget Code</label>
-                    <input style="cursor: not-allowed; background-color: #f5f5f5; color: #808080;"  pInputText type="text" class="form-control" id="companyname" formControlName="budgetid" placeholder="Budegt code" autocomplete="off" readonly />
+        <div class="body container-fluid h-100">
+            <div class="row w-100 h-100 d-flex align-items-center justify-content-between m-0 mb-1">
+                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;">
+                    <label for="companyname" class="form-label text-black mb-1 fw-semibold">Budget Code</label>
+                    <input class="form-control rounded w-100 px-2 m-0 user-select-none"  style="cursor: not-allowed; background-color: #f5f5f5; color: #808080;"  pInputText type="text"  id="companyname" formControlName="budgetid" placeholder="Budegt code" autocomplete="off" readonly />
                 </div>
                 
 
-                <div class="input-group" style="height:80px;">
-                    <label for="companyshortname" class="form-label">Description<span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="description" formControlName="description" placeholder="Description" autocomplete="off" />
+                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:90px;">
+                    <label for="companyshortname" class="form-label text-black mb-1 fw-semibold">Description<span  style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control rounded w-100 px-2 m-0" id="description" formControlName="description" placeholder="Description" autocomplete="off" (input)="transformToUppercase($event)"  />
 
 
                     <small *ngIf="myForm.get('description')?.errors?.['required'] && myForm.get('description')?.touched " >
-                        *This field is required.
+                        *Description required.
                     </small>
                     <small *ngIf="myForm.get('description')?.errors?.['maxlength']" >
                         *Description should be lesser than 20
@@ -74,12 +85,12 @@
                     
                 </div>
 
-                <div class="input-group" style="height:80px;">
-                    <label for="currencyid" class="form-label">Currency<span style="color: red;"> * </span></label>
-                    <p-dropdown  class="fullwidth fullform-control readonly-field" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
+                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:90px;">
+                    <label for="currencyid" class="form-label text-black mb-1 fw-semibold">Currency<span style="color: red;"> * </span></label>
+                    <p-dropdown  class="fullwidth fullform-control readonly-field rounded w-100 px-0" formControlName="budgetcurrencyid" [options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
 
                     <small *ngIf="myForm.get('budgetcurrencyid')?.touched  && myForm.get('budgetcurrencyid')?.errors?.['required'] " >
-                        *This field is required.
+                        *Currency required.
                     </small>
                     
                 </div>
@@ -87,28 +98,35 @@
             
 
 
-                <div class="input-group" style="height:80px;">
-                    <label for="active" class="form-label">Active</label>
-                    <p-inputSwitch class="form-control" type="" formControlName="budgetactive" ></p-inputSwitch>
-                    
-                </div>    
+                
+
+                <div class="w-100 input-group col d-flex align-items-start justify-content-start px-1 " style="height:90px;">
+                    <div class="d-flex flex-column align-items-start justify-content-start me-3  h-100">
+                        <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
+                        <p-inputSwitch (onChange)="DisableBudget($event)" class="form-control" type="" formControlName="budgetactive" ></p-inputSwitch>
+                    </div>
+                    <div *ngIf="badgeval == 'EDIT'" class=" h-100 d-flex flex-column align-items-start justify-content-start mt-4">
+                        <p>({{BudgetCreateDate}})</p>
+                    </div>
+                </div>
+                  
             </div>
         </div>
 
         <p-card  class="first">
             <ng-template pTemplate="header">
-                <h4 style="font-weight: 600;">
+                <h4 class="m-0 p-0 fw-semibold fs-6" >
                     Budget Detail Entry
                 </h4>
             </ng-template>
 
-            <div class="body2">
+            <div class="body2 w-100 p-0 d-flex align-items-center justify-content-between">
 
 
-                <div class="budget-tree"  >
+                <div class="budget-tree mx-1"  >
                     <p-card class="budget-tree-card second">
                         <ng-template pTemplate="header">
-                            <h4 style="font-weight: 600;">
+                            <h4 class="m-0 p-0 fw-semibold fs-6">
                                 Budget Tree
                             </h4>
                         </ng-template>
@@ -120,111 +138,127 @@
 
 
 
-                <div class="budget-view" style="display: flex;flex-direction: column;">
+                <div class="budget-view h-100 d-flex flex-column px-2" >
                    
-            <div class="rowss" style="max-height: 110px;">
-                <div class="input-group" style="height: 90px;">
-                    <label for="cid" class="form-label">Country <span style="color: red;"> * </span></label>
-                    <p-dropdown (onChange)="onCountryChange($event)" class="fullwidth form-control readonly-field" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
+            <div class="row d-flex align-items-center justify-content-between w-100 m-0"style="max-height: 110px;">
+                <div class=" col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height: 90px;">
+                    <label for="cid" class="form-label text-black fw-semibold mb-1">Country <span style="color: red;"> * </span></label>
+                    <p-dropdown (onChange)="onCountryChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="cid" [options]="country" optionLabel="country" optionValue="cid" placeholder="Select a Country" ></p-dropdown>
+                    <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
+                        *Country required.
+                    </small>
                 </div>
                 
 
-                <div class="input-group" style="height:90px;">
-                    <label for="username" class="form-label">State<span style="color: rgb(255, 0, 0);"> * </span></label>
-                    <p-dropdown (onChange)="onStateChange($event)" class="fullwidth form-control readonly-field" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
-                    
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height:90px;">
+                    <label for="username" class="form-label text-black fw-semibold mb-1">State<span style="color: rgb(255, 0, 0);"> * </span></label>
+                    <p-dropdown (onChange)="onStateChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="sid" [options]="state" optionLabel="state" optionValue="sid"  placeholder="Select a State" ></p-dropdown>
+                    <small *ngIf="myForm.get('sid')?.errors?.['required'] && myForm.get('sid')?.touched " >
+                        *State required.
+                    </small>
                 </div>
 
-                <div class="input-group" style="height:90px;">
-                    <label for="username" class="form-label">City<span style="color: red;"> * </span></label>
-                    <p-dropdown (onChange)="onCityChange($event)" class="fullwidth form-control readonly-field" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
-                    
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height:90px;">
+                    <label for="username" class="form-label text-black fw-semibold mb-1">City<span style="color: red;"> * </span></label>
+                    <p-dropdown (onChange)="onCityChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="cityid" [options]="city" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
+                    <small *ngIf="myForm.get('cityid')?.errors?.['required'] && myForm.get('cityid')?.touched " >
+                        *City required.
+                    </small>
                 </div>
 
             
 
 
-                <div class="input-group" style="height: 90px;">
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height: 90px;">
                     
-                    <label for="cid" class="form-label">Short Name <span style="color: red;"> * </span></label>
-                    <p-dropdown  (onChange)="onShortnameChange($event)" class="fullwidth form-control readonly-field" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
+                    <label for="cid" class="form-label text-black fw-semibold mb-1">Short Name <span style="color: red;"> * </span></label>
+                    <p-dropdown  (onChange)="onShortnameChange($event)" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="companyid" [options]="shortname" optionLabel="companyshortname" optionValue="companyid" placeholder="Select a shortname" ></p-dropdown>
                     
                     <small *ngIf="myForm.get('companyid')?.errors?.['required'] && myForm.get('companyid')?.touched " >
-                        *This field is required.
+                        *Shortname equired.
                     </small>
 
                 </div>    
             </div>
 
-            <div class="rowss" style="max-height: 110px;">
-                <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Company Name</label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
+            <div class="row d-flex align-items-center justify-content-between w-100 m-0" style="max-height: 110px;">
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height: 90px;">
+                    <label for="companyname" class="form-label text-black fw-semibold mb-1">Company Name<span style="color: red;"> * </span></label>
+                    <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
                     <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
+                        *Companyname required.
                     </small>
                     
                 </div>
                 
 
-                <div class="input-group" style="height:90px;">
-                    <label for="companyname" class="form-label">Revenue</label>
-                    <input pInputText type="text" class="form-control readonly-field" id="companyname" formControlName="revenue" placeholder="Revenue" autocomplete="off" />
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height:90px;">
+                    <label for="companyname" class="form-label text-black fw-semibold mb-1">Revenue<span style="color: red;"> * </span></label>
+                    <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="companyname" formControlName="revenue" placeholder="Revenue" autocomplete="off" />
                     <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched " >
-                        *This field is required.
+                        *Revenue required.
                     </small>
                 </div>
 
-                <div class="input-group" style="height:90px;">
-                    <label for="currencyid" class="form-label">Company Currency</label>
-                    <input pInputText class="form-control readonly-field" id="currencyid" formControlName="currency" placeholder="Currency" autocomplete="off"  />
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height:90px;">
+                    <label for="currencyid" class="form-label text-black fw-semibold mb-1">Company Currency<span style="color: red;"> * </span></label>
+                    <input pInputText class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="currencyid" formControlName="currency" placeholder="Currency" autocomplete="off"  />
                     <small *ngIf="myForm.get('currency')?.errors?.['required'] && myForm.get('currency')?.touched " >
-                        *This field is required.
+                        *Company Currency required.
                     </small>
                 </div>
 
             
 
 
-                <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Zipcode</label>
-                    <input pInputText type="text" class="form-control readonly-field" id="zipcode" formControlName="zipcode" placeholder="Zipcode" autocomplete="off" />
+                <div class="col input-group d-flex flex-column align-items-start justify-content-start p-0 mx-1 w-100" style="height: 90px;">
+                    <label for="companyname" class="form-label text-black fw-semibold mb-1">Zipcode<span style="color: red;"> * </span></label>
+                    <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="zipcode" formControlName="zipcode" placeholder="Zipcode" autocomplete="off" />
                     <small *ngIf="myForm.get('zipcode')?.errors?.['required'] && myForm.get('zipcode')?.touched " >
-                        *This field is required.
+                        *Zipcode required.
                     </small>
                 </div>   
             </div>
 
-            <div class="rows">
+            <div class="container-fluid d-flex justify-content-between w-100 p-0 ">
                
-<div class="card" *ngIf="showentrrytable">
+<div class="card w-75 " *ngIf="showentrrytable">
     <p-table styleClass="p-datatable-gridlines" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 20%;">Start</th>
-                <th style="width: 20%;">Limit</th>
-                <th style="width: 20%;">ManHour</th>
-                <th style="width: 20%;">Container Type</th>
-                <th style="width: 20%;">Container Size</th>
-                <th (click)="deleteline(myForm)" style="width: 20%; align-items: center;text-align: center;"><i class="fa-solid fa-trash-can"></i></th>
+                <th style="width: 10%;">Start</th>
+                <th style="width: 10%;">Limit</th>
+                <th style="width: 10%;">ManHour</th>
+                <th style="width: 10%;">Container Type</th>
+                <th style="width: 10%;">Container Size</th>
+                <th (click)="deleteline(myForm)" class="align-items-center text-center" style="width: 10%;"><i class="fa-solid fa-trash-can"></i></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-val>
             <tr class="tarif-tab" (click)="showDialog()" >
                 <td > {{ myForm.get('startamount')?.value}}</td>
                 <td>{{ myForm.get('limitamount')?.value }}</td>
                 <td>{{ myForm.get('manhour')?.value }}</td>
                 <td>{{ myForm.get('containertype')?.value }}</td>
                 <td>{{ myForm.get('containersize')?.value }}</td>
+                
+                
                 <td>
-                    <a style="display: block;width: 100%; height: 100%; text-align: center; line-height: 30px;" (click)="deleteline(myForm); $event.stopPropagation()">
-                      <i style="color: red;" class="fa-solid fa-trash-can"></i>
+                    <a class="d-block w-100 h-100 text-center " style="line-height: 30px;" (click)="deleteline(myForm); $event.stopPropagation()">
+                      <i  style="color: red;" class="fa-solid fa-trash-can text-danger"></i>
                     </a>
                   </td>
                   
             </tr>
         </ng-template>
     </p-table>
+</div>
+<div class="w-75" style="height: 75px;" *ngIf="!showentrrytable">
+
+</div>
+<div class="d-flex w-25 align-items-end justify-content-end"  >
+    <button class=" rounded fw-semibold text-white d-flex align-items-center justify-content-center" (click)="Addintoentry($event)" type="button" >Add</button>
+    <button class="rounded fw-semibold text-white d-flex align-items-center justify-content-center ms-2" type="button"  (click)="resetdetailentry($event)">Reset</button>
 </div>
             </div>
             
@@ -235,29 +269,29 @@
 
 
 
-            <ng-template pTemplate="footer"  style="display: flex;width: 100%;align-items: center;justify-content: flex-end;">
-               <button (click)="Addintoentry($event)" type="button" >Add</button>
-               <button type="button" style="margin-left: 10px;" (click)="resetdetailentry($event)">Reset</button>
-            </ng-template>
+            <!-- <ng-template pTemplate="footer" class="flex w-100 align-items-center justify-content-end">
+               <button class=" rounded fw-semibold text-white d-flex align-items-center justify-content-center" (click)="Addintoentry($event)" type="button" >Add</button>
+               <button class="rounded fw-semibold text-white d-flex align-items-center justify-content-center ms-2" type="button"  (click)="resetdetailentry($event)">Reset</button>
+            </ng-template> -->
 
 
         </p-card>
 
-        <p-dialog  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+        <p-dialog class="detail-line-entry"  [(visible)]="visible" [modal]="true" [style]="{ width: '80rem'}" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
             <ng-template pTemplate="header" class="detailline">
-                <h4 style="color: white;">Detail line Entry</h4>
+                <h4 class="my-2 p-0 fw-semibold fs-6">Detail line Entry</h4>
                 <div class="btss">
-                    <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="true"><i class="fa-solid fa-floppy-disk" style="color: green;margin-right: 5px;"></i>Save</button>     
-                    <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark" style="color: red;margin-right: 5px;"></i>Close</button>     
+                    <button class=" bg-white footerbtn rounded fw-semibold text-black d-flex align-items-center justify-content-center text-right py-1 px-2" (click)="visible = false" pAutoFocus [autofocus]="true"><i class="fa-solid fa-floppy-disk me-1 text-success"></i>Save</button>     
+                    <button class="bg-white footerbtn rounded fw-semibold text-black d-flex align-items-center justify-content-center text-right py-1 px-2" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark me-1 text-danger"></i>Close</button>     
                 </div>
                 
               </ng-template>
 
-              <ng-template pTemplate="body" style="height: 30vh;">
-                <div class="entryrow" >
-                    <div class="input-group" style="height:90px">
-                        <label for="containertype" class="form-label">Container Type<span style="color: rgb(255, 0, 0);"> * </span></label>
-                        <p-dropdown class="fullwidth form-control" formControlName="containertype" [options]="containertype"  placeholder="Container Type" ></p-dropdown>
+              <ng-template pTemplate="body">
+                <div class="entryrow d-flex align-items-center justify-content-between" >
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height:130px">
+                        <label for="containertype " class="form-label text-black fw-semibold mb-1">Container Type<span style="color: rgb(255, 0, 0);"> * </span></label>
+                        <p-dropdown appendTo="body" class="fullwidth form-control readonly-field rounded w-100 px-0 m-0" formControlName="containertype" [options]="containertype"  placeholder="Container Type"  ></p-dropdown>
 
                         <small *ngIf="myForm.get('containertype')?.errors?.['required'] && myForm.get('containertype')?.touched " >
                             *This field is required.
@@ -265,79 +299,66 @@
                         
                     </div>
             
-                    <div class="input-group" style="height: 90px;">
-                        <label for="startamount" class="form-label">Start Amount <span style="color: red;">*</span></label>
-                        <input pInputText type="text" class="form-control" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
-                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched" class="text-danger">
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height: 130px;">
+                        <label for="startamount" class="form-label text-black fw-semibold mb-1">Start Amount <span style="color: red;">*</span></label>
+                        <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="startamount" formControlName="startamount" placeholder="Start Amount" autocomplete="off" />
+                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('startamount')?.touched && !myForm.get('startamount')?.errors?.['pattern']" class="text-danger">
                             Start amount must be less than limit amount
                         </small>
-                       
-                    </div>
-                    
-                    <div class="input-group" style="height: 90px;">
-                        <label for="limitamount" class="form-label">Limit Amount <span style="color: red;">*</span></label>
-                        <input pInputText type="text" class="form-control" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
-                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched" class="text-danger">
-                            Limit amount must be higher than start amount
+                        <small *ngIf="myForm.get('startamount')?.errors?.['pattern'] && myForm.get('startamount')?.touched">
+                            *Enter valid number
                         </small>
                        
                     </div>
                     
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100 " style="height: 130px;">
+                        <label for="limitamount" class="form-label text-black fw-semibold mb-1">Limit Amount <span style="color: red;">*</span></label>
+                        <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="limitamount" formControlName="limitamount" placeholder="Limit Amount" autocomplete="off" />
+                        <small *ngIf="myForm.hasError('startAmountGreaterThanOrEqualLimitAmount') && myForm.get('limitamount')?.touched && !myForm.get('limitamount')?.errors?.['pattern']" class="text-danger">
+                            Limit amount must be higher than start amount
+                        </small>
+                        <small *ngIf="myForm.get('limitamount')?.errors?.['pattern'] && myForm.get('limitamount')?.touched">
+                            *Enter valid number
+                        </small>
+                        
+                    </div>
+                    
                     
     
-                    
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:130px;">
+                        <label for="containersize" class="form-label text-black fw-semibold mb-1">Container Size <span style="color: red;">*</span></label>
+                        <input uppercase pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
+                        <small *ngIf="myForm.get('containersize')?.errors?.['min']">
+                            *Value should be at least 1
+                        </small>
+                        <small *ngIf="myForm.get('containersize')?.errors?.['max']">
+                            *Value should not exceed 40
+                        </small>
+                        <small *ngIf="myForm.get('containersize')?.errors?.['pattern'] && myForm.get('containersize')?.touched">
+                            *Enter valid number
+                        </small>
+                    </div>
     
                     
-                    
+                    <div class="input-group d-flex flex-column align-items-start justify-content-start px-4 w-100" style="height:130px;">
+                        <label for="manhour" class="form-label text-black fw-semibold mb-1">Man Hour <span style="color: red;">*</span></label>
+                        <input pInputText type="text" class="fullwidth form-control readonly-field rounded w-100 px-2 m-0" id="manhour" formControlName="manhour" placeholder="Man Hour" autocomplete="off" />
+                        <small *ngIf="myForm.get('manhour')?.errors?.['min'] && myForm.get('manhour')?.touched ">
+                            *Value should be at least 1
+                        </small>
+                        <small *ngIf="myForm.get('manhour')?.errors?.['max'] && myForm.get('manhour')?.touched">
+                            *Value should not exceed 100
+                        </small>
+                        <small *ngIf="myForm.get('manhour')?.errors?.['pattern'] && myForm.get('manhour')?.touched">
+                            *Enter valid number
+                        </small>
+                        
+                    </div>
                     
                     
     
                </div>
-               <div class="entryrow" >
-                
-                <div class="input-group" style="height:90px;">
-                    <label for="containersize" class="form-label">Container Size <span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="containersize" formControlName="containersize" placeholder="Container Size" autocomplete="off" />
-                    <small *ngIf="myForm.get('containersize')?.errors?.['min']">
-                        *Value should be at least 1
-                    </small>
-                    <small *ngIf="myForm.get('containersize')?.errors?.['max']">
-                        *Value should not exceed 40
-                    </small>
-                    <small *ngIf="myForm.get('containersize')?.errors?.['pattern'] && myForm.get('containersize')?.touched">
-                        *Enter valid number
-                    </small>
-                </div>
-                
-               
-                
-                <div class="input-group" style="height:90px;">
-                    <label for="manhour" class="form-label">Man Hour <span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="manhour" formControlName="manhour" placeholder="Man Hour" autocomplete="off" />
-                    <small *ngIf="myForm.get('manhour')?.errors?.['min'] && myForm.get('manhour')?.touched ">
-                        *Value should be at least 1
-                    </small>
-                    <small *ngIf="myForm.get('manhour')?.errors?.['max'] && myForm.get('manhour')?.touched">
-                        *Value should not exceed 100
-                    </small>
-                    <small *ngIf="myForm.get('manhour')?.errors?.['pattern'] && myForm.get('manhour')?.touched">
-                        *Enter valid number
-                    </small>
-                    
-                </div>
-                
-
-                
-
-                <div>
-
-                </div>
-                
-                
-                
-                
-
-           </div>
+              
               </ng-template>
 
                
@@ -353,21 +374,16 @@
 
         <p-card>
             <ng-template pTemplate="header">
-                <h4 style="font-weight: 600;font-size: 16px">
+                <h4 class="my-2 p-0 fw-semibold fs-6">
                     Budget Detail View
                 </h4>
             </ng-template>
 
            
-                <div class="body2" style="height:100%;width: 100%;" [class.hide]="showAddBudgetdetail" >
-                <div class="container-fluid">
-     
-                    <div  style="max-height: calc(100vh - 110px)">
-                      <div  style="max-height: calc(100vh - 110px);border: 1px solid rgba(0, 0, 0, 0.131);">
-                        
-
-
-
+                <div class="container-fluid body2 w-100 p-0 d-flex align-items-center justify-content-between h-100"  [class.hide]="showAddBudgetdetail" >
+                <div class="container-fluid w-100 p-0 w-0">
+                    <div >
+                      <div  style="border: 1px solid rgba(0, 0, 0, 0.131);">
                         <p-table id="demo" #demo styleClass="p-datatable-gridlines"
                         [value]="budgetdetail" 
                         [paginator]="true"
@@ -377,20 +393,20 @@
                         [showCurrentPageReport]="true"
                         [tableStyle]="{ 'max-width': '100%', 'height': '100%', 'background-color': 'white' }" 
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [rowsPerPageOptions]="[5, 10, 15]"
+                        [rowsPerPageOptions]="rowsperpageVal"
                         [scrollable]="true"
-                        scrollHeight="700px"
+                        [scrollHeight]="scrollheightval"
                         [globalFilterFields]="['startamount', 'limitamount', 'manhour', 'containertype', 'containersize']"
                         [sortMode]="single"
                         >
 
                         <ng-template pTemplate="caption">
-                            <div class="" style="width: 100%; display: flex; align-items: center; justify-content: space-between; height: 30px;">
-                            <div class="cap">
-                                <div class="p-input-icon-left ginput">
+                            <div class="w-100 d-flex align-items-center justify-content-between" style="height: 30px;">
+                            <div class="cap h-100 d-flex align-items-center justify-content-start">
+                                <div class="p-input-icon-left ginput me-4">
                                 <span class="p-input-icon-right ml-auto">
-                                    <input #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
-                                    <i class="pi pi-search"></i>
+                                    <input class="rounded ps-2" #filterInput pInputText type="text" (input)="demo.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Filter" />
+                                    <i class="pi pi-search me-0 fw-normal"></i>
                                 </span>
                                 </div>
                                 <i class="fa-solid fa-rotate" (click)="reloadbudget()" style="color: #1e7d23;" pTooltip="Reload" tooltipPosition="bottom"></i>
@@ -402,14 +418,14 @@
                         </ng-template>
 
                         <ng-template pTemplate="header">
-                            <tr style="height: 40px;">
+                            <tr style="height: 35px;">
                             <th style="width: 10%;" pSortableColumn="startamount">Start Amount<p-sortIcon field="startamount"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="limitamount">Limit Amount<p-sortIcon field="limitamount"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="manhour">Man Hour<p-sortIcon field="manhour"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="containertype">Container Type<p-sortIcon field="containertype"></p-sortIcon></th>
                             <th style="width: 10%;" pSortableColumn="containersize">Container Size<p-sortIcon field="containersize"></p-sortIcon></th>
                             </tr>
-                            <tr style="height: 5vh;" class="try" *ngIf="showwwww">
+                            <tr style="height: 35px;" class="try" *ngIf="showwwww">
                             <th style="width: 10%;"><p-columnFilter type="text" field="startamount"></p-columnFilter></th>
                             <th style="width: 10%;"><p-columnFilter type="text" field="limitamount"></p-columnFilter></th>
                             <th style="width: 10%;"><p-columnFilter type="text" field="manhour"></p-columnFilter></th>
@@ -420,7 +436,7 @@
 
                         <ng-template pTemplate="body" let-budgetdetail let-rowIndex="rowIndex">
                             <tr class="tr-body" (click)="showindetailtable(budgetdetail, rowIndex)">
-                            <td style="display: none;">{{budgetdetail.budgetdetailid}}</td>
+                            <td  class="d-none">{{budgetdetail.budgetdetailid}}</td>
                             <td>{{budgetdetail.startamount}}</td>
                             <td>{{budgetdetail.limitamount}}</td>
                             <td>{{budgetdetail.manhour}}</td>
@@ -455,7 +471,5 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
-    <img src="../assets/idepo container.svg" alt="">
-</div>
+
 

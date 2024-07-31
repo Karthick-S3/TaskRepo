@@ -79,12 +79,15 @@ namespace Backend.Contract
 
         public  Task<int> InsertBudgetDetail(Budgetdetails budgetDetails);
 
+        public Task UpdateBudgetDetail(Budgetdetails budgetDetails);
+
 
         public Task<int> uploadfiles(filesdetails filesDetails);
 
+        public Task<IEnumerable<filesdetails>> GetFilesById(int companyid);
 
 
-   
+        public Task<User> UserLogin(string username,string password);
        
     }
 

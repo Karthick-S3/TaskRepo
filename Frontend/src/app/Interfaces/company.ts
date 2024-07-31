@@ -18,7 +18,8 @@ export interface Company {
     contactid:number,
     currency:string,
     currencyid:number,
-    budgetid : number
+    budgetid : number,
+    createdate:Date
 }
 
 

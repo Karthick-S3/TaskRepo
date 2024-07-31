@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 
+
 namespace Backend.Context
 {
     public class DapperContext
@@ -21,7 +22,7 @@ namespace Backend.Context
         }
 
 
-        public object Database { get; internal set; }
+        // public object Database { get; internal set; }
 
         public IDbConnection CreateConnection() => new OracleConnection(_connectionString);
     }

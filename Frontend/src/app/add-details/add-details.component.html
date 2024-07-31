@@ -1,7 +1,14 @@
-<form class="mainbody" [formGroup]="myForm" (ngSubmit)="insert()" novalidate>
+<form class="mainbody w-100 h-100 p-2" [formGroup]="myForm" (ngSubmit)="insert()" novalidate>
+
+
+
+
+
+
+    
     <p-card class="test" >
         <ng-template pTemplate="header">
-            <h4 style="font-weight: 600;">
+            <h4 class="fw-semibold fs-6 m-0">
                 Add Company Detail
                 <p-badge class="badge"  [value]="badgeval" severity="success"></p-badge>
             </h4>
@@ -11,45 +18,44 @@
                 <p-toast></p-toast>
                
                 <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
-                    <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
+                    <i class="fa-solid fa-list-ul text-danger"  ></i>
                     Back To List
                 </button>
-                
-                <p-confirmDialog ></p-confirmDialog>
+
                 <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
-                    <i class="fa-solid fa-plus" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-plus text-primary"></i>
                     Add New
                 </button>
                 <button type="button" (click)="routeToList()" pTooltip="Go to List" tooltipPosition="bottom">
-                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
                     Submit & Go To List
                 </button>
                 <button type="submit" pTooltip="Submit" tooltipPosition="bottom">
-                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
                     Submit
                 </button>
                 <button type="button" pTooltip="Submit" tooltipPosition="bottom" (click)="SubmitAndReset()">
-                    <i class="fa-solid fa-floppy-disk" style="color: #008000;"></i>
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
                     Submit & Add New
                 </button>
                 <button type="button"(click)="AttachmentPop()"  pTooltip="Back to List" tooltipPosition="bottom">
-                    <i class="fa-solid fa-paperclip" style="color: red;"></i>
-                    Attachments <span *ngIf="attlen" style="background-color: red;border-radius: 50%;padding: 2px 10px;color: white;" >{{attachmentlength}}</span>
+                    <i class="fa-solid fa-paperclip text-danger"></i>
+                    Attachments <span *ngIf="attlen" class="bg-danger rounded-circle text-white" style="padding: 2px 8px;" >{{attachmentlength}}</span>
                 </button>
 
                 <button type="button" (click)="GetFirst($event)">
-                    <i class="fa-solid fa-angles-left" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angles-left text-primary" ></i>
                 </button>
                 
                 <button type="button" (click)="GetPrevious($event)">
-                    <i class="fa-solid fa-angle-left" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angle-left text-primary" ></i>
                 </button>
                 <button type="button" (click)="GetNext($event)">
-                    <i class="fa-solid fa-angle-right" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angle-right text-primary" ></i>
                 </button>
 
                 <button type="button" (click)="GetLast($event)">
-                    <i class="fa-solid fa-angles-right" style="color: #1E1EC4;"></i>
+                    <i class="fa-solid fa-angles-right text-primary" ></i>
                 </button>
                 
             </div>
@@ -59,16 +65,16 @@
 
 
 
-        <div class="body" >
+        <div class="m-0 p-0 w-100 h-100 container-fluid d-flex align-items-center justify-content-center flex-column" >
             
-           <div class="rowss">
+           <div class="row w-100 h-100 d-flex align-items-center justify-content-between frow ">
             
-                <div class="input-group" style="height: 90px;">
-                    <label for="companyname" class="form-label">Company Name <span style="color: red;">*</span></label>
-                    <input pInputText type="text" class="form-control" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
+                <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;">
+                    <label for="companyname" class="form-label text-black mb-1 fw-semibold">Company Name <span  style="color: red;">*</span></label>
+                    <input pInputText type="text" class="form-control rounded w-100 px-2" id="companyname" formControlName="companyname" placeholder="Full Name" autocomplete="off" />
                     
                     <small *ngIf="myForm.get('companyname')?.errors?.['required'] && myForm.get('companyname')?.touched " >
-                        *This field is required.
+                        *Companyname required.
                     </small>
 
                     <small *ngIf="myForm.get('companyname')?.errors?.['pattern']" >
@@ -81,9 +87,9 @@
                 </div>
                 
 
-                <div class="input-group" style="height:90px;">
-                    <label for="companyshortname" class="form-label">Short Name </label>
-                    <input pInputText type="text" class="form-control" id="companyshortname" formControlName="companyshortname" placeholder="Short Name" autocomplete="off" />
+                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100 px-1" style="height: 90px;">
+                    <label for="companyshortname" class="form-label text-black mb-1 fw-semibold">Short Name </label>
+                    <input pInputText type="text" class="form-control w-100 rounded px-2" id="companyshortname" formControlName="companyshortname" placeholder="Short Name" autocomplete="off" />
                     <small *ngIf="myForm.get('companyshortname')?.errors?.['pattern']">
                         *it allows only Alphabet,Numeric And Special Character '-'
                     </small>
@@ -92,11 +98,11 @@
                     </small>
                 </div>
 
-                <div class="input-group" style="height:90px;">
-                    <label for="contact" class="form-label">Business Contact <span style="color: red;">*</span></label>
-                    <input pInputText class="form-control" id="contact" formControlName="contact"  placeholder="Phone Number" autocomplete="off"  />
+                <div class="input-group col d-flex flex-column align-items-start justify-content-start  w-100 px-1" style="height: 90px;">
+                    <label for="contact" class="form-label text-black mb-1 fw-semibold">Business Contact <span style="color: red;">*</span></label>
+                    <input pInputText class="form-control rounded w-100 px-2" id="contact" formControlName="contact"  placeholder="Phone Number" autocomplete="off"  />
                     <small *ngIf="myForm.get('contact')?.errors?.['required'] && myForm.get('contact')?.touched " >
-                        *This field is required.
+                        *Business Contact required.
                     </small>
                     <small *ngIf="myForm.get('contact')?.errors?.['pattern']">
                         *Enter Valid Number & it allow only Numeric Value
@@ -107,53 +113,61 @@
                     
                 </div>
 
-                <div class="input-group" style="height:90px;">
-                    <label for="active" class="form-label">Active</label>
-                    <p-inputSwitch class="form-control" type="" formControlName="active" ></p-inputSwitch>
-                    
+               
+
+                <div class="w-100 input-group col d-flex align-items-start justify-content-start px-1 " style="height:90px;">
+                    <div class="d-flex flex-column align-items-start justify-content-start me-3  h-100">
+                        <label for="active" class="form-label text-black mb-1 fw-semibold">Active</label>
+                        <p-inputSwitch class="form-control" type="" formControlName="active" ></p-inputSwitch>
+                    </div>
+                    <div *ngIf="badgeval == 'EDIT'" class=" h-100 d-flex flex-column align-items-start justify-content-start mt-4">
+                        <p>({{CompanyCreateDate}})</p>
+                    </div>
                 </div>
                 
                 
                 
 
            </div>
-           <div class="rowss">
+
+
+           <div class="row w-100 h-100 d-flex align-items-center justify-content-between">
 
             
-            <div class="input-group" style="height:90px;">
-                <label for="cid" class="form-label">Country <span style="color: red;"> * </span></label>
-                <p-dropdown class="fullwidth form-control" formControlName="cid" [options]="countrys" optionLabel="country" optionValue="cid" placeholder="Select a Country" (onChange)="onCountryChange($event)"></p-dropdown>
+            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;">
+                <label for="cid" class="form-label text-black mb-1 fw-semibold">Country <span style="color: red;"> * </span></label>
+                <p-dropdown   [editable]="true"  class="fullwidth form-control rounded w-100" formControlName="cid" [options]="countrys" optionLabel="country" optionValue="cid" placeholder="Select a Country" (onChange)="onCountryChange($event)"></p-dropdown>
                 
                 <small *ngIf="myForm.get('cid')?.errors?.['required'] && myForm.get('cid')?.touched " >
-                    *This field is required.
+                    *Country required.
                 </small>
              
 
             </div>
             
             
-            <div class="input-group" style="height:90px;">
-                <label for="username" class="form-label">State<span style="color: rgb(255, 0, 0);"> * </span></label>
-                <p-dropdown class="fullwidth form-control" formControlName="sid" [options]="states" optionLabel="state" optionValue="sid"  placeholder="Select a State" (onChange)="onStateChange($event)"></p-dropdown>
+            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
+                <label for="username" class="form-label text-black mb-1 fw-semibold">State<span style="color: rgb(255, 0, 0);"> * </span></label>
+                <p-dropdown [editable]="true" class="fullwidth form-control rounded w-100" formControlName="sid" [options]="states" optionLabel="state" optionValue="sid"  placeholder="Select a State" (onChange)="onStateChange($event)"></p-dropdown>
                 <small *ngIf="myForm.get('sid')?.errors?.['required'] && myForm.get('sid')?.touched " >
-                    *This field is required.
+                    *State required.
                 </small>
             </div>
 
-           <div class="input-group" style="height:90px;">
-                <label for="username" class="form-label">City<span style="color: red;"> * </span></label>
-                <p-dropdown class="fullwidth form-control" formControlName="cityid" [options]="citys" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
+           <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
+                <label for="username" class="form-label text-black mb-1 fw-semibold">City<span style="color: red;"> * </span></label>
+                <p-dropdown [editable]="true" class="fullwidth form-control rounded w-100" formControlName="cityid" [options]="citys" optionLabel="city" optionValue="cityid" placeholder="Select a City" ></p-dropdown>
                 <small *ngIf="myForm.get('cityid')?.errors?.['required'] && myForm.get('cityid')?.touched " >
-                    *This field is required.
+                    *City required.
                 </small>
             </div>
 
 
-            <div class="input-group" style="height:90px;background-color: rgb(255, 255, 255);">
-                <label for="revenue" class="form-label">Revenue<span style="color: red;"> * </span></label>
-                <input class="form-control"  pInputText  id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" />
+            <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 90px;" >
+                <label for="revenue" class="form-label text-black mb-1 fw-semibold">Revenue<span style="color: red;"> * </span></label>
+                <input class="form-control rounded w-100 px-2"  pInputText  id="revenue" placeholder="Revenue" formControlName="revenue" autocomplete="off" style="height: 37px;" />
                 <small *ngIf="myForm.get('revenue')?.errors?.['required'] && myForm.get('revenue')?.touched">
-                    * This field is required.
+                    * Revenue required.
                 </small>
                 <small *ngIf="myForm.get('revenue')?.errors?.['pattern']">
                     * Revenue allow numeric value with up to 2 decimal places.
@@ -168,18 +182,18 @@
 
 
 
-       <div class="rowss" >
-        <div class="input-group" style="height:200px;">
-            <label for="address" class="form-label">Address </label>
-            <textarea rows="5" cols="30" id="address" class="form-control" pInputTextarea placeholder="Address" autocomplete="off" formControlName="address" ></textarea>
+       <div class="row w-100 h-100 d-flex align-items-center justify-content-between" >
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
+            <label for="address" class="form-label text-black mb-1 fw-semibold">Address </label>
+            <textarea rows="5" cols="30" id="address" class="form-control rounded p-2 w-100" pInputTextarea placeholder="Address" autocomplete="off" formControlName="address" ></textarea>
             
         </div>
 
-        <div class="input-group" style="height:200px;">
-            <label for="Email" class="form-label">Contact Email<span style="color: red;"> * </span></label>
-            <textarea class="form-control" rows="5" cols="30" pInputTextarea placeholder="Contact Email Of The Company" formControlName="email" autocomplete="off"></textarea>
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
+            <label for="Email" class="form-label text-black mb-1 fw-semibold">Contact Email<span style="color: red;"> * </span></label>
+            <textarea class="form-control rounded p-2 w-100" rows="5" cols="30" pInputTextarea placeholder="Contact Email Of The Company" formControlName="email" autocomplete="off"></textarea>
             <small *ngIf="myForm.get('email')?.errors?.['required'] && myForm.get('email')?.touched">
-                * This field is required.
+                * Contact Email required.
             </small>
             <small *ngIf="myForm.get('email')?.errors?.['email'] && myForm.get('email')?.touched">
                 * Enter a valid email address.
@@ -194,13 +208,13 @@
         
         
 
-        <div class="input-group" style="height: 200px;">
-            <label for="zipcode" class="form-label">Zip Code<span style="color: red;"> * </span></label>
-            <input pInputText  placeholder="Zipcode" id="zipcode" class="form-control" formControlName="zipcode"  autocomplete="off" />
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height: 200px;">
+            <label for="zipcode" class="form-label text-black mb-1 fw-semibold">Zip Code<span style="color: red;"> * </span></label>
+            <input pInputText  placeholder="Zipcode" id="zipcode" class="form-control rounded w-100 px-2" formControlName="zipcode"  autocomplete="off" />
            
 
             <small *ngIf="myForm.get('zipcode')?.errors?.['required'] && myForm.get('zipcode')?.touched">
-                *This field is required.
+                * Zipcode required.
             </small>
             <small *ngIf="myForm.get('zipcode')?.errors?.['pattern']">
                 *Zipcode allows only numeric values
@@ -210,16 +224,18 @@
             </small>
         </div>
         
-        <div class="input-group" style="height:200px;">
-            <label for="cid" class="form-label">Currency<span style="color: red;"> * </span></label>
-            <p-dropdown class="fullwidth form-control" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
+        <div class="w-100 input-group col d-flex flex-column align-items-start justify-content-start px-1" style="height:200px;">
+            <label for="cid" class="form-label text-black mb-1 fw-semibold">Currency<span style="color: red;"> * </span></label>
+            <p-dropdown [editable]="true" class="fullwidth form-control rounded w-100 p-0" formControlName="currencyid"[options]="currency" optionLabel="currency" optionValue="currencyid" placeholder="Select a Currency" ></p-dropdown>
             
             <small *ngIf="myForm.get('currencyid')?.errors?.['required'] && myForm.get('currencyid')?.touched " >
-                *This field is required.
+                *Currency required.
             </small>
          
 
         </div>
+
+        
        </div>
 
         </div>
@@ -233,16 +249,19 @@
 
 </form>
 
-<div *ngIf="animation" style="width: 100%;height: 100vh;display: flex;align-items: center;justify-content: center;background-color: rgba(0, 0, 0, 0.623);position: absolute;top: 0;left: 0;z-index: 999;" class="preloader">
-    <img src="../assets/idepo container.svg" alt="">
-</div>
 
 
+<<<<<<< HEAD
 <p-dialog  *ngIf="visible" [visible]="true" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
     <ng-template pTemplate="header" class="detailline" >
         <h4 style="color: white;">Attachment(s)</h4>
+=======
+<p-dialog  *ngIf="visible" [visible]="true" [modal]="true" [style]="{ width: '95rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <ng-template pTemplate="header" class="detailline d-flex align-items-center justify-content-between px-2 py-1">
+        <h4 class="text-white fs-6 my-2" >Attachment(s)</h4>
+>>>>>>> 790f8ceac33f0518ff07af9e093e04e08b8f14da
         <div class="btss">   
-            <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark" style="color: red;margin-right: 5px;"></i>Close</button>     
+            <button class="footerbtn bg-white rounded py-1 px-2 fw-semibold text-black d-flex align-items-center justify-content-center align-right" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark text-danger me-1" ></i>Close</button>     
         </div>
         
       </ng-template>
@@ -250,32 +269,33 @@
       <ng-template pTemplate="body" style="height:300px;">
         <div>
             <input type="file" multiple="multiple" id="fileInput" class="file-input" (change)="onFileSelected($event)">
-            <button type="button" (click)="triggerFileInput()" id="customButton" title="Add Files" class="btn">
-              <i class="fa fa-fw fa-plus"></i> Add Files
+            <button type="button" (click)="triggerFileInput()" id="customButton" title="Add Files" class="btn  text-white py-1 px-8 rounded mb-2" style="background-color: #3a9e3c;font-size: 13px;">
+              <i class="fa fa-fw fa-plus "></i> Add Files
             </button>
           </div>
 
           <div class="preview-attachment" >
-            <p-table *ngIf="attachavailable" [value]="attachmentdata" styleClass="p-datatable-gridlines attachgrid" scrollHeight="210px">
+            <p-table *ngIf="attachavailable" [value]="attachmentdata" styleClass="p-datatable-gridlines attachgrid" [scrollHeight]="scrollheightVal">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Thumbnail</th>
                         <th>Details</th>
-                        <th style="width: 20%; align-items: center; text-align: center;"><i class="fa-solid fa-trash-can"></i></th>
+                        <th class="align-items-center text-center" style="width: 20%; "><i class="fa-solid fa-trash-can"></i></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product let-i="rowIndex">
                     <tr style="height: 50px;">
                         <td (click)="openimg(product)" style="cursor: pointer;">
-                            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="" style="max-width: 140px; max-height: 140px;">
+                            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="{{product.name}}" style="max-width: 140px; max-height: 140px;">
                         </td>
                         <td>
-                            Name: <a (click)="preview(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;">{{ product.name }}</a><br>
+                            Name: <a (click)="download(product)" style="color: #4f57d7; cursor: pointer; text-decoration: underline;" download>{{ product.name }}</a><br>
                             Size: {{ product.size }} bytes <br>
                             Uploaded By: User1
                         </td>
+                      
                         <td>
-                            <a style="display: block; width: 100%; height: 100%; text-align: center; line-height: 30px; cursor: pointer;" (click)="deleteattachment(i)">
+                            <a class="d-block w-100 h-100 text-center d-flex align-items-center justify-content-center" style=" line-height: 30px; cursor: pointer;" (click)="deleteattachment(i)">
                                 <i style="color: red;" class="fa-solid fa-trash-can"></i>
                             </a>
                         </td>
@@ -293,3 +313,5 @@
 
       </ng-template>
 </p-dialog>
+
+

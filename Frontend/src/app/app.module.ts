@@ -4,7 +4,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompanydetailsComponent } from './companydetails/companydetails.component';
-import { HttpClientModule , HttpClient} from '@angular/common/http';
+import { HttpClientModule , HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { TableModule } from 'primeng/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormGroup, FormsModule } from '@angular/forms';
@@ -28,6 +28,24 @@ import { AddbudgetComponent } from './addbudget/addbudget.component';
 import { DialogModule } from 'primeng/dialog';
 import { TreeModule } from 'primeng/tree';
 import { NgxUploaderModule } from 'ngx-uploader';
+import { CompanyserviceService } from './companyservice.service';
+import { StepperModule } from 'primeng/stepper';
+import { CompanystepsComponent } from './companysteps/companysteps.component';
+import { ServicecontrolComponent } from './servicecontrol/servicecontrol.component';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
+import { SharedTableComponent } from './shared-table/shared-table.component';
+import { LoginComponent } from './login/login.component';
+import { LayoutComponent } from './layout/layout.component';
+import { CustomInterceptor } from './custom.interceptor';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+
+
+
+
+
+
+
 
 
 @NgModule({
@@ -38,6 +56,11 @@ import { NgxUploaderModule } from 'ngx-uploader';
     DashboardComponent,
     TariffGridComponent,
     AddbudgetComponent,
+    CompanystepsComponent,
+    ServicecontrolComponent,
+    SharedTableComponent,
+    LoginComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,11 +85,19 @@ import { NgxUploaderModule } from 'ngx-uploader';
     OverlayPanelModule,
     DialogModule,
     TreeModule,
-    NgxUploaderModule
+    NgxUploaderModule,
+    StepperModule,
+    CalendarModule,
+    CheckboxModule,
+    NgxUiLoaderModule
    
   ],
   providers: [
-    provideClientHydration()
+    {
+        provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor,multi :true
+    },
+    provideClientHydration(),
+    CompanyserviceService
   ],
   bootstrap: [AppComponent]
 })
