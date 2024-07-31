@@ -277,27 +277,27 @@ export class AddDetailsComponent implements OnInit {
     
 }
 BackToList(event: Event) {
-  if(this.myForm.touched){
+  if (this.myForm && this.myForm.touched) { // Check if myForm exists and if it's touched
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'You have unsaved changes in the screen. Do you want to continue?',
+      message: 'You have unsaved changes on the screen. Do you want to continue?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-      acceptIcon:"none",
-      rejectIcon:"none",
-      rejectButtonStyleClass:"p-button-text",
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
       accept: () => {
         this.Flag.emit(false);
       },
       reject: () => {
-          
+        
       }
-  });
-  }else{
+    });
+  } else {
     this.Flag.emit(false);
   }
-  
 }
+
 
   ngOnInit(): void {
     
@@ -434,6 +434,10 @@ BackToList(event: Event) {
             console.log(response);
           }
         })
+        if(this.attachmentdata.length > 0){
+          this.uploadFiles(this.formData);
+        }
+        
       }else{
 
         this.myForm.get('contactid')?.setValue(0);
@@ -487,7 +491,7 @@ BackToList(event: Event) {
   }
   
 attachmentdata: any[] = [];
-attachmentlength: number = 0;
+attachmentlength: number = this.attachmentdata.length;
 attlen: boolean = false;
 attachavailable: boolean = false;
 
@@ -528,12 +532,13 @@ deleteattachment(index: number) {
 });
  
 }
+formData: FormData = new FormData();
 
 onFileSelected(event: Event) {
   const input = event.target as HTMLInputElement;
 
   if (input.files && input.files.length > 0) {
-      const formData = new FormData();
+      // const formData = new FormData();
       const acceptedformat = ['jpg', 'png', 'jpeg', 'xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
       let Flag = true;
 
@@ -568,19 +573,21 @@ onFileSelected(event: Event) {
                   type: file.type,
                   thumbnail: e.target.result
               });
+              this.attachmentlength++;
           };
 
           reader.readAsDataURL(file);
-          formData.append('files', file);
+          this.formData.append('files', file);
       }
 
       if (Flag) {
-          this.attachmentlength = this.attachmentdata.length;
+          
           this.attlen = true;
           this.attachavailable = true;
-          console.log(formData);
+          console.log(this.formData);
       }
   }
+  
 }
 
   

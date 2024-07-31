@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,14 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.OpenApi.Any;
 
+
 namespace Backend.Contract
 {
     public interface ICompanydetailsRepository
     {
+
+        public Task StartService(string serviceName);
+        public Task StopService(string serviceName);
 
 
         public IEnumerable<Countrydetails> GetCountry();

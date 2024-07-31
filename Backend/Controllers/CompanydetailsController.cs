@@ -28,6 +28,35 @@ namespace Backend.Controllers
 
  
 
+            [HttpPost("start")]
+public async Task<IActionResult> StartService([FromQuery] string serviceName)
+{
+    try
+    {
+        await _companydetailsRepositry.StartService(serviceName);
+        return Ok($"Service '{serviceName}' started successfully.");
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Error starting service: {ex.Message}");
+    }
+}
+
+[HttpPost("stop")]
+public async Task<IActionResult> StopService([FromQuery] string serviceName)
+{
+    try
+    {
+        await _companydetailsRepositry.StopService(serviceName);
+        return Ok($"Service '{serviceName}' stopped successfully.");
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Error stopping service: {ex.Message}");
+    }
+}
+
+
 
        
 

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -34,14 +35,65 @@ namespace Backend.Repository
     {
 
         private readonly DapperContext _context;
+        private readonly string _serviceName;
 
-        public CompanydetailsRepository( DapperContext context)
+        public CompanydetailsRepository( DapperContext context,string serviceName)
         {
             // _context = context;
+             _serviceName = serviceName;
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
- 
+        
+        public async Task StartService(string serviceName)
+        {
+            await Task.Run(() =>
+            {
+                var processInfo = new ProcessStartInfo
+                {
+                    FileName = "net",
+                    Arguments = $"start \"{serviceName}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Verb = "runas" // Run as administrator
+                };
+                using (var process = Process.Start(processInfo))
+                {
+                    process.WaitForExit();
+                }
+            });
+        }
+
+                public async Task StopService(string serviceName)
+            {
+                try
+                {
+                    await Task.Run(() =>
+                    {
+                        var processInfo = new ProcessStartInfo
+                        {
+                            FileName = "net",
+                            Arguments = $"stop \"{serviceName}\"",
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            Verb = "runas" // Run as administrator
+                        };
+                        using (var process = Process.Start(processInfo))
+                        {
+                            process.WaitForExit();
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error stopping service '{serviceName}': {ex.Message}");
+                    throw; // Rethrow the exception to indicate the failure to the caller
+                }
+            }
+
+
 
 
 
@@ -717,7 +769,6 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                     return parameters.Get<int>(":Id");
                 }
             }
-
 
         
     }

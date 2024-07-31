@@ -239,7 +239,7 @@
 
 
 <p-dialog  *ngIf="visible" [visible]="true" [modal]="true" [style]="{ width: '80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-    <ng-template pTemplate="header" class="detailline" style="display: flex;align-items: center;justify-content: space-between;background-color: red;">
+    <ng-template pTemplate="header" class="detailline" >
         <h4 style="color: white;">Attachment(s)</h4>
         <div class="btss">   
             <button class="footerbtn" (click)="visible = false" pAutoFocus [autofocus]="false"><i class="fa-solid fa-xmark" style="color: red;margin-right: 5px;"></i>Close</button>     

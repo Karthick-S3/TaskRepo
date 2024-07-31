@@ -814,8 +814,27 @@ throw new Error('Method not implemented.');
 SubmitAndReset() {
 throw new Error('Method not implemented.');
 }
-Addnew($event: MouseEvent) {
-throw new Error('Method not implemented.');
+Addnew() {
+  if (this.myForm && this.myForm.touched) { // Check if myForm exists and if it's touched
+    this.confirmationService.confirm({
+      message: 'You have unsaved changes on the screen. Do you want to continue?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
+      accept: () => {
+        this.initializeForm();
+        this.budgetdetail = [];
+      },
+      reject: () => {
+        
+      }
+    });
+  } else {
+    this.initializeForm();
+    this.budgetdetail = [];
+  }
 }
 routeToList() {
 throw new Error('Method not implemented.');
@@ -829,27 +848,25 @@ hidefil(){
   this.showwwww = false;
 
 }
-BackToList(event: Event) {
-  if(this.myForm.touched){
+BackToList() {
+  if (this.myForm && this.myForm.touched) { // Check if myForm exists and if it's touched
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'You have unsaved changes in the screen. Do you want to continue?',
+      message: 'You have unsaved changes on the screen. Do you want to continue?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-      acceptIcon:"none",
-      rejectIcon:"none",
-      rejectButtonStyleClass: 'p-button-danger',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
       accept: () => {
         this.Flag.emit(false);
       },
       reject: () => {
-          
+        
       }
-  });
-  }else{
+    });
+  } else {
     this.Flag.emit(false);
   }
-  
 }
 
 

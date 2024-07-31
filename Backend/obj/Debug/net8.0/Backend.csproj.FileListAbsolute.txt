@@ -105,29 +105,14 @@ D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Dapper.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Dapper.Oracle.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.DirectoryServices.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.Drawing.Common.dll
 D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.Security.Permissions.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\System.Windows.Extensions.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.DirectoryServices.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\linux\lib\net6.0\System.DirectoryServices.Protocols.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\osx\lib\net6.0\System.DirectoryServices.Protocols.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.DirectoryServices.Protocols.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
-D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\Current project\TaskRepo\backend\obj\Debug\net8.0\Backend.csproj.AssemblyReference.cache
 D:\Current project\TaskRepo\backend\obj\Debug\net8.0\Backend.GeneratedMSBuildEditorConfig.editorconfig
 D:\Current project\TaskRepo\backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
@@ -154,3 +139,7 @@ D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnos
 D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
 D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
 D:\Task\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
+D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
+D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
+D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
+D:\Current project\TaskRepo\backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll

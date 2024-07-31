@@ -243,7 +243,8 @@ p-dropdown .p-dropdown-label.p-placeholder{
       .p-dialog-draggable .p-dialog-header .btss{
         margin-left:900px ;
         display: flex;
-
+        position: absolute;
+        right: 10px;
         button{
             margin-left: 10px;
         }
@@ -251,7 +252,7 @@ p-dropdown .p-dropdown-label.p-placeholder{
       }
 
       .p-dialog .p-dialog-content{
-        padding: 15px 1.5rem 0rem 1.5rem;
+        padding: 15px 1.5rem 1rem 1.5rem;
       }
 
       .p-dialog .p-dialog-footer {

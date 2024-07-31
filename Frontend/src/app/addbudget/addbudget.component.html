@@ -9,12 +9,13 @@
 
             <div class="bts">
                 <p-toast></p-toast>
-                <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
+                <p-confirmDialog ></p-confirmDialog>
+                <button type="button" (click)="BackToList()" pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-list-ul" style="color: #FF0000;" ></i>
                     Back To List
                 </button>
                
-                <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
+                <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew()">
                     <i class="fa-solid fa-plus" style="color: #1E1EC4;"></i>
                     Add Budget
                 </button>
