@@ -27,15 +27,20 @@ export class AppComponent implements OnInit {
     this.ngxService.start();
     this.checkToken();
   }
+ 
 
   checkToken(): void {
-    const token = localStorage.getItem('token');
-    this.isLogin = !token;
-    this.isInitialized = true;  
-    if (token) {
-      this.router.navigateByUrl('/companylist');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const token = localStorage.getItem('token');
+      this.isLogin = !token;
+      this.isInitialized = true;  
+      if (token) {
+        this.router.navigateByUrl('/companylist');
+      } else {
+        this.router.navigateByUrl('/login');
+      }
     } else {
-      this.router.navigateByUrl('/login');
+      console.warn('localStorage is not available');
     }
 
     this.ngxService.stop();

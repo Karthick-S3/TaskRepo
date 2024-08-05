@@ -648,59 +648,77 @@ deleteattachment(index: number) {
 
 formData: FormData = new FormData();
 
+
+
 onFileSelected(event: Event) {
   const input = event.target as HTMLInputElement;
 
+  if (this.attachmentlength >= 5) {
+    this.showFileLimitWarning();
+    return;
+  }
+
   if (input.files && input.files.length > 0) {
-      const acceptedformat = ['jpg', 'png', 'jpeg', 'xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
-      let Flag = true;
+    const acceptedformat = ['jpg', 'png', 'jpeg', 'xls', 'xlsx', 'csv', 'doc', 'ods', 'docx', 'pdf', 'gif', 'txt', 'zip', 'msg', 'jfif'];
+    let Flag = true;
 
-      for (let i = 0; i < input.files.length; i++) {
-          const file = input.files[i];
-          if (file.name.length > 50) {
-              this.showFileNameExceedsLimitWarning();
-              input.value = '';
-              Flag = false;
-              continue;
-          } else if (Math.round(file.size / 1048576) > 15) {
-              input.value = '';
-              Flag = false;
-              this.showFileSizeExceedsLimitWarning();
-              continue;
-          } else if (file.type) {
-              const fileExtension = file.name.split('.').pop()?.toLowerCase();
-              if (fileExtension && !acceptedformat.includes(fileExtension)) {
-                  this.showFileTypeExceedsLimitWarning();
-                  Flag = false;
-                  input.value = '';
-                  continue;
-              }
-          }
+    if(input.files.length>5 || this.attachmentlength != 0){
+      this.showFileLimitExceedsWarning(5 - this.attachmentlength);
+    }
 
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-              this.attachmentdata.push({
-                  file,
-                  name: file.name,
-                  size: file.size,
-                  type: file.type,
-                  thumbnail: e.target.result
-              });
-              this.attachmentlength++;
-          };
+    const remainingSlots = 5 - this.attachmentlength;
+    const filesToProcess = Array.from(input.files).slice(0, remainingSlots);
 
-          reader.readAsDataURL(file);
-          this.formData.append('files', file);
+    for (let i = 0; i < filesToProcess.length; i++) {
+      const file = filesToProcess[i];
+
+      if (file.name.length > 50) {
+        this.showFileNameExceedsLimitWarning();
+        input.value = '';
+        Flag = false;
+        continue;
+      } else if (Math.round(file.size / 1048576) > 15) {
+        this.showFileSizeExceedsLimitWarning();
+        input.value = '';
+        Flag = false;
+        continue;
+      } else if (file.type) {
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
+        if (fileExtension && !acceptedformat.includes(fileExtension)) {
+          this.showFileTypeExceedsLimitWarning();
+          input.value = '';
+          Flag = false;
+          continue;
+        }
       }
 
-      if (Flag) {
-         
-          this.attlen = true;
-          this.attachavailable = true;
-          console.log(this.formData);
-      }
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.attachmentdata.push({
+          file,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          thumbnail: e.target.result
+        });
+        this.attachmentlength++;
+      };
+
+      reader.readAsDataURL(file);
+      this.formData.append('files', file);
+    }
+
+    if (Flag) {
+      this.attlen = true;
+      this.attachavailable = true;
+      console.log(this.formData);
+    }
   }
 }
+
+
+
+
 
   
   uploadFiles(formData: FormData) {
@@ -721,6 +739,41 @@ onFileSelected(event: Event) {
       });
       this.ngxService.stop();
   }
+
+
+  showFileLimitWarning() {
+    this.appcomponent.msgStatus = 'error';
+    this.confirmationService.confirm({
+      message: 'You can upload a maximum of 5 files each.',
+      header: 'Invalid File Name',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectLabel: 'Ok',
+      acceptVisible: false,
+      accept: () => {
+      }
+    });
+  }
+
+  showFileLimitExceedsWarning(remainingSlots: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.appcomponent.msgStatus = 'warning';
+      this.confirmationService.confirm({
+        message: `More Files Existed. Only the first ${remainingSlots} files will be uploaded.`,
+        header: 'File Upload Limit Exceeded',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon: 'none',
+        rejectIcon: 'none',
+        rejectLabel: 'No',
+        acceptLabel: 'Ok',
+        acceptVisible: true,
+        rejectVisible: true,
+        accept: () => resolve(true),
+        reject: () => resolve(false),
+      });
+    });
+  }
   
   showFileNameExceedsLimitWarning() {
     this.appcomponent.msgStatus = 'error';
@@ -733,7 +786,6 @@ onFileSelected(event: Event) {
       rejectLabel: 'Ok',
       acceptVisible: false,
       accept: () => {
-        // Handle accept action if needed
       }
     });
   }
