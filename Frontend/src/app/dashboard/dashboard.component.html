@@ -1,0 +1,92 @@
+<div class="main-body w-100 h-100  p-2">
+    <p-card class="test " >
+        <ng-template pTemplate="header">
+            <h4 class="fw-semibold fs-6 m-0">
+                Repair Company (RC)
+                <p-badge class="badge"  [value]="badgeval" severity="success"></p-badge>
+            </h4>
+            
+            
+            <div class="bts">
+                <p-toast></p-toast>
+               
+                <button type="button" (click)="BackToList($event)" pTooltip="Back to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-list-ul text-danger"  ></i>
+                    Back To List
+                </button>
+
+                <button type="button" pTooltip="Add new" tooltipPosition="bottom" (click)="Addnew($event)">
+                    <i class="fa-solid fa-plus text-primary"></i>
+                    Add New
+                </button>
+                <button type="button" (click)="routeToList()" pTooltip="Go to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
+                    Submit & Go To List
+                </button>
+                <button type="submit" pTooltip="Submit" tooltipPosition="bottom">
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
+                    Submit
+                </button>
+                <button type="button" pTooltip="Submit" tooltipPosition="bottom" (click)="SubmitAndReset()">
+                    <i class="fa-solid fa-floppy-disk text-success" ></i>
+                    Submit & Add New
+                </button>
+                <button type="button"(click)="AttachmentPop()"  pTooltip="Back to List" tooltipPosition="bottom">
+                    <i class="fa-solid fa-paperclip text-danger"></i>
+                    Attachments <span *ngIf="attlen" class="bg-danger rounded-circle text-white" style="padding: 2px 8px;" >{{attachmentlength}}</span>
+                </button>
+
+                <button type="button" (click)="GetFirst($event)">
+                    <i class="fa-solid fa-angles-left text-primary" ></i>
+                </button>
+                
+                <button type="button" (click)="GetPrevious($event)">
+                    <i class="fa-solid fa-angle-left text-primary" ></i>
+                </button>
+                <button type="button" (click)="GetNext($event)">
+                    <i class="fa-solid fa-angle-right text-primary" ></i>
+                </button>
+
+                <button type="button" (click)="GetLast($event)">
+                    <i class="fa-solid fa-angles-right text-primary" ></i>
+                </button>
+                
+            </div>
+            
+        </ng-template>
+
+        <div class="body m-0 p-2 w-100 h-100 container-fluid d-flex align-items-center justify-content-start flex-column">
+
+            <div class="wizard container-fluid rounded p-0 d-flex">
+                <div class="step d-flex align-items-center justify-content-center" style="border-radius: 5px 0px 0px 5px;
+    background-color: #04246a;">
+                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">1</span>
+                    <a class="text-white"  style="text-decoration: none;">RC Detail</a>
+                </div>
+                <div class="step d-flex align-items-center justify-content-center">
+                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">2</span>
+                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
+                </div>
+                <div class="step d-flex align-items-center justify-content-center">
+                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">3</span>
+                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
+                </div>
+                <div class="step d-flex align-items-center justify-content-center">
+                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">4</span>
+                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
+                </div>
+                <div class="step d-flex align-items-center justify-content-center">
+                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">5</span>
+                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
+                </div>
+                
+            </div>
+
+        </div>
+
+
+        
+
+       
+    </p-card>
+</div>

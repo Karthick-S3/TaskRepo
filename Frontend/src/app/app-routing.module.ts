@@ -15,7 +15,6 @@ import { leaveRoute } from './guards/leave-route.guard';
 
 
 
-
 const routes: Routes = [
   // {path:'companylist',component:CompanydetailsComponent,canDeactivate : [leaveRoute] },
   {path:'companylist',component:CompanydetailsComponent,canActivate: [AuthGuard],canDeactivate : [leaveRoute] },

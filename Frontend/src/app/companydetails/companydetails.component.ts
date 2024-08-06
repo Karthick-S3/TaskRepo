@@ -327,6 +327,7 @@ export class CompanydetailsComponent implements OnInit {
  
       this.companyService.lazyData2(event.first || 0, event.rows || 10, sortField, sortOrder, searchField, sFiledValue, this.selectedCountryIds, this.selectedStateIds, this.selectedCityIds,globalFilter)
         .subscribe(companies => {
+          // console.log(companies);
           this.companys = companies;
           this.total_record = companies[0].total_records;
           this.ngxService.stop();
@@ -458,7 +459,7 @@ export class CompanydetailsComponent implements OnInit {
       };
 
       
-      console.log(event);
+      // console.log(event);
       this.loadCompanies(event);
       this.ngxService.stop();
       

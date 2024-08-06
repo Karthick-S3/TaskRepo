@@ -1,0 +1,35 @@
+button{
+    padding: 6px 10px ;
+    margin-left: 10px;
+    background-color: rgb(255, 255, 255);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.wizard{
+    height: 48px;
+    border: 1px solid rgba(128, 128, 128, 0.322);
+    background: #f9f9f9;
+}
+
+.step{
+    width: 180px;
+    height: 46px;
+   border-right: 1px solid rgb(224, 224, 224);
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.step span{
+    background-color: red;
+}
+
+.step :active{
+    background-color: red;
+}

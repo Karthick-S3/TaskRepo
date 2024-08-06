@@ -2,7 +2,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,6 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.ngxService.start();
     this.checkToken();
+
   }
  
 

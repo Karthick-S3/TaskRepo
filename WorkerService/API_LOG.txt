@@ -13,3 +13,17 @@
 2024-08-05 10:07:34.348 +05:30 [INF] Worker Service started
 2024-08-05 10:07:34.374 +05:30 [INF] Execution started at: "2024-08-05T10:07:34.3726715+05:30"
 2024-08-05 10:12:28.900 +05:30 [WRN] Failed to determine the https port for redirect.
+2024-08-05 10:48:17.965 +05:30 [INF] Worker Service started
+2024-08-05 10:48:17.980 +05:30 [INF] Execution started at: "2024-08-05T10:48:17.9792405+05:30"
+2024-08-05 10:48:26.644 +05:30 [WRN] Failed to determine the https port for redirect.
+2024-08-05 10:55:03.723 +05:30 [INF] Worker Service started
+2024-08-05 10:55:03.739 +05:30 [INF] Execution started at: "2024-08-05T10:55:03.7379576+05:30"
+2024-08-05 10:55:21.390 +05:30 [WRN] Failed to determine the https port for redirect.
+2024-08-06 00:00:59.778 +05:30 [INF] IComp Service Started
+2024-08-06 00:00:59.908 +05:30 [INF] Connecting to SMTP server: smtp.gmail.com
+2024-08-06 00:01:01.543 +05:30 [INF] Authenticating SMTP server...
+2024-08-06 00:01:01.987 +05:30 [INF] Sending email...
+2024-08-06 00:01:03.902 +05:30 [INF] Email sent successfully.
+2024-08-06 10:37:12.582 +05:30 [INF] Worker Service started
+2024-08-06 10:37:12.595 +05:30 [INF] Execution started at: "2024-08-06T10:37:12.5941529+05:30"
+2024-08-06 10:37:59.807 +05:30 [WRN] Failed to determine the https port for redirect.

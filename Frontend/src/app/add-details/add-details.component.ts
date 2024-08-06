@@ -829,11 +829,11 @@ onFileSelected(event: Event) {
     console.log(event)
   }
 
-  newDate() {
-    // Set the date to 28 Mar 2023
-    const newDate = new Date(2023, 2, 28); // Month is 0-based, so 2 is March
-    this.myForm.get('dateval')?.setValue(newDate);
-  }
+  // newDate() {
+  //   // Set the date to 28 Mar 2023
+  //   const newDate = new Date(2023, 2, 28); // Month is 0-based, so 2 is March
+  //   this.myForm.get('dateval')?.setValue(newDate);
+  // }
   
 
 

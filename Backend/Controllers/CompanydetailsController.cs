@@ -89,7 +89,7 @@ namespace Backend.Controllers
 
                 var token = new JwtSecurityToken(
                     claims: claims,
-                     expires: DateTime.Now.AddMinutes(1),
+                     expires: DateTime.Now.AddMinutes(60),
                     signingCredentials: creds
                 );
 
