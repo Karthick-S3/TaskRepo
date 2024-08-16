@@ -312,9 +312,7 @@ BackToList(event: Event) {
 
 
   ngOnInit(): void {
-    if(localStorage.getItem('RoleId')){
-      console.log(localStorage.getItem('RoleId'));
-    }
+    
     
     this.loadCountry();
     this.loadState();
