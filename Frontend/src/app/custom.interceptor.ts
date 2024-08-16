@@ -21,7 +21,7 @@ export class CustomInterceptor implements HttpInterceptor {
         headers: req.headers.append('Authorization', `Bearer ${localToken}`)
       });
 
-      console.log(clonedReq);
+     
     }
 
     return next.handle(clonedReq).pipe(

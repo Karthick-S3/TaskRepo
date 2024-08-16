@@ -310,7 +310,11 @@ BackToList(event: Event) {
   
 }
 
+
   ngOnInit(): void {
+    if(localStorage.getItem('RoleId')){
+      console.log(localStorage.getItem('RoleId'));
+    }
     
     this.loadCountry();
     this.loadState();
@@ -651,6 +655,7 @@ formData: FormData = new FormData();
 
 
 onFileSelected(event: Event) {
+  this.ngxService.start();
   const input = event.target as HTMLInputElement;
 
   if (this.attachmentlength >= 5) {
@@ -674,6 +679,7 @@ onFileSelected(event: Event) {
 
       if (file.name.length > 50) {
         this.showFileNameExceedsLimitWarning();
+        this.attachmentlength = 0;
         input.value = '';
         Flag = false;
         continue;
@@ -681,6 +687,7 @@ onFileSelected(event: Event) {
         this.showFileSizeExceedsLimitWarning();
         input.value = '';
         Flag = false;
+        this.attachmentlength = 0;
         continue;
       } else if (file.type) {
         const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -688,6 +695,7 @@ onFileSelected(event: Event) {
           this.showFileTypeExceedsLimitWarning();
           input.value = '';
           Flag = false;
+          this.attachmentlength = 0;
           continue;
         }
       }
@@ -714,6 +722,7 @@ onFileSelected(event: Event) {
       console.log(this.formData);
     }
   }
+  this.ngxService.stop();
 }
 
 

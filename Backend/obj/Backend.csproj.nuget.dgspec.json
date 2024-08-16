@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Task\\TaskRepo\\Backend\\Backend.csproj": {}
+    "D:\\Task\\TaskRepo\\backend\\Backend.csproj": {}
   },
   "projects": {
-    "D:\\Task\\TaskRepo\\Backend\\Backend.csproj": {
+    "D:\\Task\\TaskRepo\\backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Task\\TaskRepo\\Backend\\Backend.csproj",
+        "projectUniqueName": "D:\\Task\\TaskRepo\\backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "D:\\Task\\TaskRepo\\Backend\\Backend.csproj",
+        "projectPath": "D:\\Task\\TaskRepo\\backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\Karthick.S\\.nuget\\packages\\",
-        "outputPath": "D:\\Task\\TaskRepo\\Backend\\obj\\",
+        "outputPath": "D:\\Task\\TaskRepo\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Karthick.S\\AppData\\Roaming\\NuGet\\NuGet.Config",

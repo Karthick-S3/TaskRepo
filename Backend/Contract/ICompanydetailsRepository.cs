@@ -76,7 +76,9 @@ namespace Backend.Contract
 
 
         public Task<User> UserLogin(string username,string password);
-       
+
+        public Task<int> InsertTest1(Test1 test1,Test2 test2);
+        
     }
 
   

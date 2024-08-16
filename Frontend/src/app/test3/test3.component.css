@@ -1,0 +1,32 @@
+.back{
+    height: 100%;
+}
+.background-badge{
+    height: 200px;
+    background-color: #04246a;
+}
+.cont{
+    background-color: rgb(241, 243, 255);
+    margin-top: -100px;
+    height: 100%;
+    padding: 40px auto;
+}
+a{
+    padding: 10px 50px;
+    background-color: #04246A;
+    outline: none;
+    border: none;
+    color: rgb(255, 255, 255) !important;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 10px;
+    text-decoration: none;
+    margin:10px;
+}
+
+
+.logo{
+    height: 100px;
+    width: 200px;
+}

@@ -1,4 +1,4 @@
-<div class="main-body w-100 h-100  p-2">
+<form  [formGroup]="mainForm2" (ngSubmit)="submitForm()" class="main-body w-100 h-100  p-2" style="overflow-y: auto;">
     <p-card class="test " >
         <ng-template pTemplate="header">
             <h4 class="fw-semibold fs-6 m-0">
@@ -33,7 +33,7 @@
                 </button>
                 <button type="button"(click)="AttachmentPop()"  pTooltip="Back to List" tooltipPosition="bottom">
                     <i class="fa-solid fa-paperclip text-danger"></i>
-                    Attachments <span *ngIf="attlen" class="bg-danger rounded-circle text-white" style="padding: 2px 8px;" >{{attachmentlength}}</span>
+                    Attachments 
                 </button>
 
                 <button type="button" (click)="GetFirst($event)">
@@ -58,35 +58,38 @@
         <div class="body m-0 p-2 w-100 h-100 container-fluid d-flex align-items-center justify-content-start flex-column">
 
             <div class="wizard container-fluid rounded p-0 d-flex">
-                <div class="step d-flex align-items-center justify-content-center" style="border-radius: 5px 0px 0px 5px;
-    background-color: #04246a;">
-                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">1</span>
-                    <a class="text-white"  style="text-decoration: none;">RC Detail</a>
+                <div *ngFor="let step of steps" (click)="OpenDiv(step.id)" 
+                     class="step d-flex align-items-center justify-content-center"
+                     [ngStyle]="{ 'background-color': currentStep === step.id ? '#04246a' : '#f9f9f9' }">
+                  <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" 
+                        [ngClass]="{ 'bg-danger': currentStep !== step.id }"
+                        style="width: 22px;height: 22px;">{{step.id}}</span>
+                  <a [ngClass]="{ 'text-white': currentStep === step.id, 'text-dark': currentStep !== step.id }" style="text-decoration: none;">{{step.label}}</a>
                 </div>
-                <div class="step d-flex align-items-center justify-content-center">
-                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">2</span>
-                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
-                </div>
-                <div class="step d-flex align-items-center justify-content-center">
-                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">3</span>
-                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
-                </div>
-                <div class="step d-flex align-items-center justify-content-center">
-                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">4</span>
-                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
-                </div>
-                <div class="step d-flex align-items-center justify-content-center">
-                    <span class="p-2 me-2 d-flex align-items-center justify-content-center text-white rounded-circle" style="width: 22px;height: 22px;">5</span>
-                    <a class="text-dark"  style="text-decoration: none;">RC Detail</a>
-                </div>
-                
-            </div>
-
+              </div>
         </div>
+
+      
+        <div *ngIf="currentStep === 1">
+            <app-test1 [childForm]="childform1"></app-test1>
+          </div>
+          <div *ngIf="currentStep === 2">
+            <app-test2 [childForm]="childform2"></app-test2>
+          </div>
+          <div *ngIf="currentStep === 3">
+            <app-addbudget></app-addbudget>
+          </div>
+          <div *ngIf="currentStep === 4">
+            <app-test3></app-test3>
+          </div>
+          <div *ngIf="currentStep === 5">
+            <div>Notification content here</div>
+          </div>
+
 
 
         
 
        
     </p-card>
-</div>
+</form>

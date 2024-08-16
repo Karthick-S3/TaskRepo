@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using MailKit.Security;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 
@@ -503,11 +504,11 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
                         oracleParams.Add("p_budgetactive", budgetDetails.budgetactive, OracleMappingType.Varchar2, ParameterDirection.Input);
                         oracleParams.Add("p_createdate", budgetDetails.createdate, OracleMappingType.Varchar2, ParameterDirection.Input);
                         oracleParams.Add("p_companyid", budgetDetails.companyid, OracleMappingType.Int32, ParameterDirection.Input);
-                        oracleParams.Add("p_budgetid", dbType: OracleMappingType.Int32, direction: ParameterDirection.Output); // Output parameter for the generated budget id
+                        oracleParams.Add("p_budgetid", dbType: OracleMappingType.Int32, direction: ParameterDirection.Output); 
 
                         await connection.ExecuteAsync("budget_management.insert_budgetdetail", oracleParams, commandType: CommandType.StoredProcedure);
 
-                        int generatedBudgetId = oracleParams.Get<int>("p_budgetid"); // Retrieve the generated budget id from the output parameter
+                        int generatedBudgetId = oracleParams.Get<int>("p_budgetid"); 
                         return generatedBudgetId;
                     }
                 }
@@ -773,13 +774,41 @@ public async Task<IEnumerable<Companydetails>> LazyData(int skip, int take, stri
             }
         }
 
-        
+       public async Task<int> InsertTest1(Test1 test1, Test2 test2)
+{
+    try
+    {
+        using (var connection = _context.CreateConnection())
+        {
+            var oracleParams = new OracleDynamicParameters();
+            oracleParams.Add("p_firstname", test1.firstname, OracleMappingType.Varchar2, ParameterDirection.Input);
+            oracleParams.Add("p_lastname", test1.lastname, OracleMappingType.Varchar2, ParameterDirection.Input);
+            oracleParams.Add("p_id", dbType: OracleMappingType.Int32, direction: ParameterDirection.Output);
 
+            await connection.ExecuteAsync("TestPackage.InsertTest", oracleParams, commandType: CommandType.StoredProcedure);
+            
+            int generatedId = oracleParams.Get<int>("p_id");
 
-   
+            if (generatedId != 0)
+            {
+                var oracleParams2 = new OracleDynamicParameters();
+                oracleParams2.Add("p_phonenumber", test2.phonenumber, OracleMappingType.Varchar2, ParameterDirection.Input);
+                oracleParams2.Add("p_id", generatedId, OracleMappingType.Int32, ParameterDirection.Input);
 
+                await connection.ExecuteAsync("TestPackage.InsertTest2", oracleParams2, commandType: CommandType.StoredProcedure);
 
-        
+                return generatedId;
+            }
+            
+            return 0; 
+        }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        throw;
+    }
+}
 
+    }
 }

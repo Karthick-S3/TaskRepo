@@ -101,22 +101,6 @@ namespace Backend.Controllers
 
 
 
-        //  [HttpGet("serviceName")]
-        // public IActionResult GetServiceStatus([FromQuery]string serviceName)
-        // {
-        //     try
-        //     {
-        //         using (var serviceController = new ServiceController(serviceName))
-        //         {
-        //             var status = serviceController.Status;
-        //             return Ok(new { ServiceName = serviceName, Status = status.ToString() });
-        //         }
-        //     }
-        //     catch (System.Exception ex)
-        //     {
-        //         return StatusCode(500, $"Error fetching status for service {serviceName}: {ex.Message}");
-        //     }
-        // }
 
 
         [HttpGet("GetServiceStatus")]
@@ -659,6 +643,25 @@ public async Task<IActionResult> UpdateBudgetDetail([FromBody] Budgetdetails bud
                 return StatusCode(500, $"Error stopping service: {ex.Message}");
             }
         }
+
+
+
+        [HttpPost("insertTest")]
+        [AllowAnonymous]
+        public async Task<IActionResult> InsertTest([FromBody] TestData testData)
+        {
+            try
+            {
+                int generatedId = await _companydetailsRepositry.InsertTest1(testData.Test1, testData.Test2);
+                return Ok(new { generatedId }); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
 
 
   

@@ -78,6 +78,8 @@ export class CompanydetailsComponent implements OnInit {
   budgetid!:number;
   budgetdetail: BudgetDetail[] = [];
 
+  flag =2;
+
   rowsperpageVal = this.appcomponent.TableProp.rowsperpage;
   scrollheightVal = this.appcomponent.TableProp.largeTabScroll;
   deatilscrollheightVal = this.appcomponent.TableProp.smallTabScroll;

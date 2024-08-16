@@ -39,6 +39,9 @@ import { LoginComponent } from './login/login.component';
 import { LayoutComponent } from './layout/layout.component';
 import { CustomInterceptor } from './custom.interceptor';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { Test1Component } from './test1/test1.component';
+import { Test2Component } from './test2/test2.component';
+import { Test3Component } from './test3/test3.component';
 
 
 
@@ -61,6 +64,9 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     SharedTableComponent,
     LoginComponent,
     LayoutComponent,
+    Test1Component,
+    Test2Component,
+    Test3Component,
   ],
   imports: [
     BrowserModule,

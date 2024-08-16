@@ -1,0 +1,11 @@
+input{
+    height: 37px;
+    border: 1px solid rgba(0, 0, 0, 0.199);
+    outline: none;
+    font-size: 14px;
+    
+}
+input:focus{
+    outline:2px solid #C2DBFE ;
+    border: 1px solid rgba(1, 53, 223, 0.795);
+}

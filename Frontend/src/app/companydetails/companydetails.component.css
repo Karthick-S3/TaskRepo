@@ -147,3 +147,13 @@ h4{
 .footerbtn:hover{
 outline: 1px solid white;
 }
+
+
+.enabled-icon {
+    cursor: pointer;
+  }
+  
+  .disabled-icon {
+    pointer-events: none;
+  }
+  

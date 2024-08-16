@@ -10,6 +10,7 @@ import { Currency } from './Interfaces/currency';
 import { BudgetDetail } from './Interfaces/budgetdetail';
 import { Filedetail } from './Interfaces/filesdetail';
 import { response } from 'express';
+import { TestData } from './Interfaces/testData';
 
 
 
@@ -316,6 +317,10 @@ UserLogin(username: string, password: string): Observable<any> {
   return this.http.get(url).pipe(map(response => {
     return response;
   }));
+}
+
+insertTest(testData: TestData): Observable<any> {
+  return this.http.post<any>(`${this.baseApiUrl}/api/Companydetails/insertTest`, testData);
 }
 
 }

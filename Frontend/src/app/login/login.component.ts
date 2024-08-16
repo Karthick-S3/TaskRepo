@@ -33,6 +33,7 @@ SubmitForm(){
   this.companyservice.UserLogin(this.myForm.value.username, this.myForm.value.password).subscribe(
     response => {
       localStorage.setItem('token', response.token);
+      localStorage.setItem('RoleId', '1');
       this.Flag.emit(false);
       
   this.ngxService.start();

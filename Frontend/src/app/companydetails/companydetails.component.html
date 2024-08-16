@@ -78,7 +78,7 @@
                         <i class="pi pi-search me-0 fw-normal"></i>
                     </span>
                   </div>
-                  <i class="fa-solid fa-plus" (click)="shows()"   pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
+                    <i class="fa-solid fa-plus" (click)="shows()"   pTooltip="Add" tooltipPosition="bottom" style="color: #1C587E;"></i>
                     <i class="fa-solid fa-print" (click)="PrintPage()" style="color: #1c537a;"  pTooltip="Print" tooltipPosition="bottom" ></i>
                     <i class="fa-solid fa-rotate"  (click)="reload()" style="color : #1e7d23;" pTooltip="Reload" tooltipPosition="bottom" ></i>
                     <i class="fa-solid fa-filter" (click)="showFilter()"  pTooltip="Filter" tooltipPosition="bottom" style="color: #1C537A;"></i>
@@ -156,7 +156,8 @@
     </div>
   </div>
 
-  <p-dialog class="detail-line-entry" [(visible)]="visible" [modal]="true" [style]="{ 'width': '110rem', 'min-height': '50vh','z-index' : '1' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [blockScroll]="true">    <ng-template pTemplate="header" class="detailline">
+  <p-dialog class="detail-line-entry" [(visible)]="visible" [modal]="true" [style]="{ 'width': '110rem', 'min-height': '50vh','z-index' : '1' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [blockScroll]="true">   
+     <ng-template pTemplate="header" class="detailline">
       <h4 class="my-2 p-0 fw-semibold fs-6">View Budget</h4>
       <div class="btss">
               
